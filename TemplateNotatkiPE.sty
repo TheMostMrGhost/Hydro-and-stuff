@@ -1,0 +1,105 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{TemplateNotatkiPE}[2021/08/05 Notatki PE]
+
+\RequirePackage{polski}
+\usepackage[utf8]{inputenc}
+\RequirePackage{amssymb}
+\RequirePackage{parskip}
+\RequirePackage{amsthm}
+\RequirePackage{xcolor}
+\RequirePackage{tikz}
+\RequirePackage{geometry}
+\RequirePackage{hyperref}
+\RequirePackage{makeidx}
+\RequirePackage{amsmath}
+\RequirePackage{float}
+%\pagestyle{headings}
+\marginparwidth=4cm
+
+\definecolor{Amber}{rgb}{1.0, 0.22, 0.0}
+\definecolor{Mediumorchid}{rgb}{0.74, 0.2, 0.64}
+\definecolor{Green}{rgb}{0.05, 0.9, 0.2} %
+\definecolor{brightgreen}{rgb}{0.4, 1.0, 0.0}
+
+\hbadness = 10000
+
+\newcommand{\rw}{\\\line(1,0){\columnwidth}\\}
+\newcommand{\fd}{\frac{dy}{dx}}
+\newcommand{\cfg}[1]{\textcolor{Green}{#1}}
+\newcommand{\cmo}[1]{\textcolor{Mediumorchid}{#1}}
+\newcommand{\cam}[1]{\textcolor{Amber}{#1}}
+\newcommand{\todo}{\textcolor{red}{TODO}}
+\newcommand{\zad}[1]{\textcolor{yellow}{Zadanie} {#1 % treść
+}}
+\newcommand{\ndef}[2]{\cfg{#1}\index{#2}} % Nowe pojęcie
+\newcommand{\nvi}[2]{\cmo{#1}\index{#2}} % Nowe urządzenie
+\newcommand{\nte}[2]{\cam{#1}\index{#2}} % Nowe twierdzenie
+\newcommand{\nsym}[1]{\textcolor{Blue}{#1}} % Nowe twierdzenie
+\newcommand{\ez}{\varepsilon_0}
+\newcommand{\rysunek}[2][]{
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = 0.3\textwidth]{#1}
+        \caption{#2}
+    \end{figure} % TODO naprawić to bo nie działa
+}
+
+\newcommand{\coulPot}{\frac{Q}{4\pi\varepsilon_0 r}}
+\newcommand{\coulField}{\frac{Q}{4\pi\varepsilon_0 r^2}}
+\newcommand{\fnvi}[1]{\nvi{#1}{#1}}
+\newcommand{\fndef}[1]{\ndef{#1}{#1}}
+\newcommand{\fnte}[1]{\nte{#1}{#1}}
+\newcommand{\muz}{\mu_0}
+\newcommand{\avg}[1]{\left< #1 \right>}
+\newcommand{\universalsep}[2]{
+    \begin{tikzpicture}
+        \draw[white] (0,0) -- (#1\textwidth,0);
+        \draw[black, thick] (#1\textwidth,0) -- (0.45\textwidth,0);
+        \filldraw[black] (0.5 \textwidth,0) circle (1pt);
+        \draw[black, thick] (0.55\textwidth,0) -- (#2\textwidth,0);
+    \end{tikzpicture}\\
+}
+\newcommand{\sep}{\universalsep{0.01}{0.99}}
+\newcommand{\smallsep}{\universalsep{0.3}{0.7}}
+
+\newcommand{\sphint}{\int_0^\pi d\theta \sin \theta \int_0^{2\pi} d\varphi}
+\newcommand{\lsum}{\sum_{l=0}^\infty}
+\newcommand{\uwaga}{\paragraph*{Uwaga}}
+
+\newcommand{\rys}[1]{
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = 0.5\textwidth]{#1}
+    \end{figure}
+}
+
+\newcommand{\rysop}[2]{
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = 0.5\textwidth]{#1}
+        \caption{#2}
+    \end{figure}
+}
+
+\newcounter{Pytanie}
+\newenvironment{Pytanie}{
+    \noindent
+    \refstepcounter{Pytanie}
+    \textbf{Pytanie~\thePytanie.}
+    \rmfamily
+}{} % TODO ogarnąć jak dokładnie działają te otoczenia
+
+\newenvironment{Komentarz}{
+    \noindent   
+    \color{gray} 
+    \rmfamily
+}{\color{black}\\}
+
+\newenvironment{Przyklad}{
+    \rmfamily
+    \paragraph{\textcolor{brightgreen}{Przykład}}
+}{\\}
+
+\newcommand{\kk}{\frac{1}{4\pi \varepsilon_0}}
+% Sidenote
+\newcommand{\sn}[1]{\marginpar{#1}}

@@ -1,0 +1,189 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{TemplateMatma}[2021/08/07 Komendy Matematyczne]
+
+\RequirePackage{polski}
+\RequirePackage{amssymb}
+\RequirePackage{parskip}
+\RequirePackage{amsthm}
+\RequirePackage{amsmath}
+
+% Wersory
+\newcommand{\vex}{\hat{e}_x}
+\newcommand{\vey}{\hat{e}_y}
+\newcommand{\vez}{\hat{e}_z}
+\newcommand{\ver}{\hat{e}_r}
+\newcommand{\vef}{\hat{e}_\varphi}
+\newcommand{\vet}{\hat{e}_\theta}
+\newcommand{\verho}{\hat{e}_\rho}
+
+% Strzałki wynikowe:
+\newcommand{\la}{\leftarrow}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\lra}{\longrightarrow}
+\newcommand{\lla}{\longleftarrow}
+\newcommand{\La}{\Leftarrow}
+\newcommand{\Ra}{\Rightarrow}
+\newcommand{\LLa}{\Longleftarrow}
+\newcommand{\LRa}{\Longrightarrow}
+\newcommand{\qiff}{\quad \iff \quad}
+\newcommand{\qLRa}{\quad \LRa \quad}
+\newcommand{\qLLa}{\quad \LLa \quad}
+
+% Litery
+    %% mathcal
+% Jeśli się coś popsuło to stara wersja była taka:
+% \newcommand{\HH}{\mathcal{H}}
+% \newcommand{\EE}{\mathcal{E}}
+% \newcommand{\eL}{\mathcal{L}}
+% \newcommand{\eN}{\mathcal{N}}
+% \newcommand{\DD}{\mathcal{D}}
+
+% Nowa wersja:
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\R}{\mathcal{R}}
+\newcommand{\Z}{\mathcal{Z}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\M}{\mathcal{M}}
+\renewcommand{\S}{\mathcal{S}}
+\renewcommand{\O}{\mathcal{O}}
+\renewcommand{\H}{\mathcal{H}}
+\renewcommand{\L}{\mathcal{L}}
+
+    %% mathbb
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\KK}{\mathbb{K}}
+\renewcommand{\SS}{\mathbb{S}}
+\renewcommand{\AA}{\mathbb{A}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\TT}{\mathbb{T}}
+\newcommand{\MM}{\mathbb{M}}
+\newcommand{\EE}{\mathbb{E}}
+
+
+    %% mathsf
+\renewcommand{\d}{\mathrm{d}}
+\renewcommand{\hom}{\mathsf{Hom}}
+\newcommand{\dd}{\mathsf{D}}
+
+    %% mathfrak
+\newcommand{\OOO}{\mathsf{O}}
+\newcommand{\AAA}{\mathfrak{A}}
+\newcommand{\B}{\mathfrak{B}}
+\newcommand{\XX}{\mathfrak{X}}
+
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+
+% Operatory różniczkowe
+\newcommand{\rot}{\nabla\times}
+\renewcommand{\div}{\nabla\cdot}
+\newcommand{\grad}{\nabla}
+\newcommand{\kd}[2]{\delta_{#1#2}}
+
+% Pochodne
+\renewcommand{\dfrac}[2]{\frac{\d #1}{\d #2}}
+\newcommand{\df}[2]{\frac{\d #1}{\d #2}}
+\newcommand{\ddfrac}[2]{\frac{\d^2 #1}{\d #2^2}}
+\newcommand{\kdfrac}[3]{\frac{\d^#1 #2}{\d #3 ^#1}}
+\newcommand{\eptf}[3]{\left.\frac{\partial #1}{\partial #2}\right|_{#3}}
+\newcommand{\ptf}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\dptf}[2]{\frac{\partial^2 #1}{\partial #2 ^ 2}}
+\newcommand{\xptf}[3]{\frac{\partial^#1 #2}{\partial #3 ^ {#1}}}
+\newcommand{\fsum}[2]{\sum_{#1}^{#2}}
+\newcommand{\ser}[1]{\sum_{#1 = 0}^\infty}
+
+% Algebra
+\newcommand{\sskal}[2]{\langle#1|#2\rangle}
+\newcommand{\oskal}[2]{\left(#1|#2\right)}
+\newcommand{\bra}[1]{\langle #1|}
+\newcommand{\ket}[1]{|#1\rangle}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\laplacesfer}{\frac{1}{r} \frac{\partial ^2 }{\partial r^2 } \left( r \Phi \right) + \frac{1}{r^2 \sin^2 \theta } \cdot 
+        \frac{\partial}{\partial \theta } \left( \sin\theta \frac{\partial \Phi}{\partial \theta} \right) +
+        \frac{1}{r^2 \sin^2 \theta } \frac{\partial^2 \Phi}{\partial \varphi^2}  =0}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\evat}[2]{\left\langle #1, #2 \right \rangle}
+
+%\newcommand{\Fakt}{\paragraph*{Fakt}}
+\newcommand{\ot}{\otimes}
+\newcommand{\naw}[2]{\left[#1, #2\right]}
+
+% \newtheorem{definition}{Def.}
+% \newtheorem{theorem}{Tw.}
+% \newtheorem{lemma}{Lemat.}
+% \let\remark\relax
+% \newtheorem{remark}{Uwaga}
+% \let\definition\relax
+% \newtheorem{proposition}{Stw.}
+
+%\let\example\relax
+%\newtheorem{example}{Przykład}
+
+% Analiza zespolona
+\newcommand{\zpar}[1]{\partial_{z} #1}
+\newcommand{\czpar}[1]{\partial_{\bar z} #1}
+\newcommand{\res}{\tm{Res}}
+\newcommand{\bC}{\bar \CC}
+
+% Geo różniczkowe:
+\newcommand{\ct}{\iota}
+\newcommand{\ctr}{\lrcorner}
+\newcommand{\ld}{\mathcal{L}}
+\newcommand{\Ad}{\mathrm{Ad}}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\ten}[1]{\underline{\underline{{#1}}}}
+
+% Wektory
+\newcommand{\pvrho}{\frac{\partial}{\partial\rho}}
+\newcommand{\pvx}{\frac{\partial}{\partial x}}
+\newcommand{\pvy}{\frac{\partial}{\partial y}}
+\newcommand{\pvz}{\frac{\partial}{\partial z}}
+\newcommand{\pvf}{\frac{\partial}{\partial \varphi}}
+\newcommand{\cov}[1]{\overleftarrow{#1}}
+
+
+% Funkcje:
+\newcommand{\lap}{\bigtriangleup}
+\newcommand{\ord}{\textrm{ord}}
+
+%Szczególne struktury:
+\newcommand{\GL}{\mathsf{GL}}
+\newcommand{\Sp}{\mathsf{Sp}}
+
+% Różne
+\newcommand{\const}{\tm{const}}
+\newcommand{\tm}[1]{\textrm{#1}}
+\newcommand{\supp}{\tm{supp}}
+\newcommand{\infint}{\int_{-\infty}^\infty}
+\newcommand{\diag}{\tm{diag}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\hd}{\underline{h}}
+\newcommand{\tr}{\tm{tr}}
+\newcommand{\orb}{\mathrm{Orb}}
+\renewcommand{\ss}{\subset}
+\def\>{\rangle}
+\def\<{\langle}
+\renewcommand{\bf}[1]{\mathbf{#1}}
+\newcommand{\tbf}[1]{\textbf{#1}}
+\newcommand{\Img}{\mathrm{im}}
+\newcommand{\coker}{\mathrm{coker}}
+\newcommand{\ori}{\textrm{or}}
+\newcommand{\ul}[1]{\underline{#1}}
+
+% Kategorie
+\newcommand{\dom}{\textrm{dom}}
+\newcommand{\cod}{\textrm{cod}}
+\newcommand{\Map}{\textrm{Map}}
+\newcommand{\Der}{\textrm{Der}}
+\newcommand{\os}[2]{\overset{#1}{#2}}
+\newcommand{\osra}[1]{\os{#1}{\lra}}
+\newcommand{\abs}[1]{\left| #1\right|}
