@@ -1,0 +1,260 @@
+\documentclass[10pt]{article}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{parskip}
+\usepackage{amsthm}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[lmargin = 2.5cm, rmargin = 2.5cm]{geometry}
+\usepackage{hyperref}
+\usepackage{makeidx}
+\usepackage{amsmath}
+\usepackage{TemplateNotatkiPE}
+\usepackage{TemplateMatma}
+\usepackage{fancyhdr}
+%Używanie pakietu do wykresów:
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{pgfplots}
+%żeby szybciej kompilować wykresy:
+\usepgfplotslibrary{external}
+\pgfplotsset{compat=1.18}
+\makeindex
+
+\title{Hydrodynamics and Elasticity,\\ Homework Sheet 1}
+\author{Mikołaj Duch}
+
+
+% Headery
+% \author{Mikołaj Duch}
+% \title{Wiązki}
+% \pagestyle{fancy}
+% \fancyhf{}
+% \rhead{\@author}
+% \chead{\Large \textbf{\@title}}
+% \lhead{\today}
+
+% \pgfplotsset{width=10cm,compat1.9}
+% \date{}
+\begin{document}
+
+    \maketitle
+    \section*{Problem 1}
+
+    Let $a,b,c,x,y,z \in \RR^3$ and denote
+    \begin{displaymath}
+      M := \begin{bmatrix}
+        - & a & - \\
+        - & b & - \\
+        - & c & - \\
+      \end{bmatrix}, 
+      \quad
+      N := \begin{bmatrix}
+        - & x & - \\
+        - & y & - \\
+        - & z & - \\
+      \end{bmatrix}.
+    \end{displaymath}
+    
+    Recall that $\det (A B) = \det (A) \det (B)$ and $\det(A) = \det (A^T)$.
+    Thus
+    \begin{displaymath}
+      \det (M N^T) = \det (M) \det (N) = \left[ \vec a \cdot (\vec b \times \vec c) \right] \cdot 
+      \left[ \vec x \cdot (\vec y \times \vec z) \right]
+    \end{displaymath}
+    and also
+    \begin{equation}
+      M N^T = \begin{bmatrix}
+        \oskal{a}{x} & \oskal{a}{y} & \oskal{a}{z} \\
+        \oskal{b}{x} & \oskal{b}{y} & \oskal{b}{z} \\
+        \oskal{c}{x} & \oskal{c}{y} & \oskal{c}{z} 
+      \end{bmatrix},
+      \label{matrixform}
+    \end{equation}
+    where $\oskal{\cdot}{\cdot}$ denotes standard inner product in $\RR^3$.
+    Using tensor notation for $\vec a \cdot (\vec b \times \vec c)$ we can write 
+    \begin{displaymath}
+      \vec a \cdot (\vec b \times \vec c) =  a_i \epsilon_{ijk}b_j c_k
+    \end{displaymath}
+    and analogously for $\vec x, \vec y, \vec z$. Thus
+    \begin{displaymath}
+      \det (MN^T) = (a_i \epsilon_{ijk} b_j c_k) (x_l \epsilon_{lmn} b_m c_n) = \epsilon_{ijk} \epsilon_{lmn} a_i b_j c_k x_l y_m z_n.
+    \end{displaymath}
+    
+    If we choose $\vec a, \vec b, \dots$ to be $\vec e_i, \vec e_j, \dots$ we obtain that 
+    \begin{displaymath}
+      \det (MN^T) = \epsilon_{ijk} \epsilon_{lmn}.
+    \end{displaymath}
+
+    On the other hand, using Equation \ref{matrixform} we get
+    \begin{displaymath}
+      \det (M N^T) = \oskal{a}{x} \oskal{b}{y} \oskal{c}{z} + 
+      \oskal{a}{y} \oskal{b}{z} \oskal{c}{x} +
+      \oskal{a}{z} \oskal{b}{x} \oskal{c}{y} - 
+      \oskal{a}{z} \oskal{b}{y} \oskal{c}{x} - 
+      \oskal{a}{y} \oskal{b}{x} \oskal{c}{z} - 
+      \oskal{a}{x} \oskal{b}{z} \oskal{c}{y}.
+    \end{displaymath}
+    Using the fact that $\oskal{e_i}{e_j} = \delta_{ij}$ we get that
+    \begin{displaymath}
+      \det (M N^T) = \delta_{il} \delta_{jm} \delta_{kn} 
+      + \delta_{im} \delta_{jn} \delta_{kl} 
+      + \delta_{in} \delta_{jl} \delta_{km} 
+      - \delta_{il} \delta_{jn} \delta_{km} 
+      - \delta_{in} \delta_{jm} \delta_{kl} 
+      - \delta_{im} \delta_{jl} \delta_{kn} 
+    \end{displaymath}
+    And therefore 
+    \begin{displaymath}
+      \epsilon_{ijk} \epsilon_{lmn} = 
+      \delta_{il} \delta_{jm} \delta_{kn} 
+      + \delta_{im} \delta_{jn} \delta_{kl} 
+      + \delta_{in} \delta_{jl} \delta_{km} 
+      - \delta_{il} \delta_{jn} \delta_{km} 
+      - \delta_{in} \delta_{jm} \delta_{kl} 
+      - \delta_{im} \delta_{jl} \delta_{kn}.
+    \end{displaymath}
+
+    Substituting $k = n$ in the above identity and using the fact that $\delta_{ik}\delta_{kj} = \delta_{ij}$ we obtain
+    \begin{align*}
+      \epsilon_{ijk} \epsilon_{lmk} &= 
+      3\delta_{il} \delta_{jm} 
+      + \delta_{im} \delta_{jl} 
+      + \delta_{jl} \delta_{im} 
+      - \delta_{il} \delta_{jm} 
+      - \delta_{jm} \delta_{il}
+      - 3\delta_{im} \delta_{jl} \\
+      &= \delta_{il} \delta_{jm} - \delta_{im}\delta_{jl}.
+    \end{align*}
+
+    This implies 
+    \begin{displaymath}
+      \epsilon_{ijk} \epsilon_{ijk} = \delta_{ii} \delta_{jj} - \delta_{ij} \delta_{ji} = 
+      \delta_{ii} \delta_{jj} - \delta_{ii} = 6.
+    \end{displaymath}
+    
+    
+    \section{Problem 2}
+    \subsection*{a)}
+    \begin{displaymath}
+      \nabla \cdot (\phi \vec a) = \ptf{}{x^i}(\phi a^i(x)) 
+      = \left(\ptf{\phi}{x^i}\right) a^i(x) + \phi \ptf{}{x^i} a^i 
+      = \left(\nabla \phi\right) \cdot \vec a(x) + \phi \nabla \cdot \vec a.
+    \end{displaymath}
+    
+    \subsection*{b)}
+    The $i$-th component
+    \begin{align*}
+      \left[\nabla \times (\nabla \times \vec a) \right]_i =  \epsilon_{ijk} \ptf{}{x^j} ( \vec \epsilon_{klm} \ptf{}{x^l} a^m ) =  
+       \epsilon_{ijk}\epsilon_{lmk} \frac{\partial^2}{\partial x^j \partial x^l} a^m\\
+       = (\delta_{il} \delta_{jm} - \delta_{im} \delta_{jl}) \frac{\partial^2}{\partial x^j \partial x^l} a^m
+       =  \ptf{}{x^i}\ptf{a^j}{x^j} - \dptf{a^i}{(x^j)} \\
+       = \ptf{}{x^i} (\nabla \cdot \vec a) - [\nabla^2 \vec a]_i.
+    \end{align*}
+    Thus 
+    \begin{displaymath}
+      \left[ \nabla \times ( \nabla \times \vec a) \right] = \nabla(\nabla \cdot \vec a) - \nabla^2 \vec a.
+    \end{displaymath}
+    
+
+    \subsection*{c)}
+    \begin{align*}
+      \nabla \cdot (\vec v \times \vec u) = \ptf{}{x^i} (\epsilon_{ijk} v^j u^k) 
+      = \epsilon_{ijk} \ptf{v^j}{x_i} u^k + \epsilon_{ijk} \ptf{u^k}{x_i} v^j
+      = \left[ \epsilon_{kij} \ptf{v^j}{x_i} \right] u^k + \left[ \epsilon_{kij} \ptf{u^k}{x_i} \right]v^j \\
+      = \left[ \nabla\times \vec v \right]_k u^k + \left[ \nabla \times \vec u \right]_k v^k 
+      = \vec u \cdot [\nabla \times \vec v] + \vec v \cdot [\nabla \times \vec u].
+    \end{align*}
+
+    \subsection*{d)}
+    The $i$-th component
+    \begin{align*}
+      [\tm{Div}(\phi \vec T)]_i = \ptf{\phi T^{ij}}{x^j} = \underbrace{\ptf{\phi}{x^j}}_{\nabla \phi} T^{ij} + \phi \ptf{T^{ij}}{x^j} 
+      = [\vec T \cdot (\nabla \phi)]_i + [\phi \tm{Div}{\vec T}]_i.
+    \end{align*}
+
+    \section{Problem 3}
+    \subsection*{a)}
+    \begin{displaymath}
+      \vec T = \begin{pmatrix}
+        1 & 2 & 3\\
+        4 & 5 & 6 \\
+        7 & 8 & 9
+      \end{pmatrix}, \quad 
+      \vec T^S = \frac{1}{2}(\vec T + \vec T^T) = 
+      \begin{pmatrix}
+        1 & 3 & 5 \\
+        3 & 5 & 7 \\
+        5 & 7 & 9
+      \end{pmatrix}, \quad 
+      \vec T^A = \frac{1}{2}(\vec T - \vec T^T) = 
+      \begin{pmatrix}
+        0 & -1 & -2 \\
+        1 & 0 & -1 \\
+        2 & 1 & 0
+      \end{pmatrix}.
+    \end{displaymath}
+
+
+    \subsection*{b)}
+    Axial vector of $\vec T^A$ is a vector $\omega\in \RR^3$ which satisfies
+    \begin{displaymath}
+      \forall \vec a \in \RR^3 \quad T^A (\vec a) = \omega \times \vec a.
+    \end{displaymath}
+    Using index notation for fixed index $i$ we obtain
+    \begin{displaymath}
+      \epsilon_{ijk} \omega_j a_k = T_{ik} a_k \qLRa \epsilon_{ijk} \omega_j = T_{ik} \iff \epsilon_{kij}\omega_j = -T_{ki}.
+    \end{displaymath}
+    Substituting for example $i = 1, k = 2$ we obtain
+    \begin{displaymath}
+      - T_{12} = \epsilon_{12j}\omega_j = \omega_3.
+    \end{displaymath}
+    Analogously we obtain that $\omega_1 = - T_{23}, \omega_2 = T_{13}$.
+    Thus the axial vector of $\vec T^A$ is 
+    \begin{displaymath}
+      \omega = \begin{pmatrix}
+        1 \\
+        - 2 \\
+        1
+      \end{pmatrix}.
+    \end{displaymath}
+    
+    
+    
+    
+
+    \subsection*{c)}
+    Let us show first that $\vec v \cdot \vec R^A \cdot \vec v = 0$.
+    \begin{displaymath}
+      \vec v \cdot \vec R^A \cdot \vec v = \frac{1}{2}v^i (R_{ij} - R_{ji}) v^j 
+      = \frac{1}{2} v^i R_{ij} v^j - \frac{1}{2} v^j R_{ij} v^i 
+      = \frac{1}{2} (\vec v \cdot \vec R \cdot \vec v - \vec v \cdot \vec R \cdot \vec v) = 0
+    \end{displaymath}
+
+    Thus
+    \begin{displaymath}
+      \vec v \cdot \vec R^S \cdot \vec v = \vec v (\vec R - \vec R^A) \cdot \vec v 
+      = \vec v \cdot \vec R\cdot \vec v - 0  = \vec v \cdot \vec R\cdot \vec v.
+    \end{displaymath}
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
