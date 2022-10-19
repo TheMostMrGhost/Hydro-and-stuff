@@ -169,9 +169,9 @@
     \nabla \cdot \vec u = 0.
   \end{displaymath}
   
-  For the incompressible flow the $\vec u$ is divergence-free or solonoidal (\todo I didn't hear it right).
+  For the incompressible flow the $\vec u$ is divergence-free or solonoidal (\todo I didn't hear well).
 
-  If $\nabla \cdot \vec u = 0$ and $ f(\vec r, t) = f_0 = \tm{const}$ then
+  If $\nabla \cdot \vec u = 0$ and $ f(\vec r, t) = f_0 = \tm{const}$ then\footnote{It follows from continuity equation}
   \begin{displaymath}
     \forall t \quad f(\vec r, t) = f_0 = \tm{const}.
   \end{displaymath}
@@ -180,8 +180,23 @@
   
 
   \section{Newton's second law (Momentum balance)}
-  \fndef{Material volume}. Consider closed system (volume $V(t)$) which is comprised of the same fluid particles.
-  It flows with a fluid. \todo Fig0.
+  % \fndef{Material volume}. 
+  Consider closed system (volume $V(t)$) which is comprised of the same fluid particles
+  (it flows with a fluid). 
+
+  % \todo Fig0.
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+      \node[anchor=south west] (image) at (0,0)
+      {\includegraphics[width=0.25\textwidth]{./images/01Fig0.png}};
+        \begin{scope}[x={(image.south east)}, y={(image.north west)}]
+        \node at (0.0, 0.0) {};
+        \end{scope}
+    \end{tikzpicture}
+    % \caption{}
+  \end{figure}
+
   We want to calculate the momentum of such \fndef{material volume}.
   It is obviously an integral
   \begin{displaymath}
@@ -203,7 +218,7 @@
     \begin{displaymath}
       \dfrac{}{t} \int_{V(t)} \beta (\vec r, t) \d \vec r = 
       \int_{V}\left[ \ptf{\beta}{t} + \nabla \cdot (\beta \vec u) \right] \d \vec r
-      = \int_V \left[ \ptf{\beta}{t} + \vec u \cdot \vec \beta + \beta \nabla \cdot \vec u \right]
+      = \int_V \left[ \ptf{\beta}{t} + \vec u \cdot \nabla \beta + \beta \nabla \cdot \vec u \right]
       ,
     \end{displaymath}
     where $V$ is a fixed quantity, called control volume (i.e. any volume that coincides with $V(t)$).
@@ -216,7 +231,7 @@
     \item changing volume i.e. $\beta \nabla\cdot \vec u$.
   \end{enumerate}
 
-  Using it to the momentum we get
+  Applying RTT to the momentum we get
   \begin{displaymath}
     \dfrac{\vec P }{t} = \dfrac{}{t} \int_{V(t)} \rho \vec u \d \vec r 
     = \int_V \left[ \ptf{\rho\vec u }{t} + \nabla \cdot (\rho \underbrace{\vec u \vec u}_{\vec u \otimes \vec u}) \right]
@@ -239,21 +254,32 @@
   \end{displaymath}
   
   \section{Further consequences of RTT}
-  \todo Fig1.
+  % \todo Fig1.
+
+  \begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+      \node[anchor=south west] (image) at (0,0)
+      {\includegraphics[width=0.25\textwidth]{./images/01Fig1.png}};
+        \begin{scope}[x={(image.south east)}, y={(image.north west)}]
+        \node at (0.0, 0.0) {};
+        \end{scope}
+    \end{tikzpicture}
+  \end{figure}
+
   
   \begin{displaymath}
     M = \int_V \rho \d \vec r \qLRa \ptf{M}{t} 
     = \ptf{}{t} \int_V \rho \d \vec r 
     = \int_V \ptf{\rho}{t} \d \vec r 
-    = - \int_{\partial V} \rho \vec u \cdot \hat n \d S 
-    = - \int_V \nabla \cdot (\rho \vec u) \d \vec r.
+    = - \int_V \nabla \cdot (\rho \vec u) \d \vec r
+    = - \int_{\partial V} \rho \vec u \cdot \hat n \d S .
   \end{displaymath}
 
   To note: material volume is the volume that flows with the fluid.
   
-  \todo Fig2
 
-  Consider material volume $V(t)$ and its mass given by
+  Consider a material volume $V(t)$ and its mass given by
   \begin{displaymath}
     M = \int_{V(t)}  \rho \d \vec r.
   \end{displaymath}
@@ -268,16 +294,28 @@
     = \int_V \left[ \ptf{\rho}{t} + \nabla \cdot (\rho \vec u) \right]\d \vec r 
     = 0.
   \end{displaymath}
+  The above equation states that the mass of the material volume which travels with the flow remains constant.
   
+  \paragraph{Force model}
   In the following equation
   \begin{displaymath}
     \int_V \rho \dfrac{\vec u}{t} \d \vec r = \vec F,
   \end{displaymath}
   we do not know what $\vec F$ is and therefore need a model for it.
 
-  \todo Fig3
+  % \todo Fig3
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+      \node[anchor=south west] (image) at (0,0)
+      {\includegraphics[width=0.25\textwidth]{./images/01Fig2.png}};
+        \begin{scope}[x={(image.south east)}, y={(image.north west)}]
+        \node at (0.0, 0.0) {};
+        \end{scope}
+    \end{tikzpicture}
+  \end{figure}
 
-  Consider that the fluid acts on its surface element $\d a$ (with normal vector $\hat n$).
+  Consider that the fluid acts on its surface element $\d a$ (with a normal vector $\hat n$).
   Let $\vec t$ be a force per unit area, and $\d \vec F = \vec t \d a$.
   \begin{displaymath}
     \vec F \os{\tm{model}}{=} \int_{\partial V} \d \vec F 
@@ -287,7 +325,7 @@
   Assume that $\vec t = - p \hat{n}$, where $p $ is a pressure and $\nabla p $ a \fndef{pressure field}.
   
   \begin{displaymath}
-    \int_V \rho \dfrac{\vec u }{t} = \d \vec r = - \int_V \nabla p \d \vec r,
+    \int_V \rho \dfrac{\vec u }{t} \d \vec r = - \int_V \nabla p \d \vec r,
   \end{displaymath}
   \begin{displaymath}
     \int_V \left[ \rho \dfrac{\vec u}{t} + \nabla p \right]\d \vec r = 0 
@@ -300,33 +338,34 @@
   This is the \fnvi{Euler model of the ideal fluid} (ideal fluid without dissipation).
   
   \section{Equilibrium}
-  Equilibrium is obtained when $\vec u = 0$ and thus $\nabla p = 0$.
-  Especially if $p = \const$.
+  Equilibrium is obtained when $\vec u = 0$ and thus $\nabla p = 0$
+  (especially if $p = \const$).
   \begin{itemize}
     \item ideal fluid $ \vec t = - p \hat n$
-    \item In general $ \vec t = \Sigma^T \cdot \vec n$, where $\Sigma$ is \fndef{Cauchy stress tensor} (second order tensor).
+    \item In general $ \vec t = \ten{\Sigma}^T \cdot \vec n$, where $\Sigma$ is \fndef{Cauchy stress tensor} (second order tensor).
   \end{itemize}
-  In general case force can have a 
-  
+  In general case force can have a form given by
   \begin{displaymath}
-    \ul{\ul{\Sigma}} = - p \ul{\ul{1}} + \ul{\ul{\Sigma'}} % TODO that's not all correct. 
+    \vec F = \int_{\partial V} \vec t \d a = \int_{\partial V} \ten{\Sigma}^T \cdot \hat n \d a 
+    = \int_V \nabla \cdot \ten{\Sigma} \d \vec r,
+  \end{displaymath}
+  with the stress tensor
+  \begin{displaymath}
+    \ten{\Sigma} = - p \cdot\ten{1} + \ten{\Sigma}'. % TODO that's not all correct. 
   \end{displaymath}
 
 
-  \begin{displaymath}
-    \vec F = \int_{\partial V} \vec t \d a = \int_{\partial V} \Sigma^T \cdot \hat n \d a = \int_V \nabla \cdot \Sigma \d \vec r.
-  \end{displaymath}
   Newton's second law
   \begin{displaymath}
-    \int_V \rho \dfrac{\vec u}{t} \d \vec r = \nabla \cdot \Sigma \d \vec r.
+    \int_V \rho \dfrac{\vec u}{t} \d \vec r = \int\nabla \cdot \ten \Sigma \d \vec r.
   \end{displaymath}
 
   \begin{displaymath}
-    \Sigma = \underbrace{- p \ul{\ul{1}}}_{\tm{ideal term}} + \underbrace{\ul{\ul{\Sigma}}}_{\tm{deviatory part}}
+    \ten \Sigma = \underbrace{- p \ul{\ul{1}}}_{\tm{ideal term}} + \underbrace{\ul{\ul{\Sigma}}}_{\tm{deviatory part}}
   \end{displaymath}
   Deviatoric part vanishes in equilibrium.
 
-  Ideal fluid model $\Sigma' = 0$, $\Sigma = - p \ul{\ul{1}}$.
+  Ideal fluid model $\ten \Sigma' = 0$, $\ten \Sigma = - p \ul{\ul{1}}$.
   \begin{displaymath}
     \nabla \cdot \Sigma = \nabla \left( - p \ul{\ul{1}} \right) = - \nabla p.
   \end{displaymath}
@@ -335,23 +374,34 @@
   Til now we formulated
   
   \begin{itemize}
-    \item 
+    \item Continuity equation
       \begin{displaymath}
           \ptf{\rho}{t} + \nabla \cdot ( \rho \vec u ) = 0
       \end{displaymath}
-    \item \begin{displaymath}
-        \rho \left( \ptf{\vec u }{t} + \vec u \cdot \nabla \cdot \vec u  \right) = \nabla \cdot \Sigma
+    \item Newton's law
+      \begin{displaymath}
+        \rho \left( \ptf{\vec u }{t} + \vec u \cdot \nabla \cdot \vec u  \right) = \nabla \cdot \ten \Sigma
     \end{displaymath}
-  \item What's next?
+  \item What's next? Angular momentum.
   \end{itemize}
 
   \section{Angular momentum}
-  Fig4
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+      \node[anchor=south west] (image) at (0,0)
+      {\includegraphics[width=0.25\textwidth]{./images/01Fig3.png}};
+        \begin{scope}[x={(image.south east)}, y={(image.north west)}]
+        \node at (0.0, 0.0) {};
+        \end{scope}
+    \end{tikzpicture}
+  \end{figure}
 
-  Consider material volume $V(t)$, density $\rho$ and a point at $\vec r$ moving with a velocity $\vec u$.
+  Consider a material volume $V(t)$, with density $\rho$ and a point at $\vec r$ moving with a velocity $\vec u$.
   \begin{displaymath}
     \vec L (t) = \int_{V(t)}\vec r \times \rho \vec u \d \vec r
-    = \int_{V(t)} \rho (\vec r \times \vec u) \d \vec r,
+    = \int_{V(t)} \rho (\vec r \times \vec u) \d \vec r
+    = \int_{V(t)} \rho \vec l \d \vec r,
   \end{displaymath}
   where $\vec l = \vec r \times \vec u $ is the \fndef{angular momentum per unit mass}.
 
@@ -359,7 +409,7 @@
   \begin{displaymath}
     \dfrac{ \vec L }{t} = \vec N,
   \end{displaymath}
-  where $\vec N$ is a \fndef{net torque} acting on $V(t)$.
+  where $\vec N$ is a net torque acting on $V(t)$.
   \begin{displaymath}
     \dfrac{\vec L}{t} = \dfrac{}{t} \int_{V(t)} \rho \vec l \d \vec r \os{\tm{RTT + cont}}{=\joinrel=} \int_V \rho \dfrac{\vec l}{t} \d \vec r.
   \end{displaymath}
@@ -369,7 +419,7 @@
   \end{displaymath}
 
   \begin{displaymath}
-    \int_V \rho \dfrac{\vec l}{t} \d \vec r = \int_V \vec r \times \vec t \d a 
+    \int_V \rho \dfrac{\vec l}{t} \d \vec r = \int_{\partial V} \vec r \times \vec t \d a 
     = \int_{\partial V} (\vec r \times \Sigma^T) \cdot \hat n \d a 
   \end{displaymath}
   using divergence theorem
@@ -378,7 +428,7 @@
     \label{eq:prev}
   \end{equation}
 
-  where divergence theorem:
+  where the divergence theorem reads
   \begin{displaymath}
     \int_{\partial V} T \cdot \hat n \d a = \int_V \nabla \cdot T^T  \d \vec r.
   \end{displaymath}
@@ -403,8 +453,8 @@
   \begin{displaymath}
     \rho \dfrac{ \vec l }{t} = \rho \dfrac{\vec r \times \vec u}{t} 
     = \rho \vec r \times \dfrac{\vec u}{t} + \rho \dfrac{ \vec r }{t} \times \vec u
-    = \vec r \times \underbrace{\rho \dfrac{\vec u}{t}}_{\nabla \Sigma} 
-    = \vec r \times \nabla \cdot \Sigma.
+    = \vec r \times \underbrace{\rho \dfrac{\vec u}{t}}_{\nabla \cdot \ten \Sigma} 
+    = \vec r \times \nabla \cdot \ten \Sigma.
   \end{displaymath}
 
   Substituting it to  \ref{eq:2.2} we get
@@ -413,11 +463,20 @@
   \end{displaymath}
   Thus the $\Sigma $ is symmetric.
 
-  The stress tensor need not to be symmetric for magnetic fluids (it works for the simple fluids).
+  The stress tensor need not to be symmetric for magnetic fluids (it works for simple fluids).
 
 
   \paragraph{,,Complex'' fluids}
-  \todo Fig5
+  % \begin{figure}
+  %   \centering
+  %   \begin{tikzpicture}
+  %     \node[anchor=south west] (image) at (0,0)
+  %     {\includegraphics[width=0.25\textwidth]{./images/01Fig4.png}};
+  %       \begin{scope}[x={(image.south east)}, y={(image.north west)}]
+  %       \node at (0.0, 0.0) {};
+  %       \end{scope}
+  %   \end{tikzpicture}
+  % \end{figure}
 
   Consider a magnetic fluid in a bottle, with magnetic dipoles.
   Assume that we apply a magnetic field, so there is a reorientation and the \fndef{internal torque} appears.
@@ -429,14 +488,23 @@
   
   
   \section{Energy conservation}
-  \todo Fig6 
+  \begin{figure}
+    \centering
+    \begin{tikzpicture}
+      \node[anchor=south west] (image) at (0,0)
+      {\includegraphics[width=0.25\textwidth]{./images/01Fig4.png}};
+        \begin{scope}[x={(image.south east)}, y={(image.north west)}]
+        \node at (0.0, 0.0) {};
+        \end{scope}
+    \end{tikzpicture}
+  \end{figure}
 
   Consider material volume $V$ and a small surface element $\d a$.
   The energy is given by 
   \begin{displaymath}
     E(t) = \int_{V (t)} \rho (\vec r ,t ) e (\vec r, t) \d \vec r ,
   \end{displaymath}
-  where $e (\vec r, t)$ is the energy for unit volume.
+  where $e (\vec r, t)$ is the energy for unit mass.
 
   The ,,law'' of change
   \begin{displaymath}
@@ -450,9 +518,9 @@
   \end{displaymath}
   
   \begin{displaymath}
-    \dfrac{W}{t} = \int_{\partial V } \vec t \d a \cdot \vec u 
-    = \int_{\partial V} (\Sigma^T \cdot \vec u ) \cdot \hat n  \d a 
-    = \int_V \nabla \cdot ( \ul{\ul{\Sigma}} \cdot u) \d \vec r.
+    \dfrac{W}{t} = \int_{\partial V } \vec t \cdot \vec u \d a 
+    = \int_{\partial V} (\ten \Sigma^T \cdot \vec u ) \cdot \hat n  \d a 
+    = \int_V \nabla \cdot ( \ten \Sigma \cdot u) \d \vec r.
   \end{displaymath}
 
   \begin{displaymath}
@@ -493,17 +561,19 @@
   \end{displaymath}
   
   \section{Ideal fluid approximation}
+
   We assume no deviatoric stress, and no heat flows
   \begin{align*}
     \Sigma' = 0 \\
     \vec q = 0.
   \end{align*}
-  The for the ideal fluid
+  For the ideal fluid
   \begin{displaymath}
     \rho \dfrac{e_0}{t} = - p ( \nabla \cdot \vec u).
   \end{displaymath}
 
-  This approximation is a result of assuming that the particles move all together, so there is no viscosity and also no way to conduct heat.
+  This approximation is a result of assuming that the particles move all together, 
+  so there is no viscosity and also no way to conduct a heat.
   
   For a compressible flow
   \begin{itemize}
@@ -515,16 +585,25 @@
   However the real fluids do.
 
   \section{Entropy balance} 
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+      \node[anchor=south west] (image) at (0,0)
+      {\includegraphics[width=0.25\textwidth]{./images/01Fig5.png}};
+        \begin{scope}[x={(image.south east)}, y={(image.north west)}]
+        \node at (0.0, 0.0) {};
+        \end{scope}
+    \end{tikzpicture}
+  \end{figure}
   
-  \todo Fig7
 
-  Consider closed system and assume that a heat has been transfered to the system.
+  Consider a closed system and assume that a heat has been transfered to the system.
   We can move between $S$ and $S + \d S$ by reversible and irreversible paths.
   For the reversible one we have 
   \begin{displaymath}
     \d S  = \frac{\d Q}{T},
   \end{displaymath}
-  and for irreversible proces
+  and for an irreversible proces
   \begin{displaymath}
     \d S \geq \frac{\d Q}{T}.
   \end{displaymath}
@@ -683,6 +762,7 @@
   Assume that we know the temperature profile i.e. $T(\tm{height})$, and assume ideal gas.
   
   \todo Fig0
+
   
   \begin{displaymath}
     \dfrac{p}{z} = - \rho g, \quad p(z) = ?,
