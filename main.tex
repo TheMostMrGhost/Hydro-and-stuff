@@ -3,6 +3,7 @@
 \usepackage[toc,page]{appendix}
 \usepackage{graphicx}
 \usepackage{natbib}
+\usepackage{cancel}
 \usepackage{lipsum}
 \usepackage{caption}
 \usepackage[T1]{fontenc}
@@ -75,6 +76,14 @@
 \newtheorem*{terminology}{Terminology}
 \newtheorem*{notation}{Notation}
 \newtheorem*{convention}{Convention}
+
+\newcommand\Ccancel[2][black]{
+    \let\OldcancelColor\CancelColor
+    \renewcommand\CancelColor{\color{#1}}
+    \cancel{#2}
+    \renewcommand\CancelColor{\OldcancelColor}
+}
+
 
 
 
@@ -152,7 +161,7 @@
   \end{displaymath}
   and thus
   \begin{displaymath}
-    \frac{1}{\rho} \dfrac{\rho}{t} = - \nabla \cdot \vec u.
+    \frac{1}{\rho} \dfrac{\rho}{t} = - \nabla \cdot \vec u. 
   \end{displaymath}
   If we introduce \fndef{specific volume} $\nu = 1 / \rho$ we obtain
   \begin{displaymath}
@@ -171,7 +180,7 @@
   
   For the incompressible flow the $\vec u$ is divergence-free or solonoidal (\todo I didn't hear well).
 
-  If $\nabla \cdot \vec u = 0$ and $ f(\vec r, t) = f_0 = \tm{const}$ then\footnote{It follows from continuity equation}
+  If $\nabla \cdot \vec u = 0$ and $ f(\vec r, t) = f_0 = \tm{const}$ then\footnote{It follows from the continuity equation.}
   \begin{displaymath}
     \forall t \quad f(\vec r, t) = f_0 = \tm{const}.
   \end{displaymath}
@@ -181,7 +190,7 @@
 
   \section{Newton's second law (Momentum balance)}
   % \fndef{Material volume}. 
-  Consider closed system (volume $V(t)$) which is comprised of the same fluid particles
+  Consider a closed system (volume $V(t)$) which is comprised of the same fluid particles
   (it flows with a fluid). 
 
   % \todo Fig0.
@@ -207,7 +216,7 @@
   \begin{displaymath}
     \dfrac{\vec P(t)}{t} = \vec F, 
   \end{displaymath}
-  where $\vec F$ is a net force.
+  where $\vec F$ is the net force.
   \begin{displaymath}
     \dfrac{\vec P}{t} = \dfrac{}{t} \int_{V(t)} \rho(\vec r, t) \vec u (\vec r, t) \d \vec r = ?.
   \end{displaymath}
@@ -242,6 +251,10 @@
     \dfrac{}{t} \int_{V(t)} \rho b \d \vec r = \int_{V} \rho \dfrac{b}{t} \d \vec r,
   \end{displaymath}
   using RTT (Raynold's transport theorem) and the continuity equation.
+  
+  \begin{displaymath}
+    \frac{\xi }{ x} = \int_V \d V 
+  \end{displaymath}
   
   \begin{displaymath}
     \dfrac{\vec P}{t} = \dfrac{}{t} \int_{V(t)} \rho \vec u \d \vec r 
@@ -283,7 +296,7 @@
   \begin{displaymath}
     M = \int_{V(t)}  \rho \d \vec r.
   \end{displaymath}
-  Thus the mass conservation means that
+  The mass conservation means that
   \begin{displaymath}
     \dfrac{M}{t} = 0.
   \end{displaymath}
@@ -303,7 +316,7 @@
   \end{displaymath}
   we do not know what $\vec F$ is and therefore need a model for it.
 
-  % \todo Fig3
+  % \todo Fig3 TODO
   \begin{figure}[h]
     \centering
     \begin{tikzpicture}
@@ -319,7 +332,7 @@
   Let $\vec t$ be a force per unit area, and $\d \vec F = \vec t \d a$.
   \begin{displaymath}
     \vec F \os{\tm{model}}{=} \int_{\partial V} \d \vec F 
-    = \int_{\partial V}  \vec t \cdot \d a
+    = \int_{\partial V}  \vec t \d a
     = - \int_V \nabla p \d \vec r.
   \end{displaymath}
   Assume that $\vec t = - p \hat{n}$, where $p $ is a pressure and $\nabla p $ a \fndef{pressure field}.
@@ -342,9 +355,9 @@
   (especially if $p = \const$).
   \begin{itemize}
     \item ideal fluid $ \vec t = - p \hat n$
-    \item In general $ \vec t = \ten{\Sigma}^T \cdot \vec n$, where $\Sigma$ is \fndef{Cauchy stress tensor} (second order tensor).
+    \item In general $ \vec t = \ten{\Sigma}^T \cdot \vec n$, where $\Sigma$ is a \fndef{Cauchy stress tensor} (second order tensor).
   \end{itemize}
-  In general case force can have a form given by
+  In general case force can have a form 
   \begin{displaymath}
     \vec F = \int_{\partial V} \vec t \d a = \int_{\partial V} \ten{\Sigma}^T \cdot \hat n \d a 
     = \int_V \nabla \cdot \ten{\Sigma} \d \vec r,
@@ -479,7 +492,7 @@
   % \end{figure}
 
   Consider a magnetic fluid in a bottle, with magnetic dipoles.
-  Assume that we apply a magnetic field, so there is a reorientation and the \fndef{internal torque} appears.
+  Assume that we apply a magnetic field, so there is a reorientation and an \fndef{internal torque} appears.
   
   \begin{displaymath}
     \vec N = \int_{\partial V} \vec r \times \vec t \d a + \int_{V} \vec b \d \vec r,
@@ -499,7 +512,7 @@
     \end{tikzpicture}
   \end{figure}
 
-  Consider material volume $V$ and a small surface element $\d a$.
+  Consider a material volume $V$ and a small surface element $\d a$.
   The energy is given by 
   \begin{displaymath}
     E(t) = \int_{V (t)} \rho (\vec r ,t ) e (\vec r, t) \d \vec r ,
@@ -620,7 +633,7 @@
     \d_e S = \frac{\d Q}{T}.
   \end{displaymath}
   \begin{displaymath}
-    \dfrac{S}{t} = \dfrac{}{t} \int_{V(t)} \rho s \d \vec r = \int-V \dfrac{s}{t} \d \vec r,
+    \dfrac{S}{t} = \dfrac{}{t} \int_{V(t)} \rho s \d \vec r = \int-\rho \dfrac{s}{t} \d \vec r,
   \end{displaymath}
   \begin{displaymath}
     \dfrac{_e S}{t} = - \int_{\partial V} \frac{ \vec q}{T} \cdot \hat n \d a 
@@ -646,9 +659,12 @@
   Recall
   \begin{displaymath}
     \ptf{\rho}{t} + \nabla \cdot (\rho \vec u) = 0,  
+  \end{displaymath}
+  \begin{equation}
     \quad \frac{1}{\nu} \dfrac{\nu}{t} = \nabla \cdot \vec u, 
     \quad \nu = \frac{1}{\rho},
-  \end{displaymath}
+    \label{eq:3.1}
+  \end{equation}
   \begin{displaymath}
     \rho \dfrac{\vec u }{t} = \rho \left(  \ptf{\vec u}{t} + \vec u \cdot \vec u \right) = \nabla \cdot \Sigma  + \rho g,
   \end{displaymath}
@@ -657,14 +673,15 @@
     \Sigma^T = \Sigma.
   \end{displaymath}
   energy per unit mass
-  \begin{displaymath}
+  \begin{equation}
     \rho \dfrac{e_0}{t} = - p (\nabla \cdot \vec u) + \Sigma' : \nabla \vec u - \nabla \cdot \vec q
-  \end{displaymath}
+    \label{eq:3.2}
+  \end{equation}
   entropy per unit mass
   \begin{displaymath}
     \rho \dfrac{s}{t} = - \nabla \cdot \left( \frac{\vec q }{T} \right) + \theta,
   \end{displaymath}
-  where $\theta$ is \fndef{entopy production}. The second law of thermodynamics says that $\theta > 0 $.
+  where $\theta$ is the \fndef{entopy production}. The second law of thermodynamics says that $\theta > 0 $.
 
   Those are complete system of balance equations and in fact quite general ones.
 
@@ -679,13 +696,12 @@
   \begin{displaymath}
     \d s = \frac{1}{T}\d e_0 + \frac{p}{T} \d \nu.
   \end{displaymath}
-  $\d e_0/\d t$ comes form a flow of a energy and the $\d \nu / \d t$ part comes from continuity equation.
+  $\d e_0/\d t$ comes form the flow of a energy and the $\d \nu / \d t$ part comes from continuity equation.
   We can write it as
   \begin{displaymath}
-    \rho \dfrac{s}{t} = \frac{1}{T} \underbrace{\rho \dfrac{e_0}{t}}_{\tm{eq } 4} 
-    + \frac{p}{T} \underbrace{\frac{1}{\nu} \dfrac{\nu }{t}}_{\tm{eq } 1}.
+    \rho \dfrac{s}{t} = \frac{1}{T} \underbrace{\rho \dfrac{e_0}{t}}_{\tm{Eq }\ref{eq:3.2}}
+    + \frac{p}{T} \underbrace{\frac{1}{\nu} \dfrac{\nu }{t}}_{\tm{Eq } \ref{eq:3.1}},
   \end{displaymath}
-  Thus
   \begin{displaymath}
     \rho \dfrac{s}{t} = \frac{1}{T} \left[ - p (\nabla \cdot \vec u) + \Sigma' : \nabla \vec u - \nabla \cdot \vec q \right]
     + \frac{p}{T} (\nabla \cdot \vec u).
@@ -694,12 +710,12 @@
     \nabla \cdot \left( \frac{\vec q }{T} \right) = \frac{1}{T} \nabla \cdot \vec q - \frac{1}{T^2} \vec q \cdot \nabla T,
   \end{displaymath}
   \begin{displaymath}
-    \theta = - \frac{p}{T} (\nabla \cdot \vec u) + \frac{1}{T} \Sigma' : \nabla \vec u - \frac{1}{T} \nabla \cdot \vec q
-    + \frac{p}{T} (\nabla \cdot \vec u) + \frac{1}{T} \nabla \cdot \vec q - \frac{1}{T^2} \vec q \cdot \nabla T.
+    \theta =  -\Ccancel[blue]{\frac{p}{T} (\nabla \cdot \vec u)} + \frac{1}{T} \Sigma' : \nabla \vec u -\Ccancel[red]{ \frac{1}{T} \nabla \cdot \vec q}
+    + \Ccancel[blue]{\frac{p}{T} (\nabla \cdot \vec u)} + \Ccancel[red]{\frac{1}{T} \nabla \cdot \vec q} - \frac{1}{T^2} \vec q \cdot \nabla T.
   \end{displaymath}
   Thus the entropy production is given by the formula
   \begin{displaymath}
-    \theta = - \frac{1}{T^2} \underbrace{\vec q \cdot \nabla T}_{\tm{,,force''}} + \frac{1}{T} \underbrace{\Sigma' : \nabla \vec u}_{\tm{,,force}} \geq 0.
+    \theta = - \frac{1}{T^2} \underbrace{\vec q \cdot \nabla T}_{\tm{heat flux}} + \frac{1}{T} \underbrace{\Sigma' : \nabla \vec u}_{\tm{momentum flux}} \geq 0.
   \end{displaymath}
   Imagine that you have a flow and a temperature gradient --- then the fluid will flow from the hotter part to the colder.
   Note that both terms have to be positive, because when one is missing, the other one must be non-negative.
@@ -721,127 +737,143 @@
     \item $ \rho \dfrac{e_0}{t} = - p(\nabla \cdot \vec u)$,
     \item $\dfrac{s}{t} = 0$.
   \end{enumerate}
-  Since the 2\textsuperscript{nd} is a vector one we have $6$ equations, but, unfortunately 7 variables.
+  Since the 2\textsuperscript{nd} equation is a vector one we have $6$ equations. 
+  Unfortunately, there are 7 unknowns, which means we are one equation short.
   The one that is missing is the thermodynamical equation of state (for pressure).
 
   \section{Thermodynamics}
+  In the equation
   \begin{displaymath}
     e_0 = e_0(s , \nu)
   \end{displaymath}
-  the specific volume is not that interesting, thus we shall use another thermodynamical potential.
-  Thus we will use enthalpy
+  the specific volume as a variable is not that interesting, since it cannot be easily controlled. 
+  It would be much better to use a pressure instead of $\nu$. 
+  To do that we switch the thermodynamical potential, from energy to enthalpy
   \begin{displaymath}
     h_0 = e_0 + p \nu = e_0 + \frac{p}{\rho}, \quad h_0 = h_0(s, p), 
   \end{displaymath}
   \begin{displaymath}
-    \d h_0 = T \d s + \nu \d p = \underbrace{T\d s}_{ = 0} + \frac{\d p}{\rho}.
+    \d h_0 = T \d s + \nu \d p = \underbrace{T\d s}_{ = 0} + \frac{\d p}{\rho},
   \end{displaymath}
+  if we work in a regime where $s$ is fixed.
   Thus 
   \begin{displaymath}
-    \d h_0 = \frac{\d p}{\rho}, \quad h_0 = h_0(p),\quad \ptf{h_0}{p}|s = \frac{1}{\rho}.
+    \d h_0 = \frac{\d p}{\rho}, \quad h_0 = h_0(p),\quad \ptf{h_0}{p}|_s = \frac{1}{\rho}.
   \end{displaymath}
-  Therefore $\rho = \rho(p)$ or $p = p(\rho)$ and that is our missing equation.
-  It is called the \fnte{equation of state}.
+  Therefore $\rho = \rho(p)$ or $p = p(\rho)$ and that's what we've been missing.
+  This equation is called the \fnte{equation of state}.
   
-  \paragraph{Ideal gas}
+  For an ideal gas
   \begin{displaymath}
     p(\rho) = C \rho ^\gamma, \quad \gamma = \frac{c_p}{c_v}.
   \end{displaymath}
 
-  \paragraph{Ideal fluid}
+  For an ideal fluid
   \begin{displaymath}
     \rho = \rho_0 = \const.
   \end{displaymath}
 
   \section{Hydrostatics}
-  Now that we have a complete set of equations we can solve problems.
-  For now $\vec u = 0$.
+  Now that we have a complete set of equations, we can solve physical problems.
+  Assume for now that $\vec u = 0$ which leads to 
   \begin{displaymath}
     \nabla p = \rho \vec g, \quad p = p(\rho).
   \end{displaymath}
-  Assume that we know the temperature profile i.e. $T(\tm{height})$, and assume ideal gas.
+  Assume that we work with an ideal gas and know the temperature profile i.e. $T(\tm{height})$.
   
-  \todo Fig0
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+      \draw (0,0) -- (5,0);
+      \draw [-stealth] (1, 0) -- (1, 2);
+      \node at (4, 1.5) {$ \vec g = - g\vez $};
+      \node at (2, 1.5) {$ T(z)$ };
+      \node at (0.8, 2) {$z$};
+    \end{tikzpicture}
+  \end{figure}
 
   
   \begin{displaymath}
     \dfrac{p}{z} = - \rho g, \quad p(z) = ?,
   \end{displaymath}
-  Ideal gas $p = \rho R T$ thus 
+  For an ideal gas $p = \rho R T$, thus
   \begin{displaymath}
     \int_{p(z = )}^{p(z)} \frac{\d p'}{p'} = - \int_0^z \frac{g \d z}{RT(z)} 
-    \qLRa p(z) = p(0) \exp\left( -\int_0^z \frac{g \d z}{RT(z)} \right).
+    \qLRa p(z) = p(0) \exp\left( -\int_0^z \frac{g \d z}{RT(z)} \right),
   \end{displaymath}
 
+  where we've used 
   \begin{enumerate}
     \item $T(z) \ra p(z)$
     \item $\rho(z)$ from the equation $\rho=  \frac{p}{RT}$
   \end{enumerate}
 
   \paragraph{Sound waves}
-  Floid in equilibrium (neglect gravity)
+  Fluid in equilibrium (neglecting gravity)
   \begin{displaymath}
     \vec u = 0,
   \end{displaymath}
-  and $p = p_{og} = \const.$, $\rho = \rho_{og} = \const.$, $s = s_{og} = \const.$
-  Sound wave is just a ,,small'' perturbation of equilibrium:
+  and $p = p_{og} = \const.$, $\rho = \rho_{og} = \const.$, $s = s_{og} = \const.$.
+  A sound wave is just a ,,small'' perturbation of the equilibrium state
   \begin{displaymath}
-    \vec u ( \vec r, t) = 0 + \vec u ' (\vec r, t)  \quad (\abs{\vec u'} \ll ?)
+    \vec u ( \vec r, t) = 0 + \vec u ' (\vec r, t)  \quad (\abs{\vec u'} \ll c)
   \end{displaymath}
   \begin{displaymath}
-    p ( \vec r, t) = p_{og} + p' (\vec r, t)  \quad (p' \ll p_{og})
+    p ( \vec r, t) = p_{eq} + p' (\vec r, t)  \quad (p' \ll p_{eq})
   \end{displaymath}
   \begin{displaymath}
-    \rho ( \vec r, t) = \rho_{og} + \rho' (\vec r, t)  \quad (\rho ' \ll \rho_{og}),
+    \rho ( \vec r, t) = \rho_{eq} + \rho' (\vec r, t)  \quad (\rho ' \ll \rho_{eq}),
   \end{displaymath}
   \begin{displaymath}
-    s( \vec r, t0 = s_{og} = \const.
+    s( \vec r, t) = s_{eq} = \const.
   \end{displaymath}
 
   Now we want to find primed variables.
-  How? Using equations for ideal fluid.
-  \begin{displaymath}
+  How? By using the equations for an ideal fluid.
+  We have
+  \begin{equation}
     \ptf{\rho}{t} + \nabla \cdot (\rho \vec u) = 0,
-  \end{displaymath}
-  \begin{displaymath}
+  \end{equation}
+  \begin{equation}
     \rho \left( \ptf{\vec u}{t} + \vec u \cdot \nabla\vec u \right) = - \nabla p,
-  \end{displaymath}
-  \begin{displaymath}
-    s = s_{og} = \const.
-  \end{displaymath}
+    \label{eq:3.3}
+  \end{equation}
+  \begin{equation}
+    s = s_{eq} = \const.
+  \end{equation}
 
-  The sound square velocity:
+  The sound velocity squared
   \begin{displaymath}
     \nabla p = \underbrace{\left( \dfrac{p}{\rho} \right)}_{c^2}\nabla \rho = c^2 \nabla \rho.
   \end{displaymath}
   
   Those equations are very hard to solve mathematically, since they are non-linear.
-  However in our case those are simpler and we can use a linear approximation.
-  Those we omit all second order terms. \todo ,,og'' should be changed to ,,eq'' XD.
+  However, since we just want to solve easier case, those can be linearly approximated.
+  Omitting all second order terms, we obtain %\todo ,,og'' should be changed to ,,eq'' XD.
   \begin{displaymath}
-    \ptf{(\rho_{og} + p')}{t} + \nabla \cdot \left[ (\rho_{eq} + p') \vec u \right] = 0,
+    \ptf{(\rho_{eq} + p')}{t} + \nabla \cdot \left[ (\rho_{eq} + p') \vec u \right] = 0,
   \end{displaymath}
-  the \fnte{linearized continuity equation}:
+  and the \fnte{linearized continuity equation}
   \begin{equation}
     \nabla \cdot \vec u' = - \frac{1}{\rho_{eq}} \ptf{\rho'}{t}.
     \label{eq:lincont}
   \end{equation}
 
-  Now we take care of the second equation
+  Now we take care of the second equation (\ref{eq:3.3})
   \begin{displaymath}
     (\rho_{eq} + \rho') \left[ \ptf{\vec u'}{t} + \underbrace{\vec u' \cdot \nabla \vec u'}_{\approx 0} \right] = - c^2 \nabla (\rho_{eq} + \rho'),
   \end{displaymath}
-  and the \fnte{linearized equation of motion}
+  and obtain the \fnte{linearized equation of motion}
   \begin{displaymath}
     \ptf{\vec u'}{t} = - \frac{c^2}{\rho_{eq}} \nabla \rho'.
   \end{displaymath}
 
   We have the following system
   \begin{align*}
-    \nabla \cdot \vec u' = - \frac{1}{\rho_{eq}} \ptf{\rho'}{t} \\
-    \ptf{\vec u'}{t} = - \frac{c^2}{\rho_{eq}} \nabla \rho'
+    \nabla \cdot \vec u' = - \frac{1}{\rho_{eq}} \ptf{\rho'}{t}, \\
+    \ptf{\vec u'}{t} = - \frac{c^2}{\rho_{eq}} \nabla \rho'.
   \end{align*}
-  Differentiating the first equation with respect to time, and using divergence operator on the second one we get
+  Differentiating the first equation with respect to time and using divergence operator on the second one we get
   \begin{displaymath}
     \dptf{(\rho')}{t} = c^2 \nabla^2 \rho'.
   \end{displaymath}
@@ -850,7 +882,7 @@
   \begin{displaymath}
     c^2 = \left( \ptf{p}{\rho} \right)_s.
   \end{displaymath}
-  For $s = \const$, $p(\rho) = C \rho^\gamma$, thus
+  For $s = \const$, $p(\rho) = C \rho^\gamma$, it can be approximated as
   \begin{displaymath}
     \left( \ptf{p}{\rho} \right)_s = \gamma \frac{p}{\rho} \approx \gamma\frac{p_{eq}}{\rho_{eq}}.
   \end{displaymath}
@@ -875,25 +907,26 @@
   \begin{displaymath}
     \omega^2 = c^2 k^2 \qLRa \omega = \pm c k.
   \end{displaymath}
-  The above equation is called \fndef{dispersion relation}.
-  Using that we get
+  The above equation is called the \fndef{dispersion relation}.
+  Using it we get
   \begin{displaymath}
-    \exp\left[ i (k x - \omega t) \right] = \exp\left[ i k (x - c t)\right]
+    \exp\left[ i (k x - \omega t) \right] = \exp\left[ i k (x - c t)\right].
   \end{displaymath}
 
   Finally
   \begin{displaymath}
     \rho'(x, t) = \int \d k \rho_1'(x) \exp\left( i k (x - c t) \right) + \int \d k \rho_2' \exp(ik ( x + ct)),
   \end{displaymath}
-  which are two families of perturbation travelling in the opposite directions.
+  which are two families of perturbations travelling in the opposite directions.
 
   \paragraph{3D case}
 
+  Using Fourier representation
   \begin{displaymath}
-    \rho'(\vec r, t) = \int \d \vec k \int \d \omega \rho'(\vec k, \omega) \exp\left[ i( \vec k \cdot \vec r - \omega t )\right].
+    \rho'(\vec r, t) = \int \d \vec k \int \d \omega \rho'(\vec k, \omega) \exp\left[ i( \vec k \cdot \vec r - \omega t )\right],
   \end{displaymath}
   \begin{displaymath}
-    \dptf{(\rho')}{t} = c^2 \nabla^2 \rho'
+    \dptf{(\rho')}{t} = c^2 \nabla^2 \rho',
   \end{displaymath}
   \begin{displaymath}
     (- i\omega)^2 \rho'(\vec k, \omega) - c^2 (i\vec k)^2 \rho'(\vec k, \omega) \qLRa \omega = \pm c \abs{k},
@@ -902,26 +935,22 @@
     \exp\left[ i(\vec k \cdot \vec r - \omega t) \right] = \exp\left[ i k ( \hat{k} \cdot \vec r - c t \right].
   \end{displaymath}
   Note that $c$ doesn't depend on $\omega$. 
-  If it would we will call such wave \fndef{dispersive}.
+  If it would, we will call such wave \fndef{dispersive}.
   Nondispersive waves travel without changing shape.
 
   We know $\rho'(\vec r, t)$. What about $p'(\vec r, t)$ and $\vec u'(\vec r, t)$?
 
-  \paragraph{a)}
-  The following diagram commutes XD
-  \begin{center}
-    \begin{tikzcd}
-      \d p \arrow[d] & = &  \left( \frac{p}{\rho} \right)_s \arrow[d]\\
-      p' & = & c^2 p'
-    \end{tikzcd}
-  \end{center}
+  By substituting into
+  \begin{displaymath}
+    \d p = \left( \frac{p}{\rho} \right)_s \d \rho, 
+  \end{displaymath}
+  relations $p'(\vec r, t) = c^2 \rho'(\vec r, t)$, we can calculate $p'(\vec r, t)$.
 
-
-  \paragraph{b)}
+  To obtain velocity $\vec u$ we note that
   \begin{displaymath}
     \ptf{\vec u'}{t}  = - \frac{c^2}{\rho_{eq}} \nabla \rho'
   \end{displaymath}
-  using Fourier we get
+  and, by using Fourier transform, we obtain
   \begin{displaymath}
     \vec u' (\vec k, \omega) = \frac{c^2}{\rho_{eq}\omega}\vec k \rho'(\vec k, \omega) 
     = \pm\frac{c^2}{\rho_{eq} ck } \vec k \rho'(\vec k, \omega) 
@@ -929,14 +958,28 @@
   \begin{displaymath}
     \vec u' = \pm  \frac{c}{\rho_{eq}} \rho' \hat k.
   \end{displaymath}
-
   Sound waves are longitudinal (particles move in the same way the waves propagates).
 
   \section{Aerodynamics}
 
   Imagine that there is a wing profile and consider a wind tunel configuration.
 
-  \todo Fig1
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+      \node[anchor=south west] (image) at (0,0)
+      {\includegraphics[width=0.25\textwidth]{./images/02Fig1.png}};
+        \begin{scope}[x={(image.south east)}, y={(image.north west)}]
+        % \node at (0.0, 0.0) {};
+        \draw [-stealth] (0.5, 0.45) -- (0.6, 0.85);
+        \draw [dashed, red, -stealth] (0.5, 0.45) -- (0.5, 0.85);
+        \draw [dashed, green, -stealth] (0.5, 0.45) -- (0.6, 0.45);
+        \node at (0.4, 0.8) {lift};
+        \node at (0.6, 0.3) {drag};
+        \end{scope}
+    \end{tikzpicture}
+    \label{fig:}
+  \end{figure}
 
   Question: what is the force that the flow exerts on the object?
   The force can be decomposed into two parts: the lift and the drag.
@@ -944,7 +987,7 @@
     \vec F = -\int_S p \hat{n} \d s, \quad p(\vec r, t) = ?
   \end{displaymath}
 
-  To obtain $p$ and $\vec u$ and $\vec F$ we have to solve the Euler's equations
+  To obtain $p$, $\vec u$ and $\vec F$ we have to solve Euler's equations
   \begin{align*}
     \rho\left( \ptf{\vec u}{t} + \vec u \cdot \nabla \vec u \right) = - \nabla p + \rho \vec g\\
     \ptf{p}{t} + \rho \cdot (\rho \vec u) = 0.
@@ -955,11 +998,21 @@
   First we can try choosing a different variable.
   We change $\vec u$ into \fndef{vorticity} $\vec \xi = \nabla \times \vec u$.
   
-  \todo Fig2
+  \begin{figure}
+    \centering
+    \begin{tikzpicture}
+      \node[anchor=south west] (image) at (0,0)
+      {\includegraphics[width=0.65\textwidth]{./images/02Fig2.png}};
+        \begin{scope}[x={(image.south east)}, y={(image.north west)}]
+        \node at (0.0, 0.0) {};
+        \end{scope}
+    \end{tikzpicture}
+    \label{fig:}
+  \end{figure}
 
-  Euler's eq
+  Euler's equations
   \begin{displaymath}
-    \ptf{\vec u}{t}+ \vec u \cdot \nabla \cdot \vec = - \frac{1}{\rho} \nabla p + \vec g
+    \ptf{\vec u}{t}+ \vec u \cdot \nabla \cdot \vec u= - \frac{1}{\rho} \nabla p + \vec g
   \end{displaymath}
   \begin{enumerate}
     \item $ \vec g = - \nabla \chi$
@@ -970,22 +1023,26 @@
       \end{displaymath}
     \item $ \frac{1}{\rho} \nabla p = \nabla h_0$
   \end{enumerate}
-  \begin{displaymath}
+  \begin{equation}
     \ptf{\vec u}{t} + \nabla \times \vec u = - \nabla h_0 - \nabla \left( \frac{\vec u^2}{2} \right) - \nabla \chi
-    = - \nabla \left( h_0 + \frac{1}{2} \vec u^2 \chi \right) = - \nabla  \mathfrak{H}.
-  \end{displaymath}
+    = - \nabla \left( h_0 + \frac{1}{2} \vec u^2 \chi \right) =: - \nabla  \mathfrak{h},
+    \label{eq:3.4}
+  \end{equation}
+  where
   \begin{displaymath}
-    \mathfrak{H} = h_0 + \frac{ \vec u^2}{2} + \chi .
+    \mathfrak{h} = h_0 + \frac{ \vec u^2}{2} + \chi .
   \end{displaymath}
 
+  Then Equation \ref{eq:3.4} reads
   \begin{displaymath}
-    \ptf{\vec u}{t} + \vec \xi \times \vec u = - \nabla \mf{H} 
+    \ptf{\vec u}{t} + \vec \xi \times \vec u = - \nabla \mf{h}.
   \end{displaymath}
-  taking the rotational
+  By taking the rotation of both sides 
   \begin{displaymath}
-    \overbrace{\ptf{\nabla \times \vec u}{t}}^{\xi} + \nabla \times (\vec \xi \times \vec u) = 0 
+    \overbrace{\ptf{\nabla \times \vec u}{t}}^{\xi} + \nabla \times (\vec \xi \times \vec u) = 0,
   \end{displaymath}
 
+  we obtain
   \begin{displaymath}
     \nabla \times (\vec \xi \times \vec u) = ( \vec u \cdot \nabla) \vec \xi - (\vec \xi \cdot \nabla) \vec u 
     + \xi (\nabla \cdot \vec u) - \vec u (\nabla \cdot \vec \xi)=
