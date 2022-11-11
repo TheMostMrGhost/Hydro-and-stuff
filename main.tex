@@ -1,15 +1,13 @@
-\documentclass[11pt,oneside]{book}
+\documentclass[11pt]{book}
 \usepackage[margin=1.2in]{geometry}
 \usepackage[toc,page]{appendix}
 \usepackage{graphicx}
 \usepackage{natbib}
-\usepackage{cancel}
 \usepackage{lipsum}
 \usepackage{caption}
 \usepackage[T1]{fontenc}
 \usepackage{titlesec, blindtext, color}
 \usepackage{xcolor,tikz}
-\usepackage{tikz-cd}
 \usepackage{caption}
 \usepackage{subcaption}
 \usetikzlibrary{patterns}
@@ -29,6 +27,9 @@
 \usepackage{TemplateMatma}
 \usepackage{TemplateNotatkiPE}
 
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+
 \tikzset{
     partial ellipse/.style args={#1:#2:#3}{
         insert path={+ (#1:#3) arc (#1:#2:#3)}
@@ -36,7 +37,6 @@
 }
 
 
-\renewcommand{\vec}[1]{\underline{#1}}
 
 % -------------------------------------------------------------------
 % Theorem Styles
@@ -77,14 +77,6 @@
 \newtheorem*{notation}{Notation}
 \newtheorem*{convention}{Convention}
 
-\newcommand\Ccancel[2][black]{
-    \let\OldcancelColor\CancelColor
-    \renewcommand\CancelColor{\color{#1}}
-    \cancel{#2}
-    \renewcommand\CancelColor{\OldcancelColor}
-}
-
-
 
 
 % -------------------------------------------------------------------
@@ -119,12 +111,9 @@
 \newcommand{\hsp}{\hspace{20pt}}
 \titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
 
-\title{Hydrodynamics and elasticity,\\ Lecture notes}
-\author{Mikołaj Duch}
 
 \begin{document}
 
-  \maketitle
   \frontmatter
 
   % -------------------------------------------------------------------
@@ -139,923 +128,544 @@
 
   \mainmatter
 
-  \input{sections/00introduction.tex}
+  % \input{sections/00introduction.tex}
 
+  \chapter{Wykład 2}
+  \section{Wektory styczne i kowektory}
+  \paragraph{a)} Wektor styczny w punkcie to odwzorowanie
+  \begin{displaymath}
+    C^\infty(M) \ni f \mapsto v(f) \in \RR,
+  \end{displaymath}
+  spełniające
+  \begin{itemize}
+    \item liniowość $v(a f + b h) = a v(f) + b v(h)$, $\forall f,g \in C^\infty(M)$, $a,b \in \RR$
+    \item Leinbniz $v(fh) = f(p) v(h) + v(f) h(p)$
+  \end{itemize}
 
-  \chapter{Lecture 2}
-  \paragraph{Reminder}
-  Material derivative 
-  \begin{displaymath}
-    \dfrac{}{t} = \frac{D}{Dt} = \ptf{}{t} + \vec u \cdot \nabla \cdot
-  \end{displaymath}
+  \todo Fig1
 
-  Mass conservation implies the continuity equation
-  \begin{displaymath}
-    \ptf{\rho}{t} + \nabla \cdot ( \rho \vec u ) = 0.
-  \end{displaymath}
+  Pozostaje pytanie jak to wygląda w lokalnych mapach. 
+  Rozważmy mapę $\varphi$ i różniczkowanie w punkcie $p \in U$, gdzie $U$ jest dziedziną mapy $\varphi$.
+  Wtedy dla wektora stycznego $\vec v$:
+  \begin{equation}
+    \vec v: f \longmapsto \left( v^k \ptf{}{x^k} (f \circ \varphi^{-1}) \right) (x^1(p), \dots, x^n(p)).
+  \end{equation}
+  Co więcej, każdy wektor styczny daje się zapisać w tej postaci.
+  Dodatkowo, jeśli mamy atlas to wszystkie wektory wyrażają się w ten sposób (to znaczy, że nie musimy szukać nowej mapy
+  dla każdego z wektorów stycznych).
 
-  \paragraph{New stuff}
-  Expanding the above equation we obtain
+  Ogólnie. Jeśli $\vec v$ jest wektorem stycznym w $p \in M$ do $M$, a $M \supset U \os{\varphi}{\ra}\RR^n$
+  to istnieją $v^1, \dots, v^n \in \RR$, takie, że $v(f)$ wyraża się poprzez
   \begin{displaymath}
-    \underbrace{\ptf{\rho}{t} + \vec u \cdot \nabla \rho}_{\dfrac{\rho}{t}} + \rho \nabla \cdot \vec u = 0,
+    v(f) = \left(v^k \ptf{}{x^k } f\circ \varphi^{-1}\right) (\varphi(p)).
   \end{displaymath}
-  and thus
-  \begin{displaymath}
-    \frac{1}{\rho} \dfrac{\rho}{t} = - \nabla \cdot \vec u. 
-  \end{displaymath}
-  If we introduce \fndef{specific volume} $\nu = 1 / \rho$ we obtain
-  \begin{displaymath}
-    \frac{1}{\nu} \dfrac{\nu}{t} = \nabla \cdot \vec u.
-  \end{displaymath}
+  \todo Fig2
 
-  We introduced that because we want to study incompressible flow.
-  If the flow is incompressible we express it by saying that
+  Zwyczajowo stosuje się notację uproszczoną
   \begin{displaymath}
-    \dfrac{\rho}{t} = 0 \quad \tm{or}\quad  \dfrac{\nu}{t} = 0.
+    \vec v = v^k \ptf{}{x^k}
   \end{displaymath}
-  From the continuity equation incompressibility of the flow implies that
+  ALE do tego musimy pamiętać, że to w lokalnym układzie współrzędnych.
+  Ma to konsekwencje np. jak mamy ,,drugą'' pochodna tj. różniczkowanie raz po $x^i$, a raz po $y^i$, gdzie $x, y$ 
+  to współrzędne w różnych mapach.
+  
+  Wektor styczny jest także związany z krzywymi na rozmaitości.
+  Rozważmy krzywą $\gamma$ przechodzącą przez punkt $p$
   \begin{displaymath}
-    \nabla \cdot \vec u = 0.
+    \gamma : \tau \mapsto x^1(\tau), \dots, x^n(\tau), \quad (x^1(0), \dots, x^n(0)) = \varphi(p)
   \end{displaymath}
   
-  For the incompressible flow the $\vec u$ is divergence-free or solonoidal (\todo I didn't hear well).
-
-  If $\nabla \cdot \vec u = 0$ and $ f(\vec r, t) = f_0 = \tm{const}$ then\footnote{It follows from the continuity equation.}
   \begin{displaymath}
-    \forall t \quad f(\vec r, t) = f_0 = \tm{const}.
+    \dfrac{f \circ \varphi^{-1}}{\tau} ( x^1 (\tau), \dots, x^n(\tau)) 
+    = \dfrac{x^i}{\tau} \ptf{}{x^i} (f \circ \varphi^{-1})|_{x(p)}
   \end{displaymath}
 
-  Positive divergence implies expansion, negative implies compression.
-  
-
-  \section{Newton's second law (Momentum balance)}
-  % \fndef{Material volume}. 
-  Consider a closed system (volume $V(t)$) which is comprised of the same fluid particles
-  (it flows with a fluid). 
-
-  % \todo Fig0.
-  \begin{figure}[h]
-    \centering
-    \begin{tikzpicture}
-      \node[anchor=south west] (image) at (0,0)
-      {\includegraphics[width=0.25\textwidth]{./images/01Fig0.png}};
-        \begin{scope}[x={(image.south east)}, y={(image.north west)}]
-        \node at (0.0, 0.0) {};
-        \end{scope}
-    \end{tikzpicture}
-    % \caption{}
-  \end{figure}
-
-  We want to calculate the momentum of such \fndef{material volume}.
-  It is obviously an integral
+  Zauważmy, że różne funkcje mogą spełniać tę relację.
+  Wniosek: wektor styczny w $P$ do $M$ to klasa równoważności krzywych takich, że
   \begin{displaymath}
-    \vec P (t) = \int_{V(t)} \rho(\vec r, t) \vec u(\vec r, t) \d \vec r.
+    \dfrac{f(p(\tau))}{\tau}|_{\tau = 0} = \dfrac{f(q(\tau))}{\tau}|_{\tau = 0},
   \end{displaymath}
-  That is a linear momentum of the material volume.
-  We want to state the Newton second law:
+  oraz $p(0) = q(0)$.
+
+  \todo Fig3
+
+  \paragraph{c) Prawo transformacji}
+  Żeby nie pisać cały czas
   \begin{displaymath}
-    \dfrac{\vec P(t)}{t} = \vec F, 
+    (y^1, \dots, y^n) = (\varphi' \cdot \varphi^{-1})(x^1, \dots, x^n), 
   \end{displaymath}
-  where $\vec F$ is the net force.
+  gdzie $y^i$ to współrzędne w mapie $\varphi'$, a $x^i$ to współrzędne w mapie $\varphi$,
+  będziemy pisać po prostu
   \begin{displaymath}
-    \dfrac{\vec P}{t} = \dfrac{}{t} \int_{V(t)} \rho(\vec r, t) \vec u (\vec r, t) \d \vec r = ?.
+    y^k = y^k(x^1, \dots, x^n).
+  \end{displaymath}
+
+  Przy tej konwencji zamiana współrzędnych ma postać
+  \begin{displaymath}
+    v^i \ptf{}{x^i} = v^i\ptf{y^j}{x^i} \ptf{}{y^j} = \underbrace{ v^i \ptf{y^j}{x^i} }_{=: (v')^i}.
   \end{displaymath}
   
-  Here is a theorem (i.e. fancy name for Leibniz rule):
+  Wniosek: jeśli $v = v^k \ptf{}{x^k} = (v')^l \ptf{}{(x')^l}$ to wtedy $(v')^l = \ptf{(x')^l}{x^k} v^k$.
+
+  Przestrzeń wekorów stycznych do $M$ w punkcie $p \in M$ nazywamy \fndef{przestrzenią styczną} i oznaczamy 
+  przez $T_pM$.
+
+  \begin{lemma}
+    $T_p M$ jest przestrzenią wektorową, czyli, jeśli $\vec v, \vec w \in T_pM$ to $ a\vec v + b \vec w \in T_pM$ 
+    dla każdych $a, b\in \RR$.
+  \end{lemma}
+
+  Wniosek: Bazę w przestrzeni $T_pM$ tworzą wektory $\ptf{}{x^1}, \dots, \ptf{}{x^n}$ gdzie 
+  $(x^1, \dots, x^n)$to dowolny układ współrzędnych.
+
+  \paragraph{d) kowektory}
+  Kowektorem jest element przestrzeni dualnej $T^*_p M$.
   
-  \begin{theorem}[Raynold's transport theorem]
+  \begin{example}
+    Niech $f \in C^\infty(M)$, zdefiniujmy
     \begin{displaymath}
-      \dfrac{}{t} \int_{V(t)} \beta (\vec r, t) \d \vec r = 
-      \int_{V}\left[ \ptf{\beta}{t} + \nabla \cdot (\beta \vec u) \right] \d \vec r
-      = \int_V \left[ \ptf{\beta}{t} + \vec u \cdot \nabla \beta + \beta \nabla \cdot \vec u \right]
-      ,
+      T_p M \ni v \mapsto v(f) \in \RR.
     \end{displaymath}
-    where $V$ is a fixed quantity, called control volume (i.e. any volume that coincides with $V(t)$).
-  \end{theorem}
+    %, Łatwo sprawdzić, że $(av + bw)(f) = a v(f) + bw (f)$.
+    Oznaczamy je $\d f $ i nazywamy \fndef{różniczką} funkcji $f$.
+    Czyli $v\ctr \d f = v(f)$, tylko teraz patrzymy na to w ten sposób, że $f$ jest stałe, a $v$ się zmienia.
+  \end{example}
 
-  The things that contribute to this change can be interpreted as
-  \begin{enumerate}
-    \item local change $\ptf{\beta}{t}$,
-    \item advection i.e. $\vec u \cdot \nabla \beta$,
-    \item changing volume i.e. $\beta \nabla\cdot \vec u$.
-  \end{enumerate}
-
-  Applying RTT to the momentum we get
-  \begin{displaymath}
-    \dfrac{\vec P }{t} = \dfrac{}{t} \int_{V(t)} \rho \vec u \d \vec r 
-    = \int_V \left[ \ptf{\rho\vec u }{t} + \nabla \cdot (\rho \underbrace{\vec u \vec u}_{\vec u \otimes \vec u}) \right]
-  \end{displaymath}
-  
-  \paragraph{Homework} Show that if $\beta = \rho b$, then 
-  \begin{displaymath}
-    \dfrac{}{t} \int_{V(t)} \rho b \d \vec r = \int_{V} \rho \dfrac{b}{t} \d \vec r,
-  \end{displaymath}
-  using RTT (Raynold's transport theorem) and the continuity equation.
-  
-  \begin{displaymath}
-    \frac{\xi }{ x} = \int_V \d V 
-  \end{displaymath}
-  
-  \begin{displaymath}
-    \dfrac{\vec P}{t} = \dfrac{}{t} \int_{V(t)} \rho \vec u \d \vec r 
-    = \int_V \rho \dfrac{\vec u}{t} \d \vec r 
-    = \vec F,
-  \end{displaymath}
-  and thus the integral's form of Newton second law
-  \begin{displaymath}
-    \int_V \rho \dfrac{\vec u}{t} \d \vec r = \vec F.
-  \end{displaymath}
-  
-  \section{Further consequences of RTT}
-  % \todo Fig1.
-
-  \begin{figure}[ht]
-    \centering
-    \begin{tikzpicture}
-      \node[anchor=south west] (image) at (0,0)
-      {\includegraphics[width=0.25\textwidth]{./images/01Fig1.png}};
-        \begin{scope}[x={(image.south east)}, y={(image.north west)}]
-        \node at (0.0, 0.0) {};
-        \end{scope}
-    \end{tikzpicture}
-  \end{figure}
-
-  
-  \begin{displaymath}
-    M = \int_V \rho \d \vec r \qLRa \ptf{M}{t} 
-    = \ptf{}{t} \int_V \rho \d \vec r 
-    = \int_V \ptf{\rho}{t} \d \vec r 
-    = - \int_V \nabla \cdot (\rho \vec u) \d \vec r
-    = - \int_{\partial V} \rho \vec u \cdot \hat n \d S .
-  \end{displaymath}
-
-  To note: material volume is the volume that flows with the fluid.
-  
-
-  Consider a material volume $V(t)$ and its mass given by
-  \begin{displaymath}
-    M = \int_{V(t)}  \rho \d \vec r.
-  \end{displaymath}
-  The mass conservation means that
-  \begin{displaymath}
-    \dfrac{M}{t} = 0.
-  \end{displaymath}
-
-  We calculate
-  \begin{displaymath}
-    \dfrac{M}{t} = \dfrac{}{t} \int_{V(t)} \rho \d \vec r 
-    = \int_V \left[ \ptf{\rho}{t} + \nabla \cdot (\rho \vec u) \right]\d \vec r 
-    = 0.
-  \end{displaymath}
-  The above equation states that the mass of the material volume which travels with the flow remains constant.
-  
-  \paragraph{Force model}
-  In the following equation
-  \begin{displaymath}
-    \int_V \rho \dfrac{\vec u}{t} \d \vec r = \vec F,
-  \end{displaymath}
-  we do not know what $\vec F$ is and therefore need a model for it.
-
-  % \todo Fig3 TODO
-  \begin{figure}[h]
-    \centering
-    \begin{tikzpicture}
-      \node[anchor=south west] (image) at (0,0)
-      {\includegraphics[width=0.25\textwidth]{./images/01Fig2.png}};
-        \begin{scope}[x={(image.south east)}, y={(image.north west)}]
-        \node at (0.0, 0.0) {};
-        \end{scope}
-    \end{tikzpicture}
-  \end{figure}
-
-  Consider that the fluid acts on its surface element $\d a$ (with a normal vector $\hat n$).
-  Let $\vec t$ be a force per unit area, and $\d \vec F = \vec t \d a$.
-  \begin{displaymath}
-    \vec F \os{\tm{model}}{=} \int_{\partial V} \d \vec F 
-    = \int_{\partial V}  \vec t \d a
-    = - \int_V \nabla p \d \vec r.
-  \end{displaymath}
-  Assume that $\vec t = - p \hat{n}$, where $p $ is a pressure and $\nabla p $ a \fndef{pressure field}.
-  
-  \begin{displaymath}
-    \int_V \rho \dfrac{\vec u }{t} \d \vec r = - \int_V \nabla p \d \vec r,
-  \end{displaymath}
-  \begin{displaymath}
-    \int_V \left[ \rho \dfrac{\vec u}{t} + \nabla p \right]\d \vec r = 0 
-    \qLRa \rho \dfrac{ \vec u }{t} = - \nabla p.
-  \end{displaymath}
-  We may also write it as 
-  \begin{displaymath}
-    \rho \left( \ptf{\vec u}{t} + \vec u \cdot \nabla \cdot \vec u  \right) = - \nabla p.
-  \end{displaymath}
-  This is the \fnvi{Euler model of the ideal fluid} (ideal fluid without dissipation).
-  
-  \section{Equilibrium}
-  Equilibrium is obtained when $\vec u = 0$ and thus $\nabla p = 0$
-  (especially if $p = \const$).
-  \begin{itemize}
-    \item ideal fluid $ \vec t = - p \hat n$
-    \item In general $ \vec t = \ten{\Sigma}^T \cdot \vec n$, where $\Sigma$ is a \fndef{Cauchy stress tensor} (second order tensor).
-  \end{itemize}
-  In general case force can have a form 
-  \begin{displaymath}
-    \vec F = \int_{\partial V} \vec t \d a = \int_{\partial V} \ten{\Sigma}^T \cdot \hat n \d a 
-    = \int_V \nabla \cdot \ten{\Sigma} \d \vec r,
-  \end{displaymath}
-  with the stress tensor
-  \begin{displaymath}
-    \ten{\Sigma} = - p \cdot\ten{1} + \ten{\Sigma}'. % TODO that's not all correct. 
-  \end{displaymath}
-
-
-  Newton's second law
-  \begin{displaymath}
-    \int_V \rho \dfrac{\vec u}{t} \d \vec r = \int\nabla \cdot \ten \Sigma \d \vec r.
-  \end{displaymath}
-
-  \begin{displaymath}
-    \ten \Sigma = \underbrace{- p \ul{\ul{1}}}_{\tm{ideal term}} + \underbrace{\ul{\ul{\Sigma}}}_{\tm{deviatory part}}
-  \end{displaymath}
-  Deviatoric part vanishes in equilibrium.
-
-  Ideal fluid model $\ten \Sigma' = 0$, $\ten \Sigma = - p \ul{\ul{1}}$.
-  \begin{displaymath}
-    \nabla \cdot \Sigma = \nabla \left( - p \ul{\ul{1}} \right) = - \nabla p.
-  \end{displaymath}
-
-  \paragraph{Summary}
-  Til now we formulated
-  
-  \begin{itemize}
-    \item Continuity equation
-      \begin{displaymath}
-          \ptf{\rho}{t} + \nabla \cdot ( \rho \vec u ) = 0
-      \end{displaymath}
-    \item Newton's law
-      \begin{displaymath}
-        \rho \left( \ptf{\vec u }{t} + \vec u \cdot \nabla \cdot \vec u  \right) = \nabla \cdot \ten \Sigma
+  \begin{lemma}
+    Dla każdego $\omega \in T_p^*M$ istnieją funkcje $f^1, \dots, f^n \in C^\infty(M)$ oraz współczynniki $\omega_1, \dots, \omega_n \in \RR$
+    takie, że
+    \begin{displaymath}
+      \omega = \omega_i \d f^i.
     \end{displaymath}
-  \item What's next? Angular momentum.
-  \end{itemize}
+  \end{lemma}
 
-  \section{Angular momentum}
-  \begin{figure}[h]
-    \centering
-    \begin{tikzpicture}
-      \node[anchor=south west] (image) at (0,0)
-      {\includegraphics[width=0.25\textwidth]{./images/01Fig3.png}};
-        \begin{scope}[x={(image.south east)}, y={(image.north west)}]
-        \node at (0.0, 0.0) {};
-        \end{scope}
-    \end{tikzpicture}
-  \end{figure}
-
-  Consider a material volume $V(t)$, with density $\rho$ and a point at $\vec r$ moving with a velocity $\vec u$.
-  \begin{displaymath}
-    \vec L (t) = \int_{V(t)}\vec r \times \rho \vec u \d \vec r
-    = \int_{V(t)} \rho (\vec r \times \vec u) \d \vec r
-    = \int_{V(t)} \rho \vec l \d \vec r,
-  \end{displaymath}
-  where $\vec l = \vec r \times \vec u $ is the \fndef{angular momentum per unit mass}.
-
-  The law of the change of the angular momentum
-  \begin{displaymath}
-    \dfrac{ \vec L }{t} = \vec N,
-  \end{displaymath}
-  where $\vec N$ is a net torque acting on $V(t)$.
-  \begin{displaymath}
-    \dfrac{\vec L}{t} = \dfrac{}{t} \int_{V(t)} \rho \vec l \d \vec r \os{\tm{RTT + cont}}{=\joinrel=} \int_V \rho \dfrac{\vec l}{t} \d \vec r.
-  \end{displaymath}
-  We calculate $\vec N$ by
-  \begin{displaymath}
-    \vec N = \int_{\partial V} \vec r \times\vec t \d a.
-  \end{displaymath}
-
-  \begin{displaymath}
-    \int_V \rho \dfrac{\vec l}{t} \d \vec r = \int_{\partial V} \vec r \times \vec t \d a 
-    = \int_{\partial V} (\vec r \times \Sigma^T) \cdot \hat n \d a 
-  \end{displaymath}
-  using divergence theorem
+  Niech $(x^1, \dots, x^n)$ będzie układem współrzędnych. Rozważmy
   \begin{equation}
-    = \int_V \nabla \cdot \left[ ( \vec r \times \Sigma^T)^T \right] \d \vec r.
-    \label{eq:prev}
+    \omega = \omega_i \d x^i.
+    \label{eq:2.1}
   \end{equation}
-
-  where the divergence theorem reads
-  \begin{displaymath}
-    \int_{\partial V} T \cdot \hat n \d a = \int_V \nabla \cdot T^T  \d \vec r.
-  \end{displaymath}
-
-  Going back to \ref{eq:prev}
-  \begin{displaymath}
-     = \int_V \left[ \vec r \times \nabla \cdot \Sigma - 2 \vec \sigma \right] \d \vec r,
-  \end{displaymath}
-  where $\vec \sigma $ is the axial vector associated with $\Sigma$.
-  Thus
-  \begin{displaymath}
-    \int_V \rho \dfrac{ \vec l}{t} \d \vec r = \int_V \left[ \vec r \times \nabla \cdot \Sigma - 2 \vec \sigma \right] \d \vec r ,
-  \end{displaymath}
-  and since the volume $V$ can be anything we get
-  \begin{equation}
-    \rho \dfrac{ \vec l }{t} = \vec r \times \nabla \cdot \Sigma - 2 \vec \sigma.
-    \label{eq:2.2}
-  \end{equation}
-
-  This is too complicated, we need to simplify it.
   
+  \begin{lemma}
+    Wszystkie $\omega \in T^*M$ są postaci \ref{eq:2.1}.
+  \end{lemma}
+  \begin{proof}
+    \begin{displaymath}
+      v \ctr \omega = (v^k\ptf{}{x^k}) \ctr \omega 
+      = v^k ( \ptf{}{x^k} \ctr \omega) 
+      = \omega_k v^k 
+      = (v^k \ptf{}{x^k}) \ctr(\omega_l \d x^l).
+    \end{displaymath}
+    
+  \end{proof}
+
+  \paragraph{Prawo transformacji}
+  Przestrzenie dualne zawsze transformują się macierzą odwrotną.
+  Explicit\'e wzór
   \begin{displaymath}
-    \rho \dfrac{ \vec l }{t} = \rho \dfrac{\vec r \times \vec u}{t} 
-    = \rho \vec r \times \dfrac{\vec u}{t} + \rho \dfrac{ \vec r }{t} \times \vec u
-    = \vec r \times \underbrace{\rho \dfrac{\vec u}{t}}_{\nabla \cdot \ten \Sigma} 
-    = \vec r \times \nabla \cdot \ten \Sigma.
+    \d x^k = \ptf{x^j}{x^k} \d (x')^k
   \end{displaymath}
-
-  Substituting it to  \ref{eq:2.2} we get
   \begin{displaymath}
-    \vec \sigma = 0.
-  \end{displaymath}
-  Thus the $\Sigma $ is symmetric.
-
-  The stress tensor need not to be symmetric for magnetic fluids (it works for simple fluids).
-
-
-  \paragraph{,,Complex'' fluids}
-  % \begin{figure}
-  %   \centering
-  %   \begin{tikzpicture}
-  %     \node[anchor=south west] (image) at (0,0)
-  %     {\includegraphics[width=0.25\textwidth]{./images/01Fig4.png}};
-  %       \begin{scope}[x={(image.south east)}, y={(image.north west)}]
-  %       \node at (0.0, 0.0) {};
-  %       \end{scope}
-  %   \end{tikzpicture}
-  % \end{figure}
-
-  Consider a magnetic fluid in a bottle, with magnetic dipoles.
-  Assume that we apply a magnetic field, so there is a reorientation and an \fndef{internal torque} appears.
-  
-  \begin{displaymath}
-    \vec N = \int_{\partial V} \vec r \times \vec t \d a + \int_{V} \vec b \d \vec r,
-  \end{displaymath}
-  where $\vec b$ is the internal torque.
-  
-  
-  \section{Energy conservation}
-  \begin{figure}
-    \centering
-    \begin{tikzpicture}
-      \node[anchor=south west] (image) at (0,0)
-      {\includegraphics[width=0.25\textwidth]{./images/01Fig4.png}};
-        \begin{scope}[x={(image.south east)}, y={(image.north west)}]
-        \node at (0.0, 0.0) {};
-        \end{scope}
-    \end{tikzpicture}
-  \end{figure}
-
-  Consider a material volume $V$ and a small surface element $\d a$.
-  The energy is given by 
-  \begin{displaymath}
-    E(t) = \int_{V (t)} \rho (\vec r ,t ) e (\vec r, t) \d \vec r ,
-  \end{displaymath}
-  where $e (\vec r, t)$ is the energy for unit mass.
-
-  The ,,law'' of change
-  \begin{displaymath}
-    \dfrac{E}{t} = \dfrac{W}{t} + \dfrac{Q}{t},
-  \end{displaymath}
-  where $W$ is a mechanical work and $Q$ is a heat.
-
-  Using RTT and continuity we get
-  \begin{displaymath}
-    \dfrac{E}{t} = \dfrac{}{t} \int_{V(t)} \rho e \d \vec r = \int_V \rho \dfrac{e}{t} \d \vec r,
+    (\omega')_k = \ptf{x^i}{(x')^k} \omega_i
   \end{displaymath}
   
-  \begin{displaymath}
-    \dfrac{W}{t} = \int_{\partial V } \vec t \cdot \vec u \d a 
-    = \int_{\partial V} (\ten \Sigma^T \cdot \vec u ) \cdot \hat n  \d a 
-    = \int_V \nabla \cdot ( \ten \Sigma \cdot u) \d \vec r.
-  \end{displaymath}
 
-  \begin{displaymath}
-    \dfrac{Q}{t} = - \int_{\partial V} \vec q \cdot  \hat n \d a = - \int_V \nabla \cdot \vec q \d \vec r,
-  \end{displaymath}
-  where $\vec q$ is the heat flow per unit surface per unit time. % TODO upewnić się, że to jest rzeczywiście to 
-
-  Summing up we get
-  \begin{equation}
-    \rho \dfrac{ e}{t} = \nabla \cdot ( \Sigma \cdot \vec u) - \nabla \cdot \vec q.
-    \label{eq:2.3}
-  \end{equation}
-
-  Let's introduce the separation 
-  \begin{displaymath}
-    e = e_0 + \frac{1}{2} \vec u^2.
-  \end{displaymath}
-
-  Substituting it into \ref{eq:2.3} we obtain
-  \begin{displaymath}
-    \rho \dfrac{e_0}{t} = - \rho \dfrac{}{t} \left( \frac{1}{2} \vec u^2 \right) + \nabla \cdot (\Sigma \cdot \vec u ) - \nabla \cdot \vec q.
-  \end{displaymath}
-  \begin{displaymath}
-    \rho \dfrac{}{t} \left( \frac{1}{2} \vec u ^2  \right) 
-    = \vec u \cdot \rho \dfrac{\vec u}{t} 
-    = \vec u \cdot ( \nabla \cdot \Sigma) 
-    = \nabla \cdot ( \Sigma \cdot u) - \Sigma :\nabla \vec u % TODO Double contraction of tensors
-  \end{displaymath}
+  \section{Tensory}
   
-  For the internal energy $e_0$:
+  Rozważmy przestrzenie wektorowe $V, W$.
+  Dla $v \in V$, $w\in W$ wprowadzamy
   \begin{displaymath}
-    \rho \dfrac{e_0}{t} = \Sigma : \nabla \vec u - \nabla \cdot \vec q.
-  \end{displaymath}
-  
-  For $\Sigma = - p \ul{\ul{1}} + \Sigma'$
-  \begin{displaymath}
-    \Sigma : \nabla \vec u = - p ( \nabla \cdot \vec u) + \Sigma' : \nabla \vec u.
-  \end{displaymath}
-  
-  \section{Ideal fluid approximation}
-
-  We assume no deviatoric stress, and no heat flows
-  \begin{align*}
-    \Sigma' = 0 \\
-    \vec q = 0.
-  \end{align*}
-  For the ideal fluid
-  \begin{displaymath}
-    \rho \dfrac{e_0}{t} = - p ( \nabla \cdot \vec u).
+    v \oitmes w.
   \end{displaymath}
 
-  This approximation is a result of assuming that the particles move all together, 
-  so there is no viscosity and also no way to conduct a heat.
-  
-  For a compressible flow
-  \begin{itemize}
-    \item $\nabla \cdot \vec u > 0 \qLRa \dfrac{e_0}{t} < 0 $ (expansion),
-    \item $\nabla \cdot \vec u < 0 \qLRa \dfrac{e_0}{t} > 0 $ (compression),
-  \end{itemize}
-  and for the incompressible flow there is no way to change internal energy, $\dfrac{e_0}{t} = 0$.
-  In ideal fluid there is no dissipation.
-  However the real fluids do.
+  Rozważmy \fndef{formalnych kombinacji liniowych} elementów $(v, w) \in V \times W$.
+  Są one postaci
+  \begin{displaymath}
+    a_1 ( v_1, w_1) +\dots + a_\mu(v_\mu, w_\mu), \quad \mu \in \NN.
+  \end{displaymath}
+  Zdefiniujmy relację równoważności 
+  \begin{displaymath}
+    (a v + b v', w) \sim a (v, w) + b (v', w)
+  \end{displaymath}
+  (analogicznie dla drugiej współrzędnej) oraz
+  \begin{displaymath}
+    (0, w) \sim (0, 0) \sim (v, 0).
+  \end{displaymath}
+  Iloczyn tensorowy przestrzeni $V, W$ definiuje się jako 
+  \begin{displaymath}
+    V \otimes W = \left\{ [(v, w)] = (v, w) / \sim | v\in V, w\in W \right\},
+  \end{displaymath}
+  gdzie $\sim$ jest zdefiniowaną wyżej relacją równoważności.
 
-  \section{Entropy balance} 
-  \begin{figure}[h]
-    \centering
-    \begin{tikzpicture}
-      \node[anchor=south west] (image) at (0,0)
-      {\includegraphics[width=0.25\textwidth]{./images/01Fig5.png}};
-        \begin{scope}[x={(image.south east)}, y={(image.north west)}]
-        \node at (0.0, 0.0) {};
-        \end{scope}
-    \end{tikzpicture}
-  \end{figure}
-  
-
-  Consider a closed system and assume that a heat has been transfered to the system.
-  We can move between $S$ and $S + \d S$ by reversible and irreversible paths.
-  For the reversible one we have 
+  Piszemy np.
   \begin{displaymath}
-    \d S  = \frac{\d Q}{T},
-  \end{displaymath}
-  and for an irreversible proces
-  \begin{displaymath}
-    \d S \geq \frac{\d Q}{T}.
-  \end{displaymath}
-  
-  \begin{displaymath}
-    S(t) = \int_{V(t)} \rho( \vec r , t) s( \vec r, t) \d \vec r,
-  \end{displaymath}
-  where $s(\vec r, t)$ is entropy per unit volume.
-  Entropy balance implies
-  \begin{displaymath}
-    \dfrac{S}{t} = \frac{\d_e S}{\d t} + \frac{\d_i S}{\d t} 
-  \end{displaymath}
-  \begin{displaymath}
-    \d_e S = \frac{\d Q}{T}.
-  \end{displaymath}
-  \begin{displaymath}
-    \dfrac{S}{t} = \dfrac{}{t} \int_{V(t)} \rho s \d \vec r = \int-\rho \dfrac{s}{t} \d \vec r,
-  \end{displaymath}
-  \begin{displaymath}
-    \dfrac{_e S}{t} = - \int_{\partial V} \frac{ \vec q}{T} \cdot \hat n \d a 
-    = - \int_V \nabla \cdot \left( \frac{\vec q}{T} \right) \d \vec r
-  \end{displaymath}
-  \begin{displaymath}
-    \dfrac{_i S}{t} = \int_V \theta \d \vec r,
-  \end{displaymath}
-  where $\theta$ is the entropy production per unit volume per unit time.
-  Thus the \fnte{entropy balance equation} is
-  \begin{displaymath}
-    \rho \dfrac{s}{t} = - \nabla \cdot \left( \frac{\vec q }{T}  \right) + \theta, \quad \theta \geq 0.
+    v\otimes w = v^a w^b \ptf{}{x^a} \oitmes \ptf{}{x^b}, 
+    \quad T = T^{ab} \ptf{}{x^a} \otimes \ptf{}{x^b}.
   \end{displaymath}
 
-  For ideal fluid (no internal efects) $\theta = 0$, and the change of entropy
+  \chapter{Wykład 3}
+  \section{Tensorowe, formy różniczkowe, gęstości}
+  \paragraph{Iloczyn tensorowy}
+  Przykład
   \begin{displaymath}
-    \dfrac{s}{t} = 0.
+    T^*_pM \otimes T^*_p M.
+  \end{displaymath}
+  Jest to przestrzeń odwzorowań biliniowych
+  \begin{displaymath}
+    T^*_pM \otimes T^*_p M \ni L : T_p M \times T_pM \ra \RR,
+  \end{displaymath}
+  \begin{displaymath}
+    T_pM \otimes T_p M \ni L : T_p^*M \times T_p^*M \ra \RR,
+  \end{displaymath}
+  itp.
+
+  Wprowadzamy oznaczenie
+  \begin{displaymath}
+    \bigwedge^N T^*_p M \subset (T^*_pM)^{\otimes n}.
   \end{displaymath}
 
+  Formy różniczkowe są całkowicie antysymetryczne, czyli dla $\omega \in \bigwedge^N(T^*_p M)$ spełnia
+  \begin{displaymath}
+    \omega(v_1, \dots v_k, \dots, v_l \dots, v_n) = - 
+    \omega(v_1, \dots v_l, \dots, v_k \dots, v_n).
+  \end{displaymath}
 
-  \chapter{Lecture 3}
-
-  Recall
-  \begin{displaymath}
-    \ptf{\rho}{t} + \nabla \cdot (\rho \vec u) = 0,  
-  \end{displaymath}
-  \begin{equation}
-    \quad \frac{1}{\nu} \dfrac{\nu}{t} = \nabla \cdot \vec u, 
-    \quad \nu = \frac{1}{\rho},
-    \label{eq:3.1}
-  \end{equation}
-  \begin{displaymath}
-    \rho \dfrac{\vec u }{t} = \rho \left(  \ptf{\vec u}{t} + \vec u \cdot \vec u \right) = \nabla \cdot \Sigma  + \rho g,
-  \end{displaymath}
-  angular momentum balance
-  \begin{displaymath}
-    \Sigma^T = \Sigma.
-  \end{displaymath}
-  energy per unit mass
-  \begin{equation}
-    \rho \dfrac{e_0}{t} = - p (\nabla \cdot \vec u) + \Sigma' : \nabla \vec u - \nabla \cdot \vec q
-    \label{eq:3.2}
-  \end{equation}
-  entropy per unit mass
-  \begin{displaymath}
-    \rho \dfrac{s}{t} = - \nabla \cdot \left( \frac{\vec q }{T} \right) + \theta,
-  \end{displaymath}
-  where $\theta$ is the \fndef{entopy production}. The second law of thermodynamics says that $\theta > 0 $.
-
-  Those are complete system of balance equations and in fact quite general ones.
-
-  \paragraph{Local thermodynamics equilibrium approximation}
-  \begin{displaymath}
-    \theta = \rho \dfrac{s}{t} + \nabla \cdot \left( \frac{\vec q}{T} \right),
-  \end{displaymath}
-  \begin{displaymath}
-    s = s(e_0, \nu),
-  \end{displaymath}
-  and the Gibbs relation
-  \begin{displaymath}
-    \d s = \frac{1}{T}\d e_0 + \frac{p}{T} \d \nu.
-  \end{displaymath}
-  $\d e_0/\d t$ comes form the flow of a energy and the $\d \nu / \d t$ part comes from continuity equation.
-  We can write it as
-  \begin{displaymath}
-    \rho \dfrac{s}{t} = \frac{1}{T} \underbrace{\rho \dfrac{e_0}{t}}_{\tm{Eq }\ref{eq:3.2}}
-    + \frac{p}{T} \underbrace{\frac{1}{\nu} \dfrac{\nu }{t}}_{\tm{Eq } \ref{eq:3.1}},
-  \end{displaymath}
-  \begin{displaymath}
-    \rho \dfrac{s}{t} = \frac{1}{T} \left[ - p (\nabla \cdot \vec u) + \Sigma' : \nabla \vec u - \nabla \cdot \vec q \right]
-    + \frac{p}{T} (\nabla \cdot \vec u).
-  \end{displaymath}
-  \begin{displaymath}
-    \nabla \cdot \left( \frac{\vec q }{T} \right) = \frac{1}{T} \nabla \cdot \vec q - \frac{1}{T^2} \vec q \cdot \nabla T,
-  \end{displaymath}
-  \begin{displaymath}
-    \theta =  -\Ccancel[blue]{\frac{p}{T} (\nabla \cdot \vec u)} + \frac{1}{T} \Sigma' : \nabla \vec u -\Ccancel[red]{ \frac{1}{T} \nabla \cdot \vec q}
-    + \Ccancel[blue]{\frac{p}{T} (\nabla \cdot \vec u)} + \Ccancel[red]{\frac{1}{T} \nabla \cdot \vec q} - \frac{1}{T^2} \vec q \cdot \nabla T.
-  \end{displaymath}
-  Thus the entropy production is given by the formula
-  \begin{displaymath}
-    \theta = - \frac{1}{T^2} \underbrace{\vec q \cdot \nabla T}_{\tm{heat flux}} + \frac{1}{T} \underbrace{\Sigma' : \nabla \vec u}_{\tm{momentum flux}} \geq 0.
-  \end{displaymath}
-  Imagine that you have a flow and a temperature gradient --- then the fluid will flow from the hotter part to the colder.
-  Note that both terms have to be positive, because when one is missing, the other one must be non-negative.
-
-  How does those equations simplify in the ideal fluid model?
-
-  \section{Ideal fluid model}
-
-  Recall that for the ideal fluid we have
-  \begin{displaymath}
-    \vec q = 0, \quad \Sigma' = 0 \qLRa \theta = 0,
-  \end{displaymath}
-  and therefore there is no entropy production.
-
-  Hydrodynamics of ideal fluids:
+  Własności
   \begin{enumerate}
-    \item $\ptf{\rho}{t} + \nabla \cdot (\rho \vec u) = 0$,
-    \item $\rho \dfrac{\vec u}{t} = - \nabla p + \rho \vec g$,
-    \item $ \rho \dfrac{e_0}{t} = - p(\nabla \cdot \vec u)$,
-    \item $\dfrac{s}{t} = 0$.
-  \end{enumerate}
-  Since the 2\textsuperscript{nd} equation is a vector one we have $6$ equations. 
-  Unfortunately, there are 7 unknowns, which means we are one equation short.
-  The one that is missing is the thermodynamical equation of state (for pressure).
-
-  \section{Thermodynamics}
-  In the equation
-  \begin{displaymath}
-    e_0 = e_0(s , \nu)
-  \end{displaymath}
-  the specific volume as a variable is not that interesting, since it cannot be easily controlled. 
-  It would be much better to use a pressure instead of $\nu$. 
-  To do that we switch the thermodynamical potential, from energy to enthalpy
-  \begin{displaymath}
-    h_0 = e_0 + p \nu = e_0 + \frac{p}{\rho}, \quad h_0 = h_0(s, p), 
-  \end{displaymath}
-  \begin{displaymath}
-    \d h_0 = T \d s + \nu \d p = \underbrace{T\d s}_{ = 0} + \frac{\d p}{\rho},
-  \end{displaymath}
-  if we work in a regime where $s$ is fixed.
-  Thus 
-  \begin{displaymath}
-    \d h_0 = \frac{\d p}{\rho}, \quad h_0 = h_0(p),\quad \ptf{h_0}{p}|_s = \frac{1}{\rho}.
-  \end{displaymath}
-  Therefore $\rho = \rho(p)$ or $p = p(\rho)$ and that's what we've been missing.
-  This equation is called the \fnte{equation of state}.
-  
-  For an ideal gas
-  \begin{displaymath}
-    p(\rho) = C \rho ^\gamma, \quad \gamma = \frac{c_p}{c_v}.
-  \end{displaymath}
-
-  For an ideal fluid
-  \begin{displaymath}
-    \rho = \rho_0 = \const.
-  \end{displaymath}
-
-  \section{Hydrostatics}
-  Now that we have a complete set of equations, we can solve physical problems.
-  Assume for now that $\vec u = 0$ which leads to 
-  \begin{displaymath}
-    \nabla p = \rho \vec g, \quad p = p(\rho).
-  \end{displaymath}
-  Assume that we work with an ideal gas and know the temperature profile i.e. $T(\tm{height})$.
-  
-  \begin{figure}[h]
-    \centering
-    \begin{tikzpicture}
-      \draw (0,0) -- (5,0);
-      \draw [-stealth] (1, 0) -- (1, 2);
-      \node at (4, 1.5) {$ \vec g = - g\vez $};
-      \node at (2, 1.5) {$ T(z)$ };
-      \node at (0.8, 2) {$z$};
-    \end{tikzpicture}
-  \end{figure}
-
-  
-  \begin{displaymath}
-    \dfrac{p}{z} = - \rho g, \quad p(z) = ?,
-  \end{displaymath}
-  For an ideal gas $p = \rho R T$, thus
-  \begin{displaymath}
-    \int_{p(z = )}^{p(z)} \frac{\d p'}{p'} = - \int_0^z \frac{g \d z}{RT(z)} 
-    \qLRa p(z) = p(0) \exp\left( -\int_0^z \frac{g \d z}{RT(z)} \right),
-  \end{displaymath}
-
-  where we've used 
-  \begin{enumerate}
-    \item $T(z) \ra p(z)$
-    \item $\rho(z)$ from the equation $\rho=  \frac{p}{RT}$
+    \item dla $N > \dim M$, $\bigwedge^N(T^*_pM) = \left\{ 0 \right\}$
+    \item dla $N = \dim M$, $\dim \bigwedge^N(T^*_pM) = 1$.
   \end{enumerate}
 
-  \paragraph{Sound waves}
-  Fluid in equilibrium (neglecting gravity)
+  Niech $e^1, \dots, e^n \in T^*_pM$,
   \begin{displaymath}
-    \vec u = 0,
+    e^a \wedge e^b := e^a \otimes e^b - e^b \otimes e^a,
   \end{displaymath}
-  and $p = p_{og} = \const.$, $\rho = \rho_{og} = \const.$, $s = s_{og} = \const.$.
-  A sound wave is just a ,,small'' perturbation of the equilibrium state
+  a dla 
   \begin{displaymath}
-    \vec u ( \vec r, t) = 0 + \vec u ' (\vec r, t)  \quad (\abs{\vec u'} \ll c)
-  \end{displaymath}
-  \begin{displaymath}
-    p ( \vec r, t) = p_{eq} + p' (\vec r, t)  \quad (p' \ll p_{eq})
-  \end{displaymath}
-  \begin{displaymath}
-    \rho ( \vec r, t) = \rho_{eq} + \rho' (\vec r, t)  \quad (\rho ' \ll \rho_{eq}),
-  \end{displaymath}
-  \begin{displaymath}
-    s( \vec r, t) = s_{eq} = \const.
+    e^{a_1} \wedge \dots \wedge e^{a_l} = \sum_\sigma (-1)^{\tm{sgn} \sigma} e^{a_{\sigma(1)} \otimes\dots \otimes e^{a_{\sigma(l)}}.
   \end{displaymath}
 
-  Now we want to find primed variables.
-  How? By using the equations for an ideal fluid.
-  We have
-  \begin{equation}
-    \ptf{\rho}{t} + \nabla \cdot (\rho \vec u) = 0,
-  \end{equation}
-  \begin{equation}
-    \rho \left( \ptf{\vec u}{t} + \vec u \cdot \nabla\vec u \right) = - \nabla p,
-    \label{eq:3.3}
-  \end{equation}
-  \begin{equation}
-    s = s_{eq} = \const.
-  \end{equation}
-
-  The sound velocity squared
+  Matematyczny zapis
   \begin{displaymath}
-    \nabla p = \underbrace{\left( \dfrac{p}{\rho} \right)}_{c^2}\nabla \rho = c^2 \nabla \rho.
+    \bigwedge^k T^*_pM \ni \omega = \omega_{a_1,\dots,a_k} e^{a_1}\otimes \dots \otimes e^{e_k} 
+    = \frac{1}{k!}\omega_{a_1,\dots,a_k} e^{a_1}\wedge \dots \wedge e^{e_k} .
+  \end{displaymath}
+
+  Zapis fizyczny dla $\alpha \in \bigwedge^kT^*M, \beta \in \bigwedge^lT^*M$ mamy
+  \begin{displaymath}
+    \alpha \wedge \beta = \left( \frac{1}{k!} \alpha_{a_1,\dots, a_k} e^{a_1} \wedge \dots \wedge e^{a_n} \right)
+    \wedge \left( \frac{1}{l!} \beta{b_1,\dots, b_l} e^{b_1} \wedge \dots \wedge e^{b_l} \right)
+  \end{displaymath}
+  \begin{displaymath}
+    = \frac{1}{k!}\frac{1}{l!} \alpha_{a_1,\dots, a_k}\beta{b_1,\dots, b_l} e^{a_1} \wedge \dots \wedge e^{a_n} 
+    \wedge    e^{a_1} \wedge \dots \wedge e^{b_l} 
+  \end{displaymath}
+
+  Mamy także iloczyn wewnętrzny, zwany też zwężeniem lub kontrakcją:
+  \begin{displaymath}
+    v \ctr \omega = \frac{1}{(k - 1)!} v^{a_1} \omega_{a_1, \dots, a_k} e^{a_2} \wedge \dots \wedge e^{a_k}.
+  \end{displaymath}
+  Własność:
+  \begin{displaymath}
+    v \ctr (\alpha \wedge \beta) = (v \ctr \alpha) \wedge \beta + (-1)^k \alpha \wedge (v \ctr \beta).
   \end{displaymath}
   
-  Those equations are very hard to solve mathematically, since they are non-linear.
-  However, since we just want to solve easier case, those can be linearly approximated.
-  Omitting all second order terms, we obtain %\todo ,,og'' should be changed to ,,eq'' XD.
-  \begin{displaymath}
-    \ptf{(\rho_{eq} + p')}{t} + \nabla \cdot \left[ (\rho_{eq} + p') \vec u \right] = 0,
-  \end{displaymath}
-  and the \fnte{linearized continuity equation}
-  \begin{equation}
-    \nabla \cdot \vec u' = - \frac{1}{\rho_{eq}} \ptf{\rho'}{t}.
-    \label{eq:lincont}
-  \end{equation}
+  \section{Gęstości}
+  Rozpocznijmy od rozważenia symbolu Levi-Civity.
+  Zauważmy, że nie jest on tensorem. Jeśli by był to znaczy, że transformowałby się jak tensor, 
+  a tego nie robi (mnoży się razy $\det A$) gdzie $A \in GL(M)$.
+  W fizyce tego nie widać, bo stosujemy transformacje z $SL(M)$, czyli ten wyznacznik daje 1.
 
-  Now we take care of the second equation (\ref{eq:3.3})
+  Jest ważne żeby nie trakotować formy maksymalnego wymiaru jako funkcji --- wynika to stąd, że nie 
+  jest ona niezmiennicza przy zamianie współrzędnych.
+  Obiekt który przy zamianie współrzędnych z $\left\{e^i\right\}$ na $\left\{ f^i \right\}$ 
+  transformuje się jak
   \begin{displaymath}
-    (\rho_{eq} + \rho') \left[ \ptf{\vec u'}{t} + \underbrace{\vec u' \cdot \nabla \vec u'}_{\approx 0} \right] = - c^2 \nabla (\rho_{eq} + \rho'),
+    f(p) \mapsto \det A(p) f(p)
   \end{displaymath}
-  and obtain the \fnte{linearized equation of motion}
+  nazywamy \fndef{pseudogęstością}. 
+  Jeśli w powyższym wzorze damy $\abs{\det A}$ zamiast $\det A$ to 
+  dostaniemy \fndef{gęstość}. 
+  Żeby być całkowicie poprawnym to 
+  \begin{definition}
+    Niech $p \in M$ będzie punktem rozmaitości, a $\mathfrak{b}$ będzie dowolną bazą w przestrzeni stycznej.
+    Odwzorowanie które parze $(p, \mathfrak{b})$ przyporządkowuje liczbę z $\RR$, a po zmianie współrzędnych
+    transformuje sią jak 
+    \begin{displaymath}
+      \rho (p, A \mf{b}) = \abs{\det A}^\alpha \rho(p, \mf{b})
+    \end{displaymath}
+    nazywamy \fndef{$\alpha$-gęstością}.
+  \end{definition}
+  
+  \section{Pola tensorowe i operacje}
+  \paragraph{a) Pole wektorowe}
+  \fndef{Polem wektorowym} na rozmaitości różniczkowej $M$ nazywamy gładkie odwzorowanie 
   \begin{displaymath}
-    \ptf{\vec u'}{t} = - \frac{c^2}{\rho_{eq}} \nabla \rho'.
+    M \ni p \mapsto v \in T_p M,
   \end{displaymath}
-
-  We have the following system
-  \begin{align*}
-    \nabla \cdot \vec u' = - \frac{1}{\rho_{eq}} \ptf{\rho'}{t}, \\
-    \ptf{\vec u'}{t} = - \frac{c^2}{\rho_{eq}} \nabla \rho'.
-  \end{align*}
-  Differentiating the first equation with respect to time and using divergence operator on the second one we get
+  jeśli odwzorowanie to jest gładkie.
+  Gładkość oznacza, że w lokalnym układzie współrzędnych, w którym $TM|_U$ można zapisać jako
+  $U \times \RR^n$ odwzorowanie
   \begin{displaymath}
-    \dptf{(\rho')}{t} = c^2 \nabla^2 \rho'.
+    U \ni p \mapsto v  \in \RR^n
   \end{displaymath}
-
-  So the speed of sound
+  jest gładkie.
+  W lokalnym układzie współrzędnych pola wektorowe można zapisywać jako
   \begin{displaymath}
-    c^2 = \left( \ptf{p}{\rho} \right)_s.
+    v = v^a \ptf{}{x^a}.
   \end{displaymath}
-  For $s = \const$, $p(\rho) = C \rho^\gamma$, it can be approximated as
+  Dodatkowo mamy nawias pól wektorowych dany poprzez
   \begin{displaymath}
-    \left( \ptf{p}{\rho} \right)_s = \gamma \frac{p}{\rho} \approx \gamma\frac{p_{eq}}{\rho_{eq}}.
+    [v, w] (f) = v(w(f)) - w(v(f)),
   \end{displaymath}
+  a w układzie współrzędnych
   \begin{displaymath}
-    c^2 \approx \gamma \frac{p_{eq}}{\rho_{eq}} = \gamma R T_{eq}.
+    [v, w] = \left( v^a \ptf{w^b}{x^a} - w^a \ptf{v^b}{x^a} \right) \ptf{}{x^b}.
   \end{displaymath}
   
-
-  \paragraph{1-D wave equation}
-  \begin{equation}
-    \dptf{(\rho')}{t} = c^2 \dptf{(\rho')}{x}, \quad \rho'(x, t) = ?.
-    \label{eq:1Dwave}
-  \end{equation}
-  To solve it we write $\rho'$ in a Fourier representation
-  \begin{displaymath}
-    \rho'(x,t) = \int\d k \int \d \omega \rho'(k, \omega) e^{ik x} e^{-i\omega t}.
-  \end{displaymath}
-  Substituting the above into \ref{eq:1Dwave} we get
-  \begin{displaymath}
-    (- i \omega) ^2 \rho'(k, \omega) = c^2 (i k)^2 \rho'(k,\omega),
-  \end{displaymath}
-  \begin{displaymath}
-    \omega^2 = c^2 k^2 \qLRa \omega = \pm c k.
-  \end{displaymath}
-  The above equation is called the \fndef{dispersion relation}.
-  Using it we get
-  \begin{displaymath}
-    \exp\left[ i (k x - \omega t) \right] = \exp\left[ i k (x - c t)\right].
-  \end{displaymath}
-
-  Finally
-  \begin{displaymath}
-    \rho'(x, t) = \int \d k \rho_1'(x) \exp\left( i k (x - c t) \right) + \int \d k \rho_2' \exp(ik ( x + ct)),
-  \end{displaymath}
-  which are two families of perturbations travelling in the opposite directions.
-
-  \paragraph{3D case}
-
-  Using Fourier representation
-  \begin{displaymath}
-    \rho'(\vec r, t) = \int \d \vec k \int \d \omega \rho'(\vec k, \omega) \exp\left[ i( \vec k \cdot \vec r - \omega t )\right],
-  \end{displaymath}
-  \begin{displaymath}
-    \dptf{(\rho')}{t} = c^2 \nabla^2 \rho',
-  \end{displaymath}
-  \begin{displaymath}
-    (- i\omega)^2 \rho'(\vec k, \omega) - c^2 (i\vec k)^2 \rho'(\vec k, \omega) \qLRa \omega = \pm c \abs{k},
-  \end{displaymath}
-  \begin{displaymath}
-    \exp\left[ i(\vec k \cdot \vec r - \omega t) \right] = \exp\left[ i k ( \hat{k} \cdot \vec r - c t \right].
-  \end{displaymath}
-  Note that $c$ doesn't depend on $\omega$. 
-  If it would, we will call such wave \fndef{dispersive}.
-  Nondispersive waves travel without changing shape.
-
-  We know $\rho'(\vec r, t)$. What about $p'(\vec r, t)$ and $\vec u'(\vec r, t)$?
-
-  By substituting into
-  \begin{displaymath}
-    \d p = \left( \frac{p}{\rho} \right)_s \d \rho, 
-  \end{displaymath}
-  relations $p'(\vec r, t) = c^2 \rho'(\vec r, t)$, we can calculate $p'(\vec r, t)$.
-
-  To obtain velocity $\vec u$ we note that
-  \begin{displaymath}
-    \ptf{\vec u'}{t}  = - \frac{c^2}{\rho_{eq}} \nabla \rho'
-  \end{displaymath}
-  and, by using Fourier transform, we obtain
-  \begin{displaymath}
-    \vec u' (\vec k, \omega) = \frac{c^2}{\rho_{eq}\omega}\vec k \rho'(\vec k, \omega) 
-    = \pm\frac{c^2}{\rho_{eq} ck } \vec k \rho'(\vec k, \omega) 
-  \end{displaymath}
-  \begin{displaymath}
-    \vec u' = \pm  \frac{c}{\rho_{eq}} \rho' \hat k.
-  \end{displaymath}
-  Sound waves are longitudinal (particles move in the same way the waves propagates).
-
-  \section{Aerodynamics}
-
-  Imagine that there is a wing profile and consider a wind tunel configuration.
-
-  \begin{figure}[h]
-    \centering
-    \begin{tikzpicture}
-      \node[anchor=south west] (image) at (0,0)
-      {\includegraphics[width=0.25\textwidth]{./images/02Fig1.png}};
-        \begin{scope}[x={(image.south east)}, y={(image.north west)}]
-        % \node at (0.0, 0.0) {};
-        \draw [-stealth] (0.5, 0.45) -- (0.6, 0.85);
-        \draw [dashed, red, -stealth] (0.5, 0.45) -- (0.5, 0.85);
-        \draw [dashed, green, -stealth] (0.5, 0.45) -- (0.6, 0.45);
-        \node at (0.4, 0.8) {lift};
-        \node at (0.6, 0.3) {drag};
-        \end{scope}
-    \end{tikzpicture}
-    \label{fig:}
-  \end{figure}
-
-  Question: what is the force that the flow exerts on the object?
-  The force can be decomposed into two parts: the lift and the drag.
-  \begin{displaymath}
-    \vec F = -\int_S p \hat{n} \d s, \quad p(\vec r, t) = ?
-  \end{displaymath}
-
-  To obtain $p$, $\vec u$ and $\vec F$ we have to solve Euler's equations
-  \begin{align*}
-    \rho\left( \ptf{\vec u}{t} + \vec u \cdot \nabla \vec u \right) = - \nabla p + \rho \vec g\\
-    \ptf{p}{t} + \rho \cdot (\rho \vec u) = 0.
-  \end{align*}
-  Those are most often almost impossible to solve.
-  We should try to simplify the mathematical problem here.
-
-  First we can try choosing a different variable.
-  We change $\vec u$ into \fndef{vorticity} $\vec \xi = \nabla \times \vec u$.
   
-  \begin{figure}
-    \centering
-    \begin{tikzpicture}
-      \node[anchor=south west] (image) at (0,0)
-      {\includegraphics[width=0.65\textwidth]{./images/02Fig2.png}};
-        \begin{scope}[x={(image.south east)}, y={(image.north west)}]
-        \node at (0.0, 0.0) {};
-        \end{scope}
-    \end{tikzpicture}
-    \label{fig:}
-  \end{figure}
+  \paragraph{Pola tensorowe}
+  Każde pole tensorowe można wyrazić przy pomocy iloczynów tensorowych (i ich kombinacji liniowych) pól wektorowy i jednoform.
 
-  Euler's equations
+  \paragraph{Pochodna Liego pola wektorowego}
+  Niech $v, w \in \XX(M)$. Wówczas \fndef{pochodną Liego} pola wektorowego $w$ w kierunku pola $v$ nazywamy
   \begin{displaymath}
-    \ptf{\vec u}{t}+ \vec u \cdot \nabla \cdot \vec u= - \frac{1}{\rho} \nabla p + \vec g
+    \ld_v w :=[v, w].
   \end{displaymath}
+  Niech $f \in C^\infty(M)$. 
+  Wówczas pochodną Liego funkcji $f$ w kierunku pola $v$ nazywamy
+  \begin{displaymath}
+    \ld_v f:= v(f).
+  \end{displaymath}
+  Podobnie
+  \begin{displaymath}
+    \ld_v(\d f) := \d (\ld_v f).
+  \end{displaymath}
+
+  Dodatkowo wymagamy, żeby pochodna Liego spełniała regułę Leibniza
+  \begin{displaymath}
+    \ld_v(v_1\otimes \dots \otimes v_k \otimes \omega_1\otimes\dots \otimes \omega_l) = 
+    (\ld_v(v_1))\otimes \dots \otimes v_k \otimes \omega_1\otimes \dots \otimes\omega_l + \dots.
+  \end{displaymath}
+  Z tego już wynika działanie pochodnej Liego na dowolne pole wektorowe.
+
+
+  \paragraph{Przykład} 
+  Niech 
+  \begin{displaymath}
+    L = L_{ab} \d x^a \otimes \d x^b, \quad v = v^a \ptf{}{x^a}.
+  \end{displaymath}
+  Wtedy 
+  \begin{displaymath}
+    \ld_vL = \ld_v(L_{ab} \d x^a \otimes \d x^b) = v(L_{ab}) \d x^a \otimes \d x^b 
+    + L_{ab} (\d v(x^a)) \otimes \d x^b
+    + L_{ab} \d x^a\otimes v(x^b)
+  \end{displaymath}
+  \begin{displaymath}
+    = v(L_{ab}) \d x^a \otimes \d x^b  
+    + L_{ab} \ptf{v^a}{x^c}\d x^c \otimes \d x^b
+    + L_{ab} \ptf{v^b}{x^c}\d x^a \otimes \d x^c.
+  \end{displaymath}
+  
+  
+  \paragraph{Przykład 2}
+  \begin{displaymath}
+    \ld_v \ptf{}{x^b} = - \ptf{v^a}{x^b}\ptf{}{x^a}.
+  \end{displaymath}
+
+  \begin{lemma}
+    \begin{displaymath}
+      \ld_v(w^a \alpha_a) = (\ld_v w)^a\alpha_a + w^a (\ld_v\alpha)_a.
+    \end{displaymath}
+    
+  \end{lemma}
+
+  \chapter{Wykład 4}
+
+  Rozkład jazdy
   \begin{enumerate}
-    \item $ \vec g = - \nabla \chi$
+    \item Pochodna Liego
+    \item Pochodna zewnętrzna
+    \item Związki pomiędzy $\ld_\xi$ oraz $\d$
+    \item Całka z $k$-formy
+    \item Uwagi: $T(M)$, $T^*(M)$ jako rozmatiości
+      \begin{enumerate}
+        \item wiązki naturalne
+        \item wiązki stowarzyszone
+        \item wiązki główne
+      \end{enumerate}
     \item 
-      \begin{displaymath}
-        \vec u \cdot \nabla \cdot \vec u = \nabla \left( \frac{\vec u^2}{2} \right) + (\nabla \times \vec u) \times \vec u 
-        = \nabla \left( \frac{\vec u^2}{2} \right) + \vec \xi \times \vec u
-      \end{displaymath}
-    \item $ \frac{1}{\rho} \nabla p = \nabla h_0$
   \end{enumerate}
-  \begin{equation}
-    \ptf{\vec u}{t} + \nabla \times \vec u = - \nabla h_0 - \nabla \left( \frac{\vec u^2}{2} \right) - \nabla \chi
-    = - \nabla \left( h_0 + \frac{1}{2} \vec u^2 \chi \right) =: - \nabla  \mathfrak{h},
-    \label{eq:3.4}
-  \end{equation}
-  where
+
+  
+  \section{Pochoda zewnętrzna}
+
+  Wprowadźmy oznaczenia 
+  \begin{itemize}
+    \item $\Gamma(T^*M)$ --- przestrzeń pól kowektorowych
+    \item $\Gamma(\gibwedge^k(T^*M))$ --- przestrzeń pól $k$-form różniczkowych
+  \end{itemize}
+  Różniczka zewnętrzna
   \begin{displaymath}
-    \mathfrak{h} = h_0 + \frac{ \vec u^2}{2} + \chi .
+    \d : \Gamma(\bigwedge^k T^*M) \ra \Gamma(\bigwedge^{k - 1}T^*M),
+  \end{displaymath}
+  z własnościami
+  \begin{align*}
+    \d (\alpha \wedge \beta) = \d \alpha \wedge \beta + (-1)^k \alpha \wedge\d \beta \\
+    \d (\alpha + \beta) = \d \alpha + \d \beta\\
+    \d^2 = 0
+  \end{align*}
+
+  \section{Związki pomiędzy $\ld$ a $\d$}
+  Niech $\omega \in \Gamma(\bigwedge^k T^*M)$, $\xi \in \Gamma(TM)$
+  \begin{displaymath}
+    \ld_\xi \omega = \xi \ctr \d \omega + \d (\xi \ctr \omega)
   \end{displaymath}
 
-  Then Equation \ref{eq:3.4} reads
+  Geometryczny wzór na nawias Liego
   \begin{displaymath}
-    \ptf{\vec u}{t} + \vec \xi \times \vec u = - \nabla \mf{h}.
+    \d \omega(v, w) = v(w \ctr \omega) - w(v \ctr \omega) - [v,w]\ctr\omega.
   \end{displaymath}
-  By taking the rotation of both sides 
-  \begin{displaymath}
-    \overbrace{\ptf{\nabla \times \vec u}{t}}^{\xi} + \nabla \times (\vec \xi \times \vec u) = 0,
-  \end{displaymath}
+  
 
-  we obtain
+  Przykład liczenia pochodnej Liego na tensorach
   \begin{displaymath}
-    \nabla \times (\vec \xi \times \vec u) = ( \vec u \cdot \nabla) \vec \xi - (\vec \xi \cdot \nabla) \vec u 
-    + \xi (\nabla \cdot \vec u) - \vec u (\nabla \cdot \vec \xi)=
-  \end{displaymath}
-  if the flow is incompressible
-  \begin{displaymath}
-    \ptf{\vec \xi}{t} + \vec u \cdot \nabla \vec \xi = \vec \xi \cdot \nabla \cdot \vec u
+    \ld_V T_{ab} \d x^a \otimes \d x^b = v(T_{ab}) + T_{cb} \ptf{v^c}{x^a}+ T_{ca} \ptf{v^c}{x^b},
   \end{displaymath}
   \begin{displaymath}
-    \dfrac{\vec \xi}{t} = \vec \xi \cdot \nabla \vec \xi.
+    \ld_V T^{ab}\ptf{}{x^a} \otimes \ptf{}{x^b} = v(T^{ab}) - T^{cb} \ptf{v^c}{x^a} - T_{ca} \ptf{v^c}{x^b},
   \end{displaymath}
 
-  If $\nabla \vec u = 0$ the $\xi $ is an invariant of a motion.
+  \section{Całki z form różniczkowych}
+  
+  Rozważmy rozmaitość $M$ i formę $\omega \in \Omega^n$.
+  Dodatkowo załóżmy, że $\supp\omega \n \chi_I(U_I)$ dla pewnej lokalnej mapy.
+  Definiujemy 
+  \begin{displaymath}
+    \int_M\omega = \int_{U_I} \omega  = \int \omega_{1, \dots, n} \d x^1 \wedge \dots \wedge \d x^n.
+  \end{displaymath}
+  Przy orientacji kluczowa jest orientacja na $M$.
+  Jeśli mamy dwie mapy, $(U_I, \chi_I)$, oraz $(U_J, \chi_J)$ ze współrzędnymi odpowiednio $x^1, \dots, x^n$
+  oraz $y^1, \dots, y^n$ to nazywamy je \fndef{zgodnie zorientowanymi} jeśli 
+  \begin{displaymath}
+    \forall a, b \quad \det \left( \ptf{x^a}{y^b} \right) > 0,
+  \end{displaymath}
+  na przecięciu $U_I\cap U_J$.
+  Rozmatiość nazywamy \fndef{zorientowaną} jeśli można na niej zadać atlas w którym każde dwie mapy mają zgodną
+  orientację.
+  Całkować można tylko na rozmaitościach zorientowanych.
+  Wynika to z tego, że przy zmianie bazy pod całką wyskakuje znak --- jeśli rozmaitość jest zorientowana to 
+  nie ma problemu, bo ten znak jest zawze taki sam.
+
+  Jeśli chcemy całkować na rozmaitości niespójnej to powinniśmy zdefiniować rozkład jedności.
+  Zakłądamy, że istnieje rozkłąd jedności, czyli zbiór funkcji $\phi_\chi$ takich, że
+  \begin{displaymath}
+    \forall p \in M, \phi_\chi \neq 0 \tm{dla skończonego pozbioru zbioru }\chi
+  \end{displaymath}
+  oraz
+  
+  
+  \chapter{Wykład 6}
+  \paragraph{Koneksja}
+  Koneksja na $TM$. 
+  Jeśli dany jest reper $e^1, \dots, e^n$ to macierz koneksji wyraza się przez $\Gamma^i_j$, $i, j = 1\dots, n$,
+  \begin{displaymath}
+    e^{ij} = (a^{-1})^i_j e^j, \quad (\Gamma')^i_j = (a^{-1})^i_k \Gamma^k + (a^{-1})^i_k \d a^k_j.
+  \end{displaymath}
+
+  
+  \paragraph{Krzywizna}
+  Krzywizna
+  \begin{displaymath}
+    \mc{R}^i_j = \d \Gamma^i_j + \Gamma^i_k \wedge \Gamma^k_j = \frac{1}{2} R^i_{jkl} e^k \wedge e^l.
+  \end{displaymath}
+  Przy zmianie repera na $(e')^i = (a^{-1})^i_k e^k$ $\mv{R}$ zmienia się na
+  \begin{displaymath}
+    (\mv{R}')^i_j = (a^{-1})^i_k \mc R^k_l a^l.
+  \end{displaymath}
+
+  Podsumowując
+  \begin{displaymath}
+    \Gamma' = a^{-1} \Gamma a + a^{-1} \d a, \quad \mc{R}' = a^{-1} \mc{R} a.
+  \end{displaymath}
+
+  \paragraph{Pochodna kowariantna}
+  Pomyślmy teraz o polu wektorowym jak o funkcji o wartościach wektorowych.
+  Mamy wtedy następujący wzór
+  \begin{displaymath}
+    D v^i = \d v^i + \Gamma^i_j v^j.
+  \end{displaymath}
+
+  Dla k-formy mamy
+  \begin{displaymath}
+    D \omega^i = \d \omega^i + \Gamma^i_j \wedge \omega^j.
+  \end{displaymath}
+
+  \begin{lemma}
+    Druga pochodna kowariantna dla współrzędnej
+    \begin{displaymath}
+      D^2\omega^i = R^i_j \wedge\omega^j.
+    \end{displaymath}
+  \end{lemma}
+  Dla funkcji mamy $D \omega = \d \omega$.
+
+  \paragraph{Różniczka kowarianta formy o wartościach kowektorowych}
+  Niech $\omega$ będzie jednoformą, $\omega = \omega_i e^i$.
+  Patrzymy na to jak na zeroformę o wartościach w $T^*_xM$.
+  Pochodną kowariantna dla jednoformy jest równa
+  \begin{displaymath}
+    D \omega_i = \d \omega_i - \Gamma^j_i \omega_j.
+  \end{displaymath}
+
+  Wytłumaczenie dlaczego powinien być ten minus: rozważmy $v^i\omega_i$ i policzmy 
+  $\d (v^i\omega_i) = (\d v^i)\omega_i + v^i \d \omega_i$.
+  Licząc dalej dostajemy
+  \begin{displaymath}
+    D(v^i\omega_i) \os{?}{=} (Dv^i)\omega_i + v^i (D\omega_j).
+  \end{displaymath}
+  Żeby równość zachodziła bierzemy minus, wtedy się rzeczy skracają.
+  
+  \begin{displaymath}
+    D \omega^{ij} = \d \omega^{ij} + \Gamma^i_l \wedge \omega^{lj} - \Gamma^j_l \wedge\omega^{il}.
+  \end{displaymath}
+  $D$ jest przemienne ze zwężaniem indeksów.
+  
+  \paragraph{Przykład}
+  Sprawdźmy jak to działa na deltę Kroneckera.
+  \begin{displaymath}
+    D \delta^i_j = \d \delta^i_j + \Gamma^i_l \delta^l_j - \Gamma^k_j \delta^i_k.
+  \end{displaymath}
+
+  \paragraph{Przykład 2}
+  Niech $\omega^i = \omega^i_j e^j = \delta^i_j e^j = e^i$
+  \begin{displaymath}
+    De^i = \d e^i \Gamma^i_j \wedge e^j = T^i = \frac{1}{2} T^i_{jk} e^j\wedge e^k.
+  \end{displaymath}
+  Dla repera holonomicznego mamy (MOŻE BYĆ BŁĄD)
+  \begin{displaymath}
+    D(\d x^i) = \d (\d x^i) + \Gamma^i_j \wedge \d x^i = \Gamma^i_{jk} \d x^k \wedge \d x&j 
+    = \frac{1}{2} \left( \Gamma^i_{jk} - \Gamma^i_{kj} \right) \d x^k \wedge \d x^j.
+  \end{displaymath}
+  
+  \paragraph{Pochodna kowariantna}
+  Niech $T^i_j$ będzie polem tensorowym (0 formą o wartościach tensorowych).
+  Wtedy różniczkę kowariantną nazywamy z definicji \fndef{pochodną kowariantną}
+  \begin{displaymath}
+    \nabla T^{i\dots}_{j\dots} = D T^{i \dots}_{j\dots}
+  \end{displaymath}
+  \begin{displaymath}
+    \nabla_k T^{i\dots}_{j\dots} e^k\otimes e_i\otimes \dots \otimes e^j \dots
+  \end{displaymath}
+  
+  
+  \begin{displaymath}
+    \nabla_v = \nabla_i v^j e^i\otimes e_j
+  \end{displaymath}
+  
+  
+
+
+  
+  
   
   
 
@@ -1063,10 +673,12 @@
   
   
   
+
   
+
   
   
 
-
-
+  
+  
 \end{document}
