@@ -1,13 +1,16 @@
-\documentclass[11pt]{book}
+\documentclass[11pt,oneside]{book}
 \usepackage[margin=1.2in]{geometry}
 \usepackage[toc,page]{appendix}
 \usepackage{graphicx}
 \usepackage{natbib}
+\usepackage{twoopt} % Do działania komend z kilkoma argumentami
+\usepackage{cancel}
 \usepackage{lipsum}
 \usepackage{caption}
 \usepackage[T1]{fontenc}
 \usepackage{titlesec, blindtext, color}
 \usepackage{xcolor,tikz}
+\usepackage{tikz-cd}
 \usepackage{caption}
 \usepackage{subcaption}
 \usetikzlibrary{patterns}
@@ -27,9 +30,6 @@
 \usepackage{TemplateMatma}
 \usepackage{TemplateNotatkiPE}
 
-\newcommand{\cmark}{\ding{51}}
-\newcommand{\xmark}{\ding{55}}
-
 \tikzset{
     partial ellipse/.style args={#1:#2:#3}{
         insert path={+ (#1:#3) arc (#1:#2:#3)}
@@ -37,6 +37,7 @@
 }
 
 
+\renewcommand{\vec}[1]{\underline{#1}}
 
 % -------------------------------------------------------------------
 % Theorem Styles
@@ -77,6 +78,21 @@
 \newtheorem*{notation}{Notation}
 \newtheorem*{convention}{Convention}
 
+\newcommand\Ccancel[2][black]{
+    \let\OldcancelColor\CancelColor
+    \renewcommand\CancelColor{\color{#1}}
+    \cancel{#2}
+    \renewcommand\CancelColor{\OldcancelColor}
+}
+
+\newcommandtwoopt{\canto}[3][red][0]{
+    \let\OldcancelColor\CancelColor
+    \renewcommand\CancelColor{\color{#1}}
+    \cancelto{#2}{#3}
+    \renewcommand\CancelColor{\OldcancelColor}
+}
+
+
 
 
 % -------------------------------------------------------------------
@@ -111,9 +127,12 @@
 \newcommand{\hsp}{\hspace{20pt}}
 \titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
 
+\title{Hydrodynamics and elasticity,\\ Lecture notes}
+\author{Mikołaj Duch}
 
 \begin{document}
 
+  \maketitle
   \frontmatter
 
   % -------------------------------------------------------------------
@@ -128,542 +147,552 @@
 
   \mainmatter
 
-  % \input{sections/00introduction.tex}
-
-  \chapter{Wykład 2}
-  \section{Wektory styczne i kowektory}
-  \paragraph{a)} Wektor styczny w punkcie to odwzorowanie
-  \begin{displaymath}
-    C^\infty(M) \ni f \mapsto v(f) \in \RR,
-  \end{displaymath}
-  spełniające
-  \begin{itemize}
-    \item liniowość $v(a f + b h) = a v(f) + b v(h)$, $\forall f,g \in C^\infty(M)$, $a,b \in \RR$
-    \item Leinbniz $v(fh) = f(p) v(h) + v(f) h(p)$
-  \end{itemize}
-
-  \todo Fig1
-
-  Pozostaje pytanie jak to wygląda w lokalnych mapach. 
-  Rozważmy mapę $\varphi$ i różniczkowanie w punkcie $p \in U$, gdzie $U$ jest dziedziną mapy $\varphi$.
-  Wtedy dla wektora stycznego $\vec v$:
-  \begin{equation}
-    \vec v: f \longmapsto \left( v^k \ptf{}{x^k} (f \circ \varphi^{-1}) \right) (x^1(p), \dots, x^n(p)).
-  \end{equation}
-  Co więcej, każdy wektor styczny daje się zapisać w tej postaci.
-  Dodatkowo, jeśli mamy atlas to wszystkie wektory wyrażają się w ten sposób (to znaczy, że nie musimy szukać nowej mapy
-  dla każdego z wektorów stycznych).
-
-  Ogólnie. Jeśli $\vec v$ jest wektorem stycznym w $p \in M$ do $M$, a $M \supset U \os{\varphi}{\ra}\RR^n$
-  to istnieją $v^1, \dots, v^n \in \RR$, takie, że $v(f)$ wyraża się poprzez
-  \begin{displaymath}
-    v(f) = \left(v^k \ptf{}{x^k } f\circ \varphi^{-1}\right) (\varphi(p)).
-  \end{displaymath}
-  \todo Fig2
-
-  Zwyczajowo stosuje się notację uproszczoną
-  \begin{displaymath}
-    \vec v = v^k \ptf{}{x^k}
-  \end{displaymath}
-  ALE do tego musimy pamiętać, że to w lokalnym układzie współrzędnych.
-  Ma to konsekwencje np. jak mamy ,,drugą'' pochodna tj. różniczkowanie raz po $x^i$, a raz po $y^i$, gdzie $x, y$ 
-  to współrzędne w różnych mapach.
+  \input{sections/01lecture.tex}
+  \input{sections/02lecture.tex}
+  \input{sections/03lecture.tex}
   
-  Wektor styczny jest także związany z krzywymi na rozmaitości.
-  Rozważmy krzywą $\gamma$ przechodzącą przez punkt $p$
+  \chapter{Lecture 4}
+  \section{Recall what we already know}
+  For the ideal fluid the stress tensor consists only of $p$ and an identity tensor.
+  However, real fluids are not ideal. 
+  Newton's second law for real fluid
   \begin{displaymath}
-    \gamma : \tau \mapsto x^1(\tau), \dots, x^n(\tau), \quad (x^1(0), \dots, x^n(0)) = \varphi(p)
+    \rho \dfrac{\vec u}{t} = - \nabla p + \vec f, \quad \rho \dfrac{\vec u}{t} = \div \ten \Sigma + \vec f.
+  \end{displaymath}
+
+  It would be perfect if we knew the \fnte{heat equation} i.e. $p = p(\rho, T)$, 
+  but for now we only have the equation of state $p(\rho)$.
+
+  Other equations that we have
+  \begin{enumerate}
+    \item momentum equation
+    \item mass conservation
+    \item equation of state
+    \item continuity equation
+  \end{enumerate}
+  
+  For an incomprehensible fluid
+  \begin{displaymath}
+    \ptf{\rho}{t} + \nabla \cdot(\rho \vec u) = 0 \qLRa \rho (\nabla \cdot \vec u) = 0.
   \end{displaymath}
   
+
+  % TODO name of this equation.
   \begin{displaymath}
-    \dfrac{f \circ \varphi^{-1}}{\tau} ( x^1 (\tau), \dots, x^n(\tau)) 
-    = \dfrac{x^i}{\tau} \ptf{}{x^i} (f \circ \varphi^{-1})|_{x(p)}
+    \ptf{\vec u}{t} + (\nabla \times \vec u) \times \vec u = - \nabla (\frac{\vec u^2}{2} + \varphi + \psi),
+  \end{displaymath}
+  where $\vec f = - \nabla \varphi$, $\psi = \frac{p}{\rho}$.
+  By introducting vorticity $\xi = \nabla \times \vec u$ we can write it as
+  \begin{displaymath}
+    \ptf{\vec u}{t} + \xi \times \vec u = - \nabla (\frac{\vec u^2}{2} + \varphi + \psi)
   \end{displaymath}
 
-  Zauważmy, że różne funkcje mogą spełniać tę relację.
-  Wniosek: wektor styczny w $P$ do $M$ to klasa równoważności krzywych takich, że
+  
+  $\frac{1}{2}\xi$ represents the averege angular velocity of this initially $\perp$ segments in the fluid.
+  Consider a $2$D fluid $\vec \xi = \xi \vez$, $\xi = \ptf{u_y}{x} - \ptf{u_x}{y}$, and look on two
+  small, perpendicular segments. We will consider a difference between their components velocities in the $y$ direction.
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale = 2]
+      \draw (0, 0) -- (0, 1);
+      \draw (0, 0) -- (1, 0);
+      \node at (-0.2, 1) {C};
+      \node at (-0.2, -0.2) {A};
+      \node at (1, -0.2) {B};
+      \node at (-0.2, 0.5) {$\delta_y$};
+      \node at (0.5, -0.2) {$\delta_x$};
+    \end{tikzpicture}
+    \label{fig:}
+  \end{figure}
+  % Let us calculate the angular velocity of
   \begin{displaymath}
-    \dfrac{f(p(\tau))}{\tau}|_{\tau = 0} = \dfrac{f(q(\tau))}{\tau}|_{\tau = 0},
+    u_y(B) - u_y(A) = u_y(x + \delta, y)- u_y(x, y) 
+    = \Ccancel[blue]{u_y(x, y)} + \ptf{u_y}{x} \delta x - \Ccancel[blue]{u_y(x, y)}
+    = \ptf{u}{x} \delta x.
   \end{displaymath}
-  oraz $p(0) = q(0)$.
-
-  \todo Fig3
-
-  \paragraph{c) Prawo transformacji}
-  Żeby nie pisać cały czas
+  This is an instantaneous  angular velocity of $AB$ around the $\perp$ axis through $A$.
+  Computing the same for rotation along $C$ axis we get
   \begin{displaymath}
-    (y^1, \dots, y^n) = (\varphi' \cdot \varphi^{-1})(x^1, \dots, x^n), 
+    u_x(C) - u_x(A) = \ptf{u_x}{y} \delta_y.
   \end{displaymath}
-  gdzie $y^i$ to współrzędne w mapie $\varphi'$, a $x^i$ to współrzędne w mapie $\varphi$,
-  będziemy pisać po prostu
+  So the vorticity at a point informs us about how much will rotate two, initially close, points. % TODO
+  Vorticity is a measure of rotation, but rather nonintuitive.
+  
+  Example. Take rigid body motion $\vec u = \vec \Omega \times \vec r$.
   \begin{displaymath}
-    y^k = y^k(x^1, \dots, x^n).
+    \vec \xi = \nabla \times \vec u , \quad \xi_i 
+    = \epsilon_{ijk} \ptf{u_k}{x^j}
+    = \epsilon_{ijk} \epsilon_{klm} \Omega_l \overbrace{\ptf{r_m}{x^j}}^{\delta_{jm}}
+    = \epsilon_{ijk} \epsilon_{klj} \Omega_l 
+    = - \left( \delta_{il} - 3 \delta_{il} \right) \Omega_l = 2 \Omega_i.
   \end{displaymath}
-
-  Przy tej konwencji zamiana współrzędnych ma postać
+  Thus, for this particular flow
   \begin{displaymath}
-    v^i \ptf{}{x^i} = v^i\ptf{y^j}{x^i} \ptf{}{y^j} = \underbrace{ v^i \ptf{y^j}{x^i} }_{=: (v')^i}.
+    \vec \xi = 2 \vec \Omega.
+  \end{displaymath}
+  Note that the left side refers to local rotation, and right refers to global rotation.
+
+  \paragraph{Nonintuitive case}
+  Consider bathtub vortex.
+  It can be represented as
+  \begin{displaymath}
+    \vec u = \frac{k}{r} \hat{e}_\theta.
   \end{displaymath}
   
-  Wniosek: jeśli $v = v^k \ptf{}{x^k} = (v')^l \ptf{}{(x')^l}$ to wtedy $(v')^l = \ptf{(x')^l}{x^k} v^k$.
+  Trick
+  \begin{displaymath}
+    \nabla \times \vec u = \frac{1}{r} \begin{bmatrix}
+      \ver & r \hat{e} _\theta & \hat{e}_z\\
+      \ptf{}{r} & \ptf{}{\theta} & \ptf{}{z} \\
+      u_r & r u_\theta & u_z
+    \end{bmatrix} = 0.
+  \end{displaymath}
+  It means that the amount of global and local rotation perfectly cancel out, and the local vorticity meter 
+  shows nothing.
 
-  Przestrzeń wekorów stycznych do $M$ w punkcie $p \in M$ nazywamy \fndef{przestrzenią styczną} i oznaczamy 
-  przez $T_pM$.
-
-  \begin{lemma}
-    $T_p M$ jest przestrzenią wektorową, czyli, jeśli $\vec v, \vec w \in T_pM$ to $ a\vec v + b \vec w \in T_pM$ 
-    dla każdych $a, b\in \RR$.
-  \end{lemma}
-
-  Wniosek: Bazę w przestrzeni $T_pM$ tworzą wektory $\ptf{}{x^1}, \dots, \ptf{}{x^n}$ gdzie 
-  $(x^1, \dots, x^n)$to dowolny układ współrzędnych.
-
-  \paragraph{d) kowektory}
-  Kowektorem jest element przestrzeni dualnej $T^*_p M$.
+  \section{Irrotational flows}
   
-  \begin{example}
-    Niech $f \in C^\infty(M)$, zdefiniujmy
-    \begin{displaymath}
-      T_p M \ni v \mapsto v(f) \in \RR.
-    \end{displaymath}
-    %, Łatwo sprawdzić, że $(av + bw)(f) = a v(f) + bw (f)$.
-    Oznaczamy je $\d f $ i nazywamy \fndef{różniczką} funkcji $f$.
-    Czyli $v\ctr \d f = v(f)$, tylko teraz patrzymy na to w ten sposób, że $f$ jest stałe, a $v$ się zmienia.
-  \end{example}
+  A flow with $\vec \xi = 0$ is called \fndef{irrotational}.
+  \begin{displaymath}
+    \left.\begin{matrix}
+      \nabla \times \vec u = 0 \\
+      \nabla \times \nabla \chi = 0 
+    \end{matrix}\right\} \quad \vec u =  \nabla \chi,
+  \end{displaymath}
+  which is called \fndef{potential flow}.
+  $\chi$ can be defind as
+  \begin{displaymath}
+    \chi(\vec r) = \int_{r_0}^{\vec r} \vec u \d \vec r', 
+    \quad \chi(\vec r + \d \vec r) - \chi(\vec r) = \nabla \chi \cdot \d \vec r = \vec u \cdot \d \vec r,
+  \end{displaymath}
+  Note. $\chi$ is determined uniquely for simply connected domains (with no holes).
 
-  \begin{lemma}
-    Dla każdego $\omega \in T_p^*M$ istnieją funkcje $f^1, \dots, f^n \in C^\infty(M)$ oraz współczynniki $\omega_1, \dots, \omega_n \in \RR$
-    takie, że
-    \begin{displaymath}
-      \omega = \omega_i \d f^i.
-    \end{displaymath}
-  \end{lemma}
-
-  Niech $(x^1, \dots, x^n)$ będzie układem współrzędnych. Rozważmy
-  \begin{equation}
-    \omega = \omega_i \d x^i.
-    \label{eq:2.1}
-  \end{equation}
+  From the stokes theorem
+  \begin{displaymath}
+    \oint_{1-2} \vec u \cdot \d \vec r = \int\d S( \nabla \times \vec u) = 0, 
+  \end{displaymath}
+  since $\nabla \times \vec u$.
   
-  \begin{lemma}
-    Wszystkie $\omega \in T^*M$ są postaci \ref{eq:2.1}.
-  \end{lemma}
+  \section{Bernoulli theorem}
+
+  Euler's equation
+  \begin{displaymath}
+    \rho\dfrac{\vec u}{t} = - \nabla p + \vec f.
+  \end{displaymath}
+  We make the following assumptions
+  \begin{enumerate}
+    \item potential form $\vec f = - \nabla \varphi$
+    \item incomprehensible flow $\rho = \const$
+  \end{enumerate}
+  Note that
+  \begin{displaymath}
+    \dfrac{\vec u}{t} = \ptf{\vec u}{t} + (\vec u \cdot \nabla ) \vec u 
+    = \ptf{\vec u}{t} + (\nabla \times \vec u) \times \vec u + \nabla \left( \frac{1}{2} \vec u^2 \right),
+  \end{displaymath}
+  thus we can rewrite
+  \begin{displaymath}
+    \ptf{\vec u}{t} + 
+    % \Ccancel[red]{\vec \xi \times \vec u} 
+    % \renewcommand\CancelColor{\color{red}}
+    % \cancelto{0}{\vec \xi \times \vec u} 
+    \canto{\vec \xi \times \vec u}
+    = - \nabla \left( \frac{\vec u^2}{2} + \varphi + \psi\right) , \quad \psi = \frac{p}{\rho},
+  \end{displaymath}
+  since flow is irrotational.
+  For a barotropic fluid
+  \begin{displaymath}
+    \frac{1}{\rho} \nabla p = \nabla \psi, \quad \psi = \int\frac{\d p'}{\rho(p')}.
+  \end{displaymath}
+  Now we can write
+  \begin{displaymath}
+    \ptf{\vec u}{t} = \ptf{\nabla \chi}{t} = \nabla \ptf{\chi}{t}.
+  \end{displaymath}
+  
+  Gathering everything on a one side we get
+  \begin{displaymath}
+    \nabla \left( \ptf{\chi}{t} + \frac{\vec u^2}{2} + \psi + \varphi \right) = 0,
+  \end{displaymath}
+  and also
+  \begin{displaymath}
+    \ptf{\chi}{t} + \frac{\vec u^2}{2} + \psi + \varphi  = C(t),
+  \end{displaymath}
+  which is \fnte{Cauchy first integral of the Euler equation for an irrotational form}.
+
+  This can be further simplified by setting
+  \begin{displaymath}
+    \chi' = \chi + \int C(t) \d t, \quad \nabla \chi' = \nabla \chi
+  \end{displaymath}
+  then
+  \begin{displaymath}
+    \ptf{\chi'}{t} + \frac{\vec u^2}{2} + \varphi + \psi = 0.
+  \end{displaymath}
+  This works everywhere in the fluid and is called \fnte{Bernoulli's theorem}.
+  If the flow if \fndef{steady} then $\ptf{\chi'}{t} = 0$ and
+  \begin{displaymath}
+    \frac{\vec u^2}{2} + \varphi + \psi = \const.
+  \end{displaymath}
+  This is \fnte{Bernoulli's theorem for steady irrotational flow}.
+
+  \section{Bernoulli's theorem for rotational forms}
+  
+  Lamb's form 
+  \begin{displaymath}
+    \ptf{\vec u}{t} + \vec \xi \times \vec u = - \nabla \left( \frac{\vec u^2}{2} + \varphi + \psi \right),
+  \end{displaymath}
+  but there is no velocity potential.
+  Consider steady flow and perform scalar multiplication by $\vec u$.
+  We get 
+  \begin{displaymath}
+    0 = \vec u \cdot (\vec \xi \times \vec u) 
+    = - \vec u \cdot\nabla \left(\frac{\vec u^2}{2} + \varphi + \psi\right)
+    = \vec u \cdot \nabla H, \quad H = \frac{1}{2} \vec u^2 + \varphi + \psi.
+  \end{displaymath}
+  
+  The quantity $H$ is constatn along streamlines!
+
+  Evangelista Torricelli in $1664$ asked the following problem.
+  A barrel of wine has a little spout at the bottom. 
+  If we remove a plag we see a stream of fluid.
+  How long will it take for the barrel to drain?
+
+  Assuming that we deal with an incompressible fluid, $\psi = \frac{p}{\rho}$, and $\varphi = g z$
+  Choose a streamline and two points on it $A$, $B$.
+  By using second Bernoulli equation we can calculate a velocity of an outgoing fluid.
+  It will be equal
+  \begin{displaymath}
+    H_A = gh + \frac{p_0}{\rho} + \frac{1}{2} \cdot 0 ^2 ,
+  \end{displaymath}
+  \begin{displaymath}
+    H_B = 0 + \frac{p_0}{\rho} + \frac{1}{2} \vec u^2.
+  \end{displaymath}
+  Comparing those two we obtain
+  \begin{displaymath}
+    \frac{p_0}{\rho} + gh = \frac{p_0}{\rho} + \frac{1}{2} \vec u^2 \qiff V = \sqrt{2gh}.
+  \end{displaymath}
+
+  For a bottle with diameter $1$ m and height $2$ m, and $a = 5$ cm, $V = 6.3$ $\frac{\tm{m}}{\tm{s}}$.
+  
+  \section{Vorticity equation}
+  \begin{displaymath}
+    \ptf{\vec u}{t} + \vec \xi \times \vec u = - \nabla H
+  \end{displaymath}
+  \begin{displaymath}
+    \ptf{\vec \xi}{t} + \nabla \times (\vec \xi \times \vec u) = - \nabla \times \nabla H = 0
+  \end{displaymath}
+  \begin{displaymath}
+    \nabla \times(\vec \xi \times\vec u )  = (\vec u \cdot \nabla) \vec \xi + 
+    \Ccancel[red]{\vec \xi (\nabla \cdot \vec u)} - \Ccancel[blue]{(\nabla \cdot \vec \xi) \vec u} - (\vec \xi \cdot \nabla ) \vec u.
+  \end{displaymath}
+  thus
+  \begin{displaymath}
+    \ptf{\vec \xi}{t} + (\vec u\cdot \nabla ) \vec \xi = (\vec \xi \cdot \nabla)\vec u 
+    \qLRa \dfrac{\vec \xi}{t} = (\vec \xi \cdot \nabla) \vec u.
+  \end{displaymath}
+
+  For a 2D flow
+  \begin{displaymath}
+    \vec u = \begin{pmatrix}
+      u_x\\
+      u_y\\
+      0
+    \end{pmatrix}, \quad 
+    \vec \xi = \begin{pmatrix}
+      0\\
+      0\\
+      \xi
+    \end{pmatrix}, \quad (\vec \xi \cdot \nabla) \vec u = 0, 
+  \end{displaymath}
+  thus
+  \begin{displaymath}
+    \dfrac{\vec \xi}{t} = 0.
+  \end{displaymath}
+
+  \begin{enumerate}
+    \item For a $2$D flow vorticity of a fluid element is conserved.
+    \item In a 3D, if at any time $t_0$ $\vec \xi =0$ then for $t> t_0$ it will remain $0$.
+      (Persistance of irrotational flows, Cauchy-Lagrange theorem)
+    \item Consider a steady flow. Then 
+      \begin{displaymath}
+        (\vec u \cdot \nabla) \vec \xi = 0.
+      \end{displaymath}
+      
+  \end{enumerate}
+
+  \section{Circulation}
+  An ideal fluid is sometimes called inviscid.
+  Consider force field $\vec g = - \nabla g$ and consider a material curve made of fluid elements.
+
+  Define a \fndef{circulation}  along a curve $c(t)$, which is equal to 
+  \begin{displaymath}
+    \Gamma(t) = \oint_{c(t)} \vec u \cdot \d \vec r.
+  \end{displaymath}
+  Kelvin Circualtion theorem: $\Gamma(t) = \const$
+
   \begin{proof}
-    \begin{displaymath}
-      v \ctr \omega = (v^k\ptf{}{x^k}) \ctr \omega 
-      = v^k ( \ptf{}{x^k} \ctr \omega) 
-      = \omega_k v^k 
-      = (v^k \ptf{}{x^k}) \ctr(\omega_l \d x^l).
-    \end{displaymath}
     
+    We calculate the change on the circulation while the $c(t)$ is changing.
+    Let's look at it in an Euler picture.
+    \begin{displaymath}
+      \delta \Gamma(c(t),t) = \Gamma(c(t + \delta t), t + \delta t) - \Gamma(c(t), t) 
+      = \oint_{c(t + \delta t)} \vec u( r', t + \delta t) \d \vec r' 
+      - \oint_{c(t + \delta t)} \vec u( r') \d \vec r' 
+    \end{displaymath}
+    \begin{displaymath}
+      \delta \Gamma(t) = \oint_{c(t)} \vec u( \vec r + \vec u(\vec r, t) \delta t, t + \delta t) \cdot ( \d \vec r + ( \d \vec r \cdot \nabla) \vec u \delta t
+      - \oint_{c(t)}\vec u(\vec r, t) \d \vec r = 
+    \end{displaymath}
+    expand to first order in $\delta t$
+    \begin{displaymath}
+      = \oint_{c(t)} \left\{ \ptf{\vec u}{t} + (\vec u(\vec r, t)\cdot \nabla ) \vec u\delta t) \cdot \d \vec r + \vec u (\vec r, t) \cdot (\d \vec r \cdot \nabla ) \vec u \delta t \right\}
+      =\int_{c(t)} (- \nabla \frac{p}{\rho} - \nabla \varphi + \frac{1}{2} \nabla \vec u^2\d \vec r  = \int\nabla \dots\tm{\todo}.
+    \end{displaymath}
   \end{proof}
 
-  \paragraph{Prawo transformacji}
-  Przestrzenie dualne zawsze transformują się macierzą odwrotną.
-  Explicit\'e wzór
+  \chapter{Lecture 5}
+  \section{Magnus effect}
+  \todo Fig0
+  Consider a flow around a circular cylinder of a radius $a$ with
   \begin{displaymath}
-    \d x^k = \ptf{x^j}{x^k} \d (x')^k
+    u_r = 0, \quad u_\theta = - 2 U \sin \theta.
+  \end{displaymath}
+  Points where velocity is equal to $0$ are called \fndef{stagnation points}.
+  We denote them by $S_1, S_2$.
+  Recall that there is no force acting on the circle! (D'Alambert paradox).
+
+  We will do something artificial to obtain the force.
+  Assme that the cylinder rotates.
+  A \fndef{circulation} is a flow which flow lines are circles.
+  A \fndef{free vortex} is 
+  \begin{displaymath}
+    \vec u_{\tm{vortex}} = \frac{\Gamma}{2 \pi r} \hat{e}_\theta,
+  \end{displaymath}
+  where $\Gamma$ is just 
+  \begin{displaymath}
+    \Gamma = \oint_C \vec u \cdot \d \vec r,
+  \end{displaymath}
+  i.e. a circulation associated with the flow.
+  We have to satisfy the boundary conditions and they happen to be satisfied when we superpose original flow with 
+  the artificial one.
+  \begin{displaymath}
+    \nabla \times \vec u_{\tm{vortex}} = \vec 0,
   \end{displaymath}
   \begin{displaymath}
-    (\omega')_k = \ptf{x^i}{(x')^k} \omega_i
+    \vec u_{\tm{vortex}} = \nabla \phi_{\tm{vortex}}.
   \end{displaymath}
+  Thus
+  \begin{displaymath}
+    \frac{1}{r} \ptf{\Phi_{\tm{vortex}}}{\theta} = u_\theta = \frac{\Gamma}{2 \pi r}, \quad
+    \ptf{\Phi_{\tm{vortex}}}{\theta} = \frac{\Gamma}{2\pi}, \quad \Phi_{\tm{vortex}} = \frac{\Gamma}{2\pi}\theta.
+  \end{displaymath}
+  \begin{displaymath}
+    \Phi = U \left( r+ \frac{a^2}{r}  \right) \cos \theta + \frac{\Gamma}{2\pi}\theta.
+  \end{displaymath}
+  Velocity field $\vec u = \nabla \Phi$
+  \begin{displaymath}
+    u_r = \ptf{\Phi}{r} = U \left( 1 - \frac{a^2}{r^2} \right) \cos \theta,
+  \end{displaymath}
+  \begin{displaymath}
+    u_\theta = \frac{1}{r} \ptf{\Phi}{\theta} = - U \left( 1 + \frac{a^2}{r^2} \right) \sin \theta + \frac{\Gamma}{2\pi r}.
+  \end{displaymath}
+  For $r = a$ we have $u_r = 0$, $u_\theta = - 2 U \sin \theta + \Gamma/(2 \pi a)$.
+  The stagnation points move downwords.
+
+  \todo Fig1
   
-
-  \section{Tensory}
+  Position of stagnation poins are at points that satisfy
+  \begin{displaymath}
+    u_\theta = 0 = 2 U \sin \theta - \frac{\Gamma}{2 \pi a} \qLLa \sin \theta = \frac{\Gamma}{4\pi U a} = \frac{y_s}{a}.
+  \end{displaymath}
+  Thus $y_s = - a $ implies $\Gamma = - 4 \pi U a$.
+  If we increase $U$ even more the saturation points may not be on the surface of the circle.
   
-  Rozważmy przestrzenie wektorowe $V, W$.
-  Dla $v \in V$, $w\in W$ wprowadzamy
-  \begin{displaymath}
-    v \oitmes w.
-  \end{displaymath}
-
-  Rozważmy \fndef{formalnych kombinacji liniowych} elementów $(v, w) \in V \times W$.
-  Są one postaci
-  \begin{displaymath}
-    a_1 ( v_1, w_1) +\dots + a_\mu(v_\mu, w_\mu), \quad \mu \in \NN.
-  \end{displaymath}
-  Zdefiniujmy relację równoważności 
-  \begin{displaymath}
-    (a v + b v', w) \sim a (v, w) + b (v', w)
-  \end{displaymath}
-  (analogicznie dla drugiej współrzędnej) oraz
-  \begin{displaymath}
-    (0, w) \sim (0, 0) \sim (v, 0).
-  \end{displaymath}
-  Iloczyn tensorowy przestrzeni $V, W$ definiuje się jako 
-  \begin{displaymath}
-    V \otimes W = \left\{ [(v, w)] = (v, w) / \sim | v\in V, w\in W \right\},
-  \end{displaymath}
-  gdzie $\sim$ jest zdefiniowaną wyżej relacją równoważności.
-
-  Piszemy np.
-  \begin{displaymath}
-    v\otimes w = v^a w^b \ptf{}{x^a} \oitmes \ptf{}{x^b}, 
-    \quad T = T^{ab} \ptf{}{x^a} \otimes \ptf{}{x^b}.
-  \end{displaymath}
-
-  \chapter{Wykład 3}
-  \section{Tensorowe, formy różniczkowe, gęstości}
-  \paragraph{Iloczyn tensorowy}
-  Przykład
-  \begin{displaymath}
-    T^*_pM \otimes T^*_p M.
-  \end{displaymath}
-  Jest to przestrzeń odwzorowań biliniowych
-  \begin{displaymath}
-    T^*_pM \otimes T^*_p M \ni L : T_p M \times T_pM \ra \RR,
-  \end{displaymath}
-  \begin{displaymath}
-    T_pM \otimes T_p M \ni L : T_p^*M \times T_p^*M \ra \RR,
-  \end{displaymath}
-  itp.
-
-  Wprowadzamy oznaczenie
-  \begin{displaymath}
-    \bigwedge^N T^*_p M \subset (T^*_pM)^{\otimes n}.
-  \end{displaymath}
-
-  Formy różniczkowe są całkowicie antysymetryczne, czyli dla $\omega \in \bigwedge^N(T^*_p M)$ spełnia
-  \begin{displaymath}
-    \omega(v_1, \dots v_k, \dots, v_l \dots, v_n) = - 
-    \omega(v_1, \dots v_l, \dots, v_k \dots, v_n).
-  \end{displaymath}
-
-  Własności
-  \begin{enumerate}
-    \item dla $N > \dim M$, $\bigwedge^N(T^*_pM) = \left\{ 0 \right\}$
-    \item dla $N = \dim M$, $\dim \bigwedge^N(T^*_pM) = 1$.
-  \end{enumerate}
-
-  Niech $e^1, \dots, e^n \in T^*_pM$,
-  \begin{displaymath}
-    e^a \wedge e^b := e^a \otimes e^b - e^b \otimes e^a,
-  \end{displaymath}
-  a dla 
-  \begin{displaymath}
-    e^{a_1} \wedge \dots \wedge e^{a_l} = \sum_\sigma (-1)^{\tm{sgn} \sigma} e^{a_{\sigma(1)} \otimes\dots \otimes e^{a_{\sigma(l)}}.
-  \end{displaymath}
-
-  Matematyczny zapis
-  \begin{displaymath}
-    \bigwedge^k T^*_pM \ni \omega = \omega_{a_1,\dots,a_k} e^{a_1}\otimes \dots \otimes e^{e_k} 
-    = \frac{1}{k!}\omega_{a_1,\dots,a_k} e^{a_1}\wedge \dots \wedge e^{e_k} .
-  \end{displaymath}
-
-  Zapis fizyczny dla $\alpha \in \bigwedge^kT^*M, \beta \in \bigwedge^lT^*M$ mamy
-  \begin{displaymath}
-    \alpha \wedge \beta = \left( \frac{1}{k!} \alpha_{a_1,\dots, a_k} e^{a_1} \wedge \dots \wedge e^{a_n} \right)
-    \wedge \left( \frac{1}{l!} \beta{b_1,\dots, b_l} e^{b_1} \wedge \dots \wedge e^{b_l} \right)
-  \end{displaymath}
-  \begin{displaymath}
-    = \frac{1}{k!}\frac{1}{l!} \alpha_{a_1,\dots, a_k}\beta{b_1,\dots, b_l} e^{a_1} \wedge \dots \wedge e^{a_n} 
-    \wedge    e^{a_1} \wedge \dots \wedge e^{b_l} 
-  \end{displaymath}
-
-  Mamy także iloczyn wewnętrzny, zwany też zwężeniem lub kontrakcją:
-  \begin{displaymath}
-    v \ctr \omega = \frac{1}{(k - 1)!} v^{a_1} \omega_{a_1, \dots, a_k} e^{a_2} \wedge \dots \wedge e^{a_k}.
-  \end{displaymath}
-  Własność:
-  \begin{displaymath}
-    v \ctr (\alpha \wedge \beta) = (v \ctr \alpha) \wedge \beta + (-1)^k \alpha \wedge (v \ctr \beta).
-  \end{displaymath}
+  \todo Fig2 
+  \todo Fig3
   
-  \section{Gęstości}
-  Rozpocznijmy od rozważenia symbolu Levi-Civity.
-  Zauważmy, że nie jest on tensorem. Jeśli by był to znaczy, że transformowałby się jak tensor, 
-  a tego nie robi (mnoży się razy $\det A$) gdzie $A \in GL(M)$.
-  W fizyce tego nie widać, bo stosujemy transformacje z $SL(M)$, czyli ten wyznacznik daje 1.
-
-  Jest ważne żeby nie trakotować formy maksymalnego wymiaru jako funkcji --- wynika to stąd, że nie 
-  jest ona niezmiennicza przy zamianie współrzędnych.
-  Obiekt który przy zamianie współrzędnych z $\left\{e^i\right\}$ na $\left\{ f^i \right\}$ 
-  transformuje się jak
+  Lets calculate the force 
   \begin{displaymath}
-    f(p) \mapsto \det A(p) f(p)
+    \vec F = - \int_{\partial V} p(r = a, \theta) \hat n d S, 
   \end{displaymath}
-  nazywamy \fndef{pseudogęstością}. 
-  Jeśli w powyższym wzorze damy $\abs{\det A}$ zamiast $\det A$ to 
-  dostaniemy \fndef{gęstość}. 
-  Żeby być całkowicie poprawnym to 
-  \begin{definition}
-    Niech $p \in M$ będzie punktem rozmaitości, a $\mathfrak{b}$ będzie dowolną bazą w przestrzeni stycznej.
-    Odwzorowanie które parze $(p, \mathfrak{b})$ przyporządkowuje liczbę z $\RR$, a po zmianie współrzędnych
-    transformuje sią jak 
-    \begin{displaymath}
-      \rho (p, A \mf{b}) = \abs{\det A}^\alpha \rho(p, \mf{b})
-    \end{displaymath}
-    nazywamy \fndef{$\alpha$-gęstością}.
-  \end{definition}
+  and Bernoulli
+  \begin{displaymath}
+    \frac{p}{\rho} + \frac{\vec u ^2 }{2} = \const. \qLRa p = \const. - \frac{\rho \vec u^2}{2}.
+  \end{displaymath}
+  Therefore, 
+  \begin{displaymath}
+    p(r = 0, \theta) = \const - \frac{1}{2}\left[ 2 U \sin \theta - \frac{\Gamma}{2 \pi a} \right]^2,
+  \end{displaymath}
+  \begin{displaymath}
+    \hat n = \cos \theta \vex + \sin \theta \vey, \quad \d S = aL \d \theta ,
+  \end{displaymath}
+  where $L$ is the length of the cylinder.
+  Due to the symmetry we expect that $ \vec F \sim \vey$.
+  \begin{displaymath}
+    F_x = \frac{1}{2} \rho \int_0^{2 \pi} \left[ 2 U\sin \theta - \frac{\Gamma}{2\pi a} \right]^2 \cos \theta aL\d \theta = 0,
+    \quad 
+    F_y =  \frac{1}{2} \rho \int_0^{2 \pi} \left[ 2 U\sin \theta - \frac{\Gamma}{2\pi a} \right]^2 \sin \theta aL\d \theta = - \rho U \Gamma.
+  \end{displaymath}
+  It is called the \fndef{Magnus effect}.
   
-  \section{Pola tensorowe i operacje}
-  \paragraph{a) Pole wektorowe}
-  \fndef{Polem wektorowym} na rozmaitości różniczkowej $M$ nazywamy gładkie odwzorowanie 
+  Kutta-Joukowski law states that, for any configuration of the boundary with the rotating ,,artificial'' flow, the force is given by
   \begin{displaymath}
-    M \ni p \mapsto v \in T_p M,
-  \end{displaymath}
-  jeśli odwzorowanie to jest gładkie.
-  Gładkość oznacza, że w lokalnym układzie współrzędnych, w którym $TM|_U$ można zapisać jako
-  $U \times \RR^n$ odwzorowanie
-  \begin{displaymath}
-    U \ni p \mapsto v  \in \RR^n
-  \end{displaymath}
-  jest gładkie.
-  W lokalnym układzie współrzędnych pola wektorowe można zapisywać jako
-  \begin{displaymath}
-    v = v^a \ptf{}{x^a}.
-  \end{displaymath}
-  Dodatkowo mamy nawias pól wektorowych dany poprzez
-  \begin{displaymath}
-    [v, w] (f) = v(w(f)) - w(v(f)),
-  \end{displaymath}
-  a w układzie współrzędnych
-  \begin{displaymath}
-    [v, w] = \left( v^a \ptf{w^b}{x^a} - w^a \ptf{v^b}{x^a} \right) \ptf{}{x^b}.
+    F_x = 0, \quad F_y = - p U \Gamma.
   \end{displaymath}
   
   
-  \paragraph{Pola tensorowe}
-  Każde pole tensorowe można wyrazić przy pomocy iloczynów tensorowych (i ich kombinacji liniowych) pól wektorowy i jednoform.
-
-  \paragraph{Pochodna Liego pola wektorowego}
-  Niech $v, w \in \XX(M)$. Wówczas \fndef{pochodną Liego} pola wektorowego $w$ w kierunku pola $v$ nazywamy
+  \section{Flow around the plane wing}
+  We will do so by using the conformal mapping form a cylinder to a wing.
+  But first, we need some mathematical tools
+  We assume that our problem is two-dimensional, $\nabla \times \vec u = 0$, $ \nabla \cdot \vec u = 0$.
+  Thus we have the potential $\Phi$ such that $\vec u = \nabla \Phi$, $\nabla^2 \Phi = 0$.
+  Also, we have $\Psi$ such that $\vec u =  \nabla \times \vec \psi \vez$, $\nabla^2 \Psi = 0$.
+  Thus, for $\vec u = (u, v)$ 
   \begin{displaymath}
-    \ld_v w :=[v, w].
-  \end{displaymath}
-  Niech $f \in C^\infty(M)$. 
-  Wówczas pochodną Liego funkcji $f$ w kierunku pola $v$ nazywamy
-  \begin{displaymath}
-    \ld_v f:= v(f).
-  \end{displaymath}
-  Podobnie
-  \begin{displaymath}
-    \ld_v(\d f) := \d (\ld_v f).
+    u = \ptf{\Phi}{x} = \ptf{\psi}{y}, \quad v = \ptf{\Phi}{y}  = - \ptf{\Psi}{x}.
   \end{displaymath}
 
-  Dodatkowo wymagamy, żeby pochodna Liego spełniała regułę Leibniza
+  Consider a complex plane with $z = x + i y$ and an analytic funciton 
   \begin{displaymath}
-    \ld_v(v_1\otimes \dots \otimes v_k \otimes \omega_1\otimes\dots \otimes \omega_l) = 
-    (\ld_v(v_1))\otimes \dots \otimes v_k \otimes \omega_1\otimes \dots \otimes\omega_l + \dots.
+    w(z) = \Phi(x,y) + i \Psi(x,y),
   \end{displaymath}
-  Z tego już wynika działanie pochodnej Liego na dowolne pole wektorowe.
+  called complex velocity potential.
+  Thus, complex velocity
+  \begin{displaymath}
+    \dfrac{w}{z} = \lim_{\Delta z \ra 0} \frac{w(z + \Delta z) - w(z)}{\Delta z}.
+  \end{displaymath}
 
+  \begin{displaymath}
+    \dfrac{w}{z} = u - i v, \quad \abs{\dfrac{w}{z}}^2 = u^2 + v^2.
+  \end{displaymath}
 
-  \paragraph{Przykład} 
-  Niech 
+  \paragraph{Example.} Consider an uniform flow $\vec u = U \vex = (U, 0)$.
+  Thus
   \begin{displaymath}
-    L = L_{ab} \d x^a \otimes \d x^b, \quad v = v^a \ptf{}{x^a}.
-  \end{displaymath}
-  Wtedy 
-  \begin{displaymath}
-    \ld_vL = \ld_v(L_{ab} \d x^a \otimes \d x^b) = v(L_{ab}) \d x^a \otimes \d x^b 
-    + L_{ab} (\d v(x^a)) \otimes \d x^b
-    + L_{ab} \d x^a\otimes v(x^b)
+    \ptf{\Phi}{x} = U, \quad \Phi = U x,
   \end{displaymath}
   \begin{displaymath}
-    = v(L_{ab}) \d x^a \otimes \d x^b  
-    + L_{ab} \ptf{v^a}{x^c}\d x^c \otimes \d x^b
-    + L_{ab} \ptf{v^b}{x^c}\d x^a \otimes \d x^c.
+    \ptf{\Psi}{y} = U, \quad \Psi = Uy, 
+  \end{displaymath}
+  \begin{displaymath}
+    w(z) = U x + i U y.
+  \end{displaymath}
+
+  \paragraph{Free vortex}
+  \begin{displaymath}
+    \vec u = \frac{\Gamma}{2 \pi r} \hat e_\theta, \quad w(z) = ?,
+  \end{displaymath}
+  \begin{displaymath}
+    \frac{1}{r} \ptf{\Phi}{\theta} = \frac{\Gamma}{2 \pi r} \qLRa \Phi = \frac{\Gamma}{2\pi}\theta,
+  \end{displaymath}
+  \begin{displaymath}
+    - \ptf{\Psi}{r} = \frac{\Gamma}{2\pi r} \qLRa \Psi = - \frac{\Gamma}{2\pi} \log r,
+  \end{displaymath}
+  \begin{displaymath}
+    w(z) = \Phi + i \Psi = \frac{\Gamma}{2 \pi}\theta - i \frac{\Gamma}{2\pi} \log r = \frac{\Gamma}{2 \pi} ( \theta - i \log r).
+  \end{displaymath}
+  Substituting $z = r e^{i \theta}$ we obtain 
+  \begin{displaymath}
+    w(z) = - i \frac{\Gamma}{2 \pi}\log z.
   \end{displaymath}
   
-  
-  \paragraph{Przykład 2}
+  \paragraph{Cylinder without circluation}
   \begin{displaymath}
-    \ld_v \ptf{}{x^b} = - \ptf{v^a}{x^b}\ptf{}{x^a}.
+    \phi= U \left(r + \frac{a^2}{r}\right) \cos \theta,
   \end{displaymath}
-
-  \begin{lemma}
-    \begin{displaymath}
-      \ld_v(w^a \alpha_a) = (\ld_v w)^a\alpha_a + w^a (\ld_v\alpha)_a.
-    \end{displaymath}
-    
-  \end{lemma}
-
-  \chapter{Wykład 4}
-
-  Rozkład jazdy
-  \begin{enumerate}
-    \item Pochodna Liego
-    \item Pochodna zewnętrzna
-    \item Związki pomiędzy $\ld_\xi$ oraz $\d$
-    \item Całka z $k$-formy
-    \item Uwagi: $T(M)$, $T^*(M)$ jako rozmatiości
-      \begin{enumerate}
-        \item wiązki naturalne
-        \item wiązki stowarzyszone
-        \item wiązki główne
-      \end{enumerate}
-    \item 
-  \end{enumerate}
-
-  
-  \section{Pochoda zewnętrzna}
-
-  Wprowadźmy oznaczenia 
-  \begin{itemize}
-    \item $\Gamma(T^*M)$ --- przestrzeń pól kowektorowych
-    \item $\Gamma(\gibwedge^k(T^*M))$ --- przestrzeń pól $k$-form różniczkowych
-  \end{itemize}
-  Różniczka zewnętrzna
   \begin{displaymath}
-    \d : \Gamma(\bigwedge^k T^*M) \ra \Gamma(\bigwedge^{k - 1}T^*M),
+    \Psi = U\left( r - \frac{a^2}{r}\right) \sin \theta,
   \end{displaymath}
-  z własnościami
-  \begin{align*}
-    \d (\alpha \wedge \beta) = \d \alpha \wedge \beta + (-1)^k \alpha \wedge\d \beta \\
-    \d (\alpha + \beta) = \d \alpha + \d \beta\\
-    \d^2 = 0
-  \end{align*}
-
-  \section{Związki pomiędzy $\ld$ a $\d$}
-  Niech $\omega \in \Gamma(\bigwedge^k T^*M)$, $\xi \in \Gamma(TM)$
   \begin{displaymath}
-    \ld_\xi \omega = \xi \ctr \d \omega + \d (\xi \ctr \omega)
-  \end{displaymath}
-
-  Geometryczny wzór na nawias Liego
-  \begin{displaymath}
-    \d \omega(v, w) = v(w \ctr \omega) - w(v \ctr \omega) - [v,w]\ctr\omega.
+    w(z) = U\left( z + \frac{a^2}{z} \right).
   \end{displaymath}
   
-
-  Przykład liczenia pochodnej Liego na tensorach
+  \paragraph{Cylinder with circulation}
+  We just superpose the free vortex one with the cylinder without circulation to obtain
   \begin{displaymath}
-    \ld_V T_{ab} \d x^a \otimes \d x^b = v(T_{ab}) + T_{cb} \ptf{v^c}{x^a}+ T_{ca} \ptf{v^c}{x^b},
-  \end{displaymath}
-  \begin{displaymath}
-    \ld_V T^{ab}\ptf{}{x^a} \otimes \ptf{}{x^b} = v(T^{ab}) - T^{cb} \ptf{v^c}{x^a} - T_{ca} \ptf{v^c}{x^b},
-  \end{displaymath}
-
-  \section{Całki z form różniczkowych}
-  
-  Rozważmy rozmaitość $M$ i formę $\omega \in \Omega^n$.
-  Dodatkowo załóżmy, że $\supp\omega \n \chi_I(U_I)$ dla pewnej lokalnej mapy.
-  Definiujemy 
-  \begin{displaymath}
-    \int_M\omega = \int_{U_I} \omega  = \int \omega_{1, \dots, n} \d x^1 \wedge \dots \wedge \d x^n.
-  \end{displaymath}
-  Przy orientacji kluczowa jest orientacja na $M$.
-  Jeśli mamy dwie mapy, $(U_I, \chi_I)$, oraz $(U_J, \chi_J)$ ze współrzędnymi odpowiednio $x^1, \dots, x^n$
-  oraz $y^1, \dots, y^n$ to nazywamy je \fndef{zgodnie zorientowanymi} jeśli 
-  \begin{displaymath}
-    \forall a, b \quad \det \left( \ptf{x^a}{y^b} \right) > 0,
-  \end{displaymath}
-  na przecięciu $U_I\cap U_J$.
-  Rozmatiość nazywamy \fndef{zorientowaną} jeśli można na niej zadać atlas w którym każde dwie mapy mają zgodną
-  orientację.
-  Całkować można tylko na rozmaitościach zorientowanych.
-  Wynika to z tego, że przy zmianie bazy pod całką wyskakuje znak --- jeśli rozmaitość jest zorientowana to 
-  nie ma problemu, bo ten znak jest zawze taki sam.
-
-  Jeśli chcemy całkować na rozmaitości niespójnej to powinniśmy zdefiniować rozkład jedności.
-  Zakłądamy, że istnieje rozkłąd jedności, czyli zbiór funkcji $\phi_\chi$ takich, że
-  \begin{displaymath}
-    \forall p \in M, \phi_\chi \neq 0 \tm{dla skończonego pozbioru zbioru }\chi
-  \end{displaymath}
-  oraz
-  
-  
-  \chapter{Wykład 6}
-  \paragraph{Koneksja}
-  Koneksja na $TM$. 
-  Jeśli dany jest reper $e^1, \dots, e^n$ to macierz koneksji wyraza się przez $\Gamma^i_j$, $i, j = 1\dots, n$,
-  \begin{displaymath}
-    e^{ij} = (a^{-1})^i_j e^j, \quad (\Gamma')^i_j = (a^{-1})^i_k \Gamma^k + (a^{-1})^i_k \d a^k_j.
-  \end{displaymath}
-
-  
-  \paragraph{Krzywizna}
-  Krzywizna
-  \begin{displaymath}
-    \mc{R}^i_j = \d \Gamma^i_j + \Gamma^i_k \wedge \Gamma^k_j = \frac{1}{2} R^i_{jkl} e^k \wedge e^l.
-  \end{displaymath}
-  Przy zmianie repera na $(e')^i = (a^{-1})^i_k e^k$ $\mv{R}$ zmienia się na
-  \begin{displaymath}
-    (\mv{R}')^i_j = (a^{-1})^i_k \mc R^k_l a^l.
-  \end{displaymath}
-
-  Podsumowując
-  \begin{displaymath}
-    \Gamma' = a^{-1} \Gamma a + a^{-1} \d a, \quad \mc{R}' = a^{-1} \mc{R} a.
-  \end{displaymath}
-
-  \paragraph{Pochodna kowariantna}
-  Pomyślmy teraz o polu wektorowym jak o funkcji o wartościach wektorowych.
-  Mamy wtedy następujący wzór
-  \begin{displaymath}
-    D v^i = \d v^i + \Gamma^i_j v^j.
-  \end{displaymath}
-
-  Dla k-formy mamy
-  \begin{displaymath}
-    D \omega^i = \d \omega^i + \Gamma^i_j \wedge \omega^j.
-  \end{displaymath}
-
-  \begin{lemma}
-    Druga pochodna kowariantna dla współrzędnej
-    \begin{displaymath}
-      D^2\omega^i = R^i_j \wedge\omega^j.
-    \end{displaymath}
-  \end{lemma}
-  Dla funkcji mamy $D \omega = \d \omega$.
-
-  \paragraph{Różniczka kowarianta formy o wartościach kowektorowych}
-  Niech $\omega$ będzie jednoformą, $\omega = \omega_i e^i$.
-  Patrzymy na to jak na zeroformę o wartościach w $T^*_xM$.
-  Pochodną kowariantna dla jednoformy jest równa
-  \begin{displaymath}
-    D \omega_i = \d \omega_i - \Gamma^j_i \omega_j.
-  \end{displaymath}
-
-  Wytłumaczenie dlaczego powinien być ten minus: rozważmy $v^i\omega_i$ i policzmy 
-  $\d (v^i\omega_i) = (\d v^i)\omega_i + v^i \d \omega_i$.
-  Licząc dalej dostajemy
-  \begin{displaymath}
-    D(v^i\omega_i) \os{?}{=} (Dv^i)\omega_i + v^i (D\omega_j).
-  \end{displaymath}
-  Żeby równość zachodziła bierzemy minus, wtedy się rzeczy skracają.
-  
-  \begin{displaymath}
-    D \omega^{ij} = \d \omega^{ij} + \Gamma^i_l \wedge \omega^{lj} - \Gamma^j_l \wedge\omega^{il}.
-  \end{displaymath}
-  $D$ jest przemienne ze zwężaniem indeksów.
-  
-  \paragraph{Przykład}
-  Sprawdźmy jak to działa na deltę Kroneckera.
-  \begin{displaymath}
-    D \delta^i_j = \d \delta^i_j + \Gamma^i_l \delta^l_j - \Gamma^k_j \delta^i_k.
-  \end{displaymath}
-
-  \paragraph{Przykład 2}
-  Niech $\omega^i = \omega^i_j e^j = \delta^i_j e^j = e^i$
-  \begin{displaymath}
-    De^i = \d e^i \Gamma^i_j \wedge e^j = T^i = \frac{1}{2} T^i_{jk} e^j\wedge e^k.
-  \end{displaymath}
-  Dla repera holonomicznego mamy (MOŻE BYĆ BŁĄD)
-  \begin{displaymath}
-    D(\d x^i) = \d (\d x^i) + \Gamma^i_j \wedge \d x^i = \Gamma^i_{jk} \d x^k \wedge \d x&j 
-    = \frac{1}{2} \left( \Gamma^i_{jk} - \Gamma^i_{kj} \right) \d x^k \wedge \d x^j.
+    w(z) = U \left( z + \frac{a^2}{z} \right) - i \frac{\Gamma}{2 \pi }\log z
   \end{displaymath}
   
-  \paragraph{Pochodna kowariantna}
-  Niech $T^i_j$ będzie polem tensorowym (0 formą o wartościach tensorowych).
-  Wtedy różniczkę kowariantną nazywamy z definicji \fndef{pochodną kowariantną}
+  \paragraph{Plane wing}
+
+  Assume that we know the solution for the problem when the wing is just a cylinder
+  and also that we know the mapping from cylindrical problem into the physical one.
+  Assume that $z = z(z_1)$ and also we know the inverse $z_1 = z_1(z)$.
+  Then, our solution is given by
   \begin{displaymath}
-    \nabla T^{i\dots}_{j\dots} = D T^{i \dots}_{j\dots}
-  \end{displaymath}
-  \begin{displaymath}
-    \nabla_k T^{i\dots}_{j\dots} e^k\otimes e_i\otimes \dots \otimes e^j \dots
+    w(z) = w_1[z_1(z)].
   \end{displaymath}
   
-  
+  \paragraph{Joukowski transformation}
+  Consider
   \begin{displaymath}
-    \nabla_v = \nabla_i v^j e^i\otimes e_j
+    Z = z_1 + \frac{a^2}{z_1}, \quad a \in \RR
   \end{displaymath}
+  and
+  \begin{displaymath}
+    z_1 = \rho e^{i \phi}, \quad \rho \neq a.
+  \end{displaymath}
+  Then,
+  \begin{displaymath}
+    Z = x + iy 
+    = \rho e^{i \varphi} + \frac{a^2}{\rho} e^{-i \varphi} 
+    = \left( \rho + \frac{a^2}{\rho} \right) \cos \varphi + i\left( \rho - \frac{a^2}{\rho} \right) \sin \varphi.
+  \end{displaymath}
+  
+  \todo FigNext (XD)
+
+  We want to calculate a force on a plate that forms an angle $\alpha$.
+  Consider a cylinder with
+  \begin{displaymath}
+    w_1(z_1) = U\left(z + \frac{a^2}{z_1}\right).
+  \end{displaymath}
+  To obtain a plate we first need to rotate the cylinder by $\alpha$, thus multiply by $z_1e^{i \alpha}$.
+  We get $z_2 = z_1 e^{i\alpha}$. Next we squeeze using the Joukowski transformation
+  \begin{displaymath}
+    z = z_2 + \frac{a^2}{z2}.
+  \end{displaymath}
+  Using the formula for the derivative of a composite function we obtain
+  \begin{displaymath}
+    \dfrac{w}{z} = \dfrac{w_1}{z_1} \dfrac{z_1}{z_2}\dfrac{z_2}{z} = \dfrac{w_1}{z_1} e^{-i\alpha} \left[ 1 - \frac{a^2}{z_2^2} \right]^2.
+  \end{displaymath}
+  To obtain the force we use Kutta-Joukowski theorem.
+  That requires calculating the circulation first.
+  But we used only conformal mapping, thus the circulation is the same as in the case of the cylinder.
+  Thus the force is 0 again XD.
+
+  Note that we have a singularity for $z_1 = a$. 
+  It is called a \fndef{trailing edge}.
+  To solve this problem we say that $\d w_1/ \d z_1 = 0$ and the trailing edge is a stagnation point.
+  
+  We introduce an artificial circulation to make $z = a$ a stagnation point.
+  It is called a Kutta condition.
+  The circulation that we have to put is equal to 
+  \begin{displaymath}
+    \alpha = - \theta_s, \quad \sin \theta_s = \frac{\Gamma}{4 \pi U a}.
+  \end{displaymath}
+
+  Now the circulation is non-zero and thus
+  \begin{displaymath}
+    \Gamma = -4\pi U a \sin \alpha, \quad F = 4 \pi U a \rho \sin \theta.
+  \end{displaymath}
+  
+  \todo loads of figs
+  
+  A \fndef{stall} is a phenomenon when $\alpha$ is big enough that the force starts to decrease.
+  In case of real fluids we also have the \fndef{turbulent wake}.
+
+
   
   
 
+  
 
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
@@ -675,10 +704,16 @@
   
 
   
-
+  
+  
+  
+  
+  
+  
   
   
 
   
+
   
 \end{document}
