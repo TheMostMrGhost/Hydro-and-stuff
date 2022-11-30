@@ -1,0 +1,190 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+\chapter{Lecture 7}
+    \paragraph{Test} 8.12, 8:15 (3h).
+
+    \section{Pipe flow}
+    We assume that the flow is stationary, incompressible and viscous, through a circular pipe of radius $R$,
+    length $L$. The flow is driven by a pressure difference $\Delta p$.
+
+    \todo pipe fig
+
+    We introduce a system of coordinates when the $z$ axis coincides with the axis of symmetry of cylinder (steady = stationay).
+    For now we use cylindrical coordinates.
+    Due to symmetry of a problem we have
+    \begin{displaymath}
+      \vec u = [0, 0 , u(\vec r)], \quad r^2 = x^2 +y^2.
+    \end{displaymath}
+    The flow is incompressible, thus
+    \begin{displaymath}
+      \nabla \cdot \vec u = 0 = \ptf{u(r)}{z}.
+    \end{displaymath}
+
+    Navier-Stokes equations reads 
+    \begin{displaymath}
+      (\vec u \cdot \nabla) \vec u = u \ptf{}{z} u = 0
+    \end{displaymath}
+    and the laplacian
+    \begin{displaymath}
+      \nabla^2 \vec u = \left( \dptf{}{x} + \dptf{}{y} \right) u(\vec r) \vez = \vez \left( \dptf{u}{x} + \dptf{u}{y} \right).
+    \end{displaymath}
+    Thus Navier-Stokes equations 
+    \begin{displaymath}
+      \begin{matrix}
+        x & 0 &=& - \frac{1}{\rho} \ptf{p}{x}\\
+        y & 0 &=& - \frac{1}{\rho} \ptf{p}{y}\\
+        z & 0 &=& - \frac{1}{\rho} \ptf{p}{z} + \nu \nabla^2 u\\
+      \end{matrix}
+    \end{displaymath}
+    Since 
+    \begin{displaymath}
+      \underbrace{\frac{1}{\mu} \dfrac{p}{z}}_{\tm{only on }z} = \underbrace{\left( \dptf{}{x} + \dptf{}{y} \right) u}_{\tm{only on }x, y},
+    \end{displaymath}
+    both sides must be equal to a constant.
+    Therefore $p = a z + b$ thus
+    \begin{displaymath}
+      p(z) = - \frac{\Delta p}{L}z + p_0 + \Delta p
+    \end{displaymath}
+    Now we need to solve 
+    \begin{displaymath}
+      \dptf{u}{x} + \dptf{u}{y} =- \frac{\Delta p}{\mu L}.
+    \end{displaymath}
+    Plugging $u = u(r)$ we obtain
+    \begin{displaymath}
+      \ptf{u}{x} = \ptf{u}{r} \ptf{r}{x} = \ptf{u}{r} \frac{x}{r}.
+    \end{displaymath}
+    The second derivative 
+    \begin{displaymath}
+      \dptf{u}{x} = \frac{1}{r} \ptf{u}{r} + \frac{x^2}{r} \ptf{}{r} \left( \frac{1}{r} \ptf{u}{r} \right).
+    \end{displaymath}
+    Analogously for $y$.
+    The sum
+    \begin{displaymath}
+      \left( \dptf{}{x} + \dptf{}{y} \right) u = \frac{2}{r} \ptf{u}{r} + \frac{x^2 + y^2}{r} \ptf{}{r} \left( \frac{1}{r}\ptf{u}{r} \right)
+      = \frac{1}{r} \ptf{u}{r} + \dptf{u}{r} = \frac{1}{r} \ptf{}{r} \left( r \ptf{u}{r} \right).
+    \end{displaymath}
+
+    Summing up we get
+    \begin{displaymath}
+      \frac{1}{r} \ptf{}{r} \left( r \ptf{u}{r} \right) = - \frac{\Delta p}{\mu L} \qLLa u(r) = - \frac{\Delta p}{4\mu L}r^2 + c_1 \log(r) + c_2.
+    \end{displaymath}
+    We know that $c_1 = 0$ since inside the pipe the velocity must be finite.
+    Stick boundary condition implies $u(R) = 0$ thus $c_2 = \frac{\Delta p}{4 \mu L} R^2$.
+    Thus the flow in a pipe is given by
+    \begin{displaymath}
+      \vec u (\vec r) = \frac{\Delta p}{4 \mu L} (R^2 - r^2).
+    \end{displaymath}
+    
+    A \fndef{volumetric flux} (discharge/wydatek), flow rate
+    \begin{displaymath}
+      Q = \int_0^R u(r) \cdot  2 \pi r \d r = \frac{\Delta p \pi R^4}{8 \mu L}.
+    \end{displaymath}
+    This is called \fnte{Hagen-Poiseuille} formula and the flow \fndef{Hagen-Poiseuille flow}.
+    We can also use $\abs{\nabla p} = \Delta p / L$, and then
+    \begin{displaymath}
+      \langle u \rangle = \frac{Q}{A} = \frac{R^2}{8 \mu} \frac{\Delta p}{L} = \frac{R^2}{8 \mu} \nabla p
+    \end{displaymath}
+    This is failry simmilar to electric resistance.
+
+    \paragraph{Reynolds number}
+    Reminder (\todo what is $U$)
+    \begin{displaymath}
+      R_e = \frac{UL \mu}{\rho} = \frac{U L }{\nu},
+    \end{displaymath}
+    pipe flow
+    \begin{displaymath}
+      R_e = \frac{Ud}{\nu}.
+    \end{displaymath}
+    Typical critical $R_e\approx 2300$.
+    
+    
+    \paragraph{Ostwald viscometer}
+    It is a device that determines the viscosity without any moving parts. \todo fig
+    We measure the time needed for emptying the higher bowl.
+    Estimate for $\nu$, $G = \rho_0 g$
+    \begin{displaymath}
+      \nu = \frac{G\pi R^4}{8 \rho_0 Q} = \frac{\pi R^4 g}{8 V} T.
+    \end{displaymath}
+    
+    \section{Dissipation of energy}
+    We assume no external forces, just viscosity.
+    Also, our fluids are incompressible, $\rho = \const$.
+    Total kinetic energy of the fluid
+    \begin{displaymath}
+      \varepsilon_{kin} = \int_\Omega \d V \left( \frac{\rho \vec u^2}{2} \right).
+    \end{displaymath}
+    The question is $\dfrac{\varepsilon_{kin}}{t} = ?$.
+    Using Navier-Stokes equations we can calculate
+    \begin{displaymath}
+      \ptf{}{t} \left( \frac{\rho \vec u^2}{2}  \right) 
+      = \rho \vec u \left[ - (\vec u \cdot \nabla) \vec u - \frac{\nabla p}{\rho} + \frac{1}{\rho} \div \ten \Sigma''\right].
+    \end{displaymath}
+    Note that $\vec u \cdot (\vec u \cdot \nabla) \vec u = (\vec u\cdot \nabla) (\vec u^2 / 2)$ is a scalar.
+    Thus
+    \begin{displaymath}
+      \ptf{}{t} \left( \frac{\rho \vec u^2}{2}  \right)  
+      =- \rho( \vec u \cdot \nabla ) \left[ \frac{\vec u^2}{2} + \frac{p}{\rho}\right] + \vec u \div \ten \Sigma'.
+    \end{displaymath}
+    We can simplify the last summand by
+    \begin{displaymath}
+      \vec u \cdot \div \ten \Sigma' = \ptf{}{x^j} \left( u_j \Sigma'_{ji} \right) - \Sigma_{ji}' \ptf{u_i}{x^j} 
+      = \div(\vec u \cdot \ten \Sigma') - \ten \Sigma' : (\nabla \vec u).
+    \end{displaymath}
+    Reminder
+    \begin{displaymath}
+      \ten A : \ten B = A_{ij}B_{ji}.
+    \end{displaymath}
+    Since $\vec u$ is divergence-free we have $\vec u \cdot\nabla \varphi = \nabla \cdot (\varepsilon \vec u)$, where $\varphi$
+    is any scalar function.
+
+    Thus the final form of energy dissipation (we use the assumption that the fluid is Newtonian)
+    \begin{displaymath}
+      \rho \ptf{}{t} \left( \frac{\vec u^2}{2} \right) 
+      = - \div \left[ \rho \vec u \left( \frac{\vec u^2}{2} + \frac{p}{\rho}\right) - \vec u \cdot \ten \Sigma'\right] 
+      - \mu\left[ (\nabla \vec u) + (\nabla \vec u)^T \right] : (\nabla \vec u).
+    \end{displaymath}
+    Since we integrate a divergence over a surface integral on which velocity vanishes, the square bracket vanishes.
+    Thus
+    \begin{displaymath}
+      \ptf{\varepsilon_{kin}}{t} = - \mu \int_\Omega \d V\left[ (\nabla \vec u) + (\nabla \vec u)^T \right] : (\nabla \vec u)
+    \end{displaymath}
+    \begin{displaymath}
+      = - \mu \int_\Omega \d V\left[ (\nabla \vec u) + (\nabla \vec u)^T \right] : \frac{1}{2}[(\nabla \vec u) + (\nabla \vec u)^T]
+      = -\frac{\mu}{2} \int_\Omega \d V \left( \ptf{u_i}{x^j} + \ptf{u_j}{x^i} \right)^2 .
+    \end{displaymath}
+    Since $\dot \varepsilon_{kin} < 0 \LRa \mu > 0$.
+    This is the energy loss due to the internal friction in a fluid (which is 0 in eulerian fluid).
+    
+
+    \section{Time dependant flow}
+    The ideal fluid model is a good approximation when we are far away from boundaries.
+
+    We want to solve a problem of oscillatory motions.
+    Imagine that you have a half-space filled with viscous fluid ($\mu$) and the surface oscillates with
+    \begin{displaymath}
+      \vec u = u \vey, \quad u = u_0 \cos (\omega t).
+    \end{displaymath}
+    What is the resulting flow?
+    By symmetry the flow should not depend on $z$.
+    We propose
+    \begin{displaymath}
+      \vec u(x, t) = [0, u(x, t), 0], \quad \nabla \cdot \vec u = 0, \quad (\vec u \cdot \nabla) \vec u = 0.
+    \end{displaymath}
+    Now we write the Navier-Stokes equations
+    \begin{displaymath}
+      \ptf{\vec u}{t} = - \frac{1}{\rho} \nabla p + \frac{\mu}{\rho} \nabla^2 \vec u.
+    \end{displaymath}
+    The $x$ component (vertical axis) is constant, the $y$ component
+    \begin{displaymath}
+      \ptf{u}{t} = \nu \dptf{u}{x}.
+    \end{displaymath}
+    This is the diffusion equation.
+    Let's try a solution of the form
+    \begin{displaymath}
+      u(x, t) = u_0 \exp(i(k x - \omega t)).
+    \end{displaymath}
+    After substituting it into the original equation we obtain
+    \begin{displaymath}
+      k^2 = \frac{i \omega}{\nu}.
+    \end{displaymath}
+\end{document}

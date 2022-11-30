@@ -1,0 +1,260 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+  \chapter{Lecture 6}
+
+  Demonstration of a difference between water and corn syroup.
+  The latter has a high viscosity.
+
+  A viscous fluid starts flowing under shear. % shearing motion
+  \fndef{Shear stress} means naprężenia ścinające.
+  A \fndef{Newtonian fluid} resist its changing of form proportionally to the rate of deformation.
+
+  \paragraph{The rate of deformation}
+  We consider two points, one at $r_0$ and the other at $r_0 + \d r_0$, and consider their motion to 
+  $\vec r(r_0 + \d r_0, t)$ and $\vec r(r_0, t)$ respectively.
+  We have
+  \begin{displaymath}
+    \d \vec r= \vec r(\vec r_0 + \d \vec r_0, t) - \vec r ( \vec r_0, t).
+  \end{displaymath}
+  How fast does $\d \vec r$ change while moving along the trajectory of motion?
+  To calculate the velocity we need a material derivative of $\vec r$.
+  We have (in the Lagrange picture)
+  \begin{align*}
+    \frac{D}{Dt} \d \vec r &= \ptf{}{t} \vec r (\vec r_0 + \d \vec r, t) - \ptf{}{t}\vec r(\vec r_0, t)\\
+    &= \vec v(\vec r_0 + \d \vec r_0, t) - \vec v(\vec r_0, t)
+  \end{align*}
+  switching to Euler
+  \begin{align*}
+    \frac{D}{Dt} \d \vec r &= \vec v(\vec r + \d \vec r, t) - \vec v(\vec r, t)\\
+    &= (\nabla \vec v) \cdot \d \vec r.
+  \end{align*}
+  The object $\nabla \vec v$ is a velocity gradient, with coordinates given by
+  \begin{displaymath}
+    \frac{D}{Dt} (\d r)_i = (\nabla \cdot \vec v)_i^j \d r_j, 
+  \end{displaymath}
+  thus
+  \begin{displaymath}
+    \frac{D}{Dt} \d \vec r = (\nabla \vec v) \cdot \d \vec r.
+  \end{displaymath}
+  We build \fndef{rate of deformation tensor} as
+  \begin{displaymath}
+    \hat D = (\nabla \vec v)^S = \frac{1}{2} \left[ (\nabla \vec v) + (\nabla \vec v)^T \right].
+  \end{displaymath}
+  We want to connect the stress in the fluid to the deformation.
+  Recall
+  \begin{displaymath}
+    \ten \Sigma  = - p \ten 1.
+  \end{displaymath}
+
+  We assume that stress is linear to deformation (in a Newtonian fluid) and the fluid is isotropic.
+  We would like to know what is the most general, linear relationship between them.
+  It is given by
+  \begin{displaymath}
+    \Sigma_{ij} = C_{ijkl} D_{kl}.
+  \end{displaymath}
+  Fun fact: there is only one isotropic, symmetric tensor of order $4$ in dimension $3$
+  \begin{displaymath}
+    C_{ijkl} = \alpha \delta_{ij} \delta_{lk} + \beta \delta_{ik}\delta_{jl} + \gamma \delta_{il} \delta_{jk}.
+  \end{displaymath}
+  Thus
+  \begin{displaymath}
+    \Sigma_{ij} = \alpha \delta_{ij} D_{lk} + \beta D_{ij} + \gamma D_{ji} = \alpha \delta_{ij} D_{ll} + (\beta + \gamma) D_{ij}.
+  \end{displaymath}
+  
+  Let us denote $\lambda = \alpha _{ij}$, $2 \mu = \beta + \gamma$. 
+  Thus
+  \begin{displaymath}
+    \ten \Sigma' = \lambda (\tr( \ten D)) \ten 1 + 2\mu \ten D,
+  \end{displaymath}
+  \begin{displaymath}
+    \tr \ten \Sigma' = (3 \lambda + 2 \mu) \tr(D) = 3 \xi \tr (D),
+  \end{displaymath}
+  where $\xi = \lambda + \frac{2}{3} \mu$ and is called a \fndef{bulk viscosity} and $\mu$ is 
+  called a \fndef{shear viscosity}.
+
+  The equations of motion (momentum eq.)
+  \begin{displaymath}
+    \rho \frac{D\vec v}{D t} = \div \ten \Sigma + \vec f.
+  \end{displaymath}
+  We know something about the relation between $\Sigma$ and $\frac{D \vec v}{Dt}$ so we can calculate the closed form.
+  \begin{displaymath}
+    (\div (- p \vec 1))_j = \ptf{}{x^i} (- p \delta_{ij}) = -\ptf{p}{x^j}.
+  \end{displaymath}
+
+  \paragraph{Barotropic fluids}
+  We want to calculate $\div \ten \Sigma'$.
+  \begin{displaymath}
+    (\div \ten \Sigma')_i = \ptf{\Sigma'_{ij}}{x^j} = 2 \mu \ptf{D_{ij}}{x^j} + \lambda \delta_{ij} \ptf{D_{kk}}{x^j}
+  \end{displaymath}
+  inserting
+  \begin{displaymath}
+    D_{ij} = \frac{1}{2} \left( \ptf{v_j}{x^i} + \ptf{v_i}{x^j} \right) 
+  \end{displaymath}
+  into the above equation we obtain
+  \begin{displaymath}
+    (\div \ten \Sigma')_i = \mu \left( \frac{\partial^2 v_j}{\partial x^j \partial x^i} 
+    + \frac{\partial^2 v_k}{\partial x^j \partial x^k}\right) + \lambda \frac{\partial^2 v_k}{\partial x^j \partial x^k} \delta_{ij}.
+  \end{displaymath}
+
+  Thus we have
+  \begin{displaymath}
+    (\div \ten \Sigma')_i = \mu \nabla^2 v_i + (\lambda + \mu) \frac{\partial^2 v_j}{\partial x^j \partial x^i} 
+    = \mu \nabla^2 + (\lambda + \mu) [\nabla (\nabla \cdot \vec v)]_i
+  \end{displaymath}
+
+  Using the equations
+  \begin{displaymath}
+    \rho \left( \ptf{\vec v}{t} + (\vec v \cdot \nabla) \vec v \right) 
+    = - \nabla p + \mu \nabla^2 \vec v + (\xi + \frac{1}{3} \mu) \nabla (\nabla \cdot \vec v) + \vec f
+  \end{displaymath}
+  \begin{displaymath}
+    \ptf{\rho}{t} + \nabla \cdot (\rho \vec v) = 0, \quad p = p(\rho).
+  \end{displaymath}
+
+  \paragraph{Intuition}
+  Assume a unidirectional flow along $x$, varying along $y$ with
+  \begin{displaymath}
+    \vec v = [v_x(y), 0, 0].
+  \end{displaymath}
+  Lot of things simplifies, for example
+  \begin{displaymath}
+    \nabla \cdot \vec v = 0.
+  \end{displaymath}
+  
+  Let's calculate the deformation tensor
+  \begin{displaymath}
+    \ten D = (\nabla \vec v)^S = \frac{1}{2} \begin{pmatrix}
+      0 & \ptf{v_x}{y} & 0 \\
+       \ptf{v_x}{y} & 0 & 0 \\
+       0 & 0 & 0
+    \end{pmatrix}, \quad \ten \Sigma' = \lambda (\tr \ten D) \ten 1 + 2 \mu \ten D 
+    = \mu \begin{pmatrix}
+      0 & \ptf{v_x}{y} & 0\\
+      \ptf{v_x}{y} & 0 & 0\\
+      0 & 0 & 0
+    \end{pmatrix}.
+  \end{displaymath}
+  What is the interpretation of such results?
+  \begin{displaymath}
+    \vec f= \ten \Sigma \cdot \vec n, \quad f_i = \Sigma_{ij} \vec n_j, 
+  \end{displaymath}
+  with $\vec n$ as the normal vector, we get
+  \begin{displaymath}
+    \vec f = \vec f_n + \vec f_s,
+  \end{displaymath}
+  where the first is the normal component and the second is shear component.
+  Choose $\vec n = \vey$. We have
+  \begin{displaymath}
+    \vec f = \ten{ \Sigma} \hat e_j = \mu \begin{pmatrix}
+      0 & \ptf{v_x}{y} & 0\\
+      \ptf{v_x}{y} & 0 & 0\\
+      0 & 0 & 0
+    \end{pmatrix} \cdot \begin{pmatrix}
+      0 \\ 
+      1 \\
+      0
+    \end{pmatrix} = \begin{pmatrix}
+      \mu \ptf{v_x}{y}\\
+      0\\
+      0
+    \end{pmatrix}.
+  \end{displaymath}
+  This means that there is purely shear stress, with the relation between rate of change of velocity 
+  between subsequent fluid layer given by
+  \begin{displaymath}
+    \Sigma_{xy} = \ptf{v_x}{y}.
+  \end{displaymath}
+  
+  
+  We point out that $[\mu] =\tm{Pa} \cdot S$.
+  $\mu $ is a \fndef{dynamic viscosity}.
+  We can write $N \cdot S$ as
+  \begin{displaymath}
+    \frac{D \vec v}{Dt} =\frac{1}{\rho} \nabla p + \nu \nabla^2 \vec v + \frac{\vec f}{\rho},
+  \end{displaymath}
+  where $\nu = \mu/\rho$ and is called a \fndef{kinematic viscosity}.
+  
+    \begin{table}
+      \label{tab:}
+      \begin{center}
+        \begin{tabular}[c]{c|c|c|c}
+          \hline
+          Example & $\rho$ kg/m$^3$ & $\mu$ / Pa$\cdot$s & $\nu$ m$^3$/s \\
+          \hline
+          hydrogen & 0.084 & $8.8\cdot 10^{-5}$ & $10^{-4}$ \\
+          \hline
+          air & 1.18 & $1.8\cdot 10^{-5}$ & $1.5 \cdot 10^{-5}$ \\
+          \hline
+          water & 1000 & $10^{-3}$ & $10^{-6}$ \\
+          \hline
+        \end{tabular}
+      \end{center}
+    \end{table}
+
+    \section{Boundary conditions}
+    \paragraph{1)}
+    On the surface of a solid body $\vec v = 0$, $\vec v_n = 0$, $\vec v_t = 0$.
+    Those are called stick (or not slim) boundary conditions.
+    Otherwise infinite gradients.
+
+    \paragraph{2)} On a free surface $\vec v_n = 0$. 
+    A tangential velocity is not necesserily zero, but is not determined a priori.
+    The normal stresses have to be continuous, thus $\ten \Sigma \cdot \vec n$ are continuous.
+
+    \section{Bulk viscosity}
+    For an ideal fluid
+    \begin{align*}
+      \ten \Sigma &= - p \ten 1 + \ten \Sigma^T \\
+      &= - p \ten 1 + (\xi - \frac{2}{3} \mu) (\nabla \cdot \vec v) \ten 1 + \mu [(\nabla \vec v) + (\nabla \vec v)^T] \\
+      &= - p \ten 1 + \xi (\nabla \cdot \vec v) \ten 1 + \mu [(\nabla \vec v) + (\nabla \vec v) ^T - \frac{2}{3} (\nabla \cdot \vec v) \ten 1] \\
+      &= 0,
+    \end{align*}
+    thus $\ten \Sigma$ is symmetric and stressless tensor.
+
+    For a viscous fluid
+    \begin{displaymath}
+      p^* = - \frac{1}{3} \tr \ten \Sigma = p - \xi(\nabla \cdot \vec v).
+    \end{displaymath}
+    The part $p$ is a pressure and $\xi (\nabla \cdot \vec v) $ is a dynamic pressure.
+    The second part is important only when the fluid is compressible (for example in sound waves).
+
+    \section{Reynolds number}
+    Assume incompressible fluid.
+    We introduce one number to rule them all --- the \fndef{Reynolds number}.
+    We performed an experiment \todo Fig.
+    \fndef{Laminar flow} --- continuous, paralell streamlines.
+    After increasing the flow speed he observed irregularities.
+    At some point it starts to go crazy, for example completely mix with a fluid.
+
+    Consider a steady flow of a viscous fluid.
+    \begin{align*}
+      \rho(\vec v \cdot \nabla) \vec v = - \nabla p + \mu \nabla^2 \mu\\
+      \nabla \cdot \vec v = 0.
+    \end{align*}
+
+    Consider a flow with characteristic length $L$ and velocity $U$.
+    Those scale as
+    \begin{displaymath}
+      \rho( \vec v \cdot \nabla) \vec v \sim \rho U \cdot \frac{U}{L}
+    \end{displaymath}
+    \begin{displaymath}
+      \mu \nabla^2 \vec v \sim \mu \frac{U}{L^2}.
+    \end{displaymath}
+    Thus the Reynolds number 
+    \begin{displaymath}
+      R_e = \frac{\tm{inertia}}{\tm{viscosity}} 
+      = \frac{\rho \frac{U^2}{L}}{\mu \frac{U}{L^2}} 
+      = \frac{\rho UL}{\mu}
+      = \frac{UL}{\nu}.
+    \end{displaymath}
+    We have the following possibilities
+    \begin{itemize}
+      \item $R_e \ll 1$ inertia $\ll$ viscosity, laminar flow (Stokes flow),
+      \item $R_e \approx 1$ can still be laminar,
+      \item $R_e \gg 1$ inertia dominated flow --- turbulent flow.
+    \end{itemize}
+    The exact number for which there occurs transition from laminar to turbulent depends on the problem.
+    Typically it is around 1000.
+    For water $10^{-6}$, for a bacteria $R_e = 10^{-6}$, for honey on toast $R_e = 10^{-3}$, 
+    for a swimmer in a pool
+\end{document}

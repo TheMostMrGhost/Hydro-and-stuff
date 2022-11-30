@@ -1,0 +1,236 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+  \chapter{Lecture 5}
+  \section{Magnus effect}
+  \todo Fig0
+  Consider a flow around a circular cylinder of a radius $a$ with
+  \begin{displaymath}
+    u_r = 0, \quad u_\theta = - 2 U \sin \theta.
+  \end{displaymath}
+  Points where velocity is equal to $0$ are called \fndef{stagnation points}.
+  We denote them by $S_1, S_2$.
+  Recall that there is no force acting on the circle! (D'Alambert paradox).
+
+  We will do something artificial to obtain the force.
+  Assme that the cylinder rotates.
+  A \fndef{circulation} is a flow which flow lines are circles.
+  A \fndef{free vortex} is 
+  \begin{displaymath}
+    \vec u_{\tm{vortex}} = \frac{\Gamma}{2 \pi r} \hat{e}_\theta,
+  \end{displaymath}
+  where $\Gamma$ is just 
+  \begin{displaymath}
+    \Gamma = \oint_C \vec u \cdot \d \vec r,
+  \end{displaymath}
+  i.e. a circulation associated with the flow.
+  We have to satisfy the boundary conditions and they happen to be satisfied when we superpose original flow with 
+  the artificial one.
+  \begin{displaymath}
+    \nabla \times \vec u_{\tm{vortex}} = \vec 0,
+  \end{displaymath}
+  \begin{displaymath}
+    \vec u_{\tm{vortex}} = \nabla \phi_{\tm{vortex}}.
+  \end{displaymath}
+  Thus
+  \begin{displaymath}
+    \frac{1}{r} \ptf{\Phi_{\tm{vortex}}}{\theta} = u_\theta = \frac{\Gamma}{2 \pi r}, \quad
+    \ptf{\Phi_{\tm{vortex}}}{\theta} = \frac{\Gamma}{2\pi}, \quad \Phi_{\tm{vortex}} = \frac{\Gamma}{2\pi}\theta.
+  \end{displaymath}
+  \begin{displaymath}
+    \Phi = U \left( r+ \frac{a^2}{r}  \right) \cos \theta + \frac{\Gamma}{2\pi}\theta.
+  \end{displaymath}
+  Velocity field $\vec u = \nabla \Phi$
+  \begin{displaymath}
+    u_r = \ptf{\Phi}{r} = U \left( 1 - \frac{a^2}{r^2} \right) \cos \theta,
+  \end{displaymath}
+  \begin{displaymath}
+    u_\theta = \frac{1}{r} \ptf{\Phi}{\theta} = - U \left( 1 + \frac{a^2}{r^2} \right) \sin \theta + \frac{\Gamma}{2\pi r}.
+  \end{displaymath}
+  For $r = a$ we have $u_r = 0$, $u_\theta = - 2 U \sin \theta + \Gamma/(2 \pi a)$.
+  The stagnation points move downwords.
+
+  \todo Fig1
+  
+  Stagnation poins are at points that satisfy
+  \begin{displaymath}
+    u_\theta = 0 = 2 U \sin \theta - \frac{\Gamma}{2 \pi a} \qLRa \sin \theta = \frac{\Gamma}{4\pi U a} = \frac{y_s}{a}.
+  \end{displaymath}
+  Thus $y_s = - a $ implies $\Gamma = - 4 \pi U a$.
+  If we increase $U$ even more the saturation points may not be on the surface of the circle.
+  
+  \todo Fig2 
+  \todo Fig3
+  
+  Lets calculate the force 
+  \begin{displaymath}
+    \vec F = - \int_{\partial V} p(r = a, \theta) \hat n d S, 
+  \end{displaymath}
+  and Bernoulli
+  \begin{displaymath}
+    \frac{p}{\rho} + \frac{\vec u ^2 }{2} = \const. \qLRa p = \const. - \frac{\rho \vec u^2}{2}.
+  \end{displaymath}
+  Therefore, 
+  \begin{displaymath}
+    p(r = 0, \theta) = \const - \frac{1}{2}\left[ 2 U \sin \theta - \frac{\Gamma}{2 \pi a} \right]^2,
+  \end{displaymath}
+  \begin{displaymath}
+    \hat n = \cos \theta \vex + \sin \theta \vey, \quad \d S = aL \d \theta ,
+  \end{displaymath}
+  where $L$ is the length of the cylinder.
+  Due to the symmetry we expect that $ \vec F \sim \vey$.
+  \begin{displaymath}
+    F_x = \frac{1}{2} \rho \int_0^{2 \pi} \left[ 2 U\sin \theta - \frac{\Gamma}{2\pi a} \right]^2 \cos \theta aL\d \theta = 0,
+  \end{displaymath}
+  \begin{displaymath}
+    F_y =  \frac{1}{2} \rho \int_0^{2 \pi} \left[ 2 U\sin \theta - \frac{\Gamma}{2\pi a} \right]^2 \sin \theta aL\d \theta = - \rho U \Gamma.
+  \end{displaymath}
+  
+  It is called the \fndef{Magnus effect}.
+  
+  Kutta-Joukowski law states that, for any configuration of the boundary with the rotating ,,artificial'' flow, the force is given by
+  \begin{displaymath}
+    F_x = 0, \quad F_y = - \rho U \Gamma.
+  \end{displaymath}
+  
+  
+  \section{Flow around the plane wing}
+  We will do so by using the conformal mapping form a cylinder to a wing.
+  But first, we need some mathematical tools
+  We assume that our problem is two-dimensional, $\nabla \times \vec u = 0$, $ \nabla \cdot \vec u = 0$.
+  Thus we have the potential $\Phi$ such that $\vec u = \nabla \Phi$, $\nabla^2 \Phi = 0$.
+  Also, we have $\Psi$ such that $\vec u =  \nabla \times \vec \psi \vez$, $\nabla^2 \Psi = 0$.
+  Thus, for $\vec u = (u, v)$ 
+  \begin{displaymath}
+    u = \ptf{\Phi}{x} = \ptf{\psi}{y}, \quad v = \ptf{\Phi}{y}  = - \ptf{\Psi}{x}.
+  \end{displaymath}
+
+  Consider a complex plane with $z = x + i y$ and an analytic funciton 
+  \begin{displaymath}
+    w(z) = \Phi(x,y) + i \Psi(x,y),
+  \end{displaymath}
+  called complex velocity potential.
+  Thus, complex velocity
+  \begin{displaymath}
+    \dfrac{w}{z} = \lim_{\Delta z \ra 0} \frac{w(z + \Delta z) - w(z)}{\Delta z}.
+  \end{displaymath}
+
+  \begin{displaymath}
+    \dfrac{w}{z} = u - i v, \quad \abs{\dfrac{w}{z}}^2 = u^2 + v^2.
+  \end{displaymath}
+
+  \paragraph{Example.} Consider a uniform flow $\vec u = U \vex = (U, 0)$.
+  Thus
+  \begin{displaymath}
+    \ptf{\Phi}{x} = U, \quad \Phi = U x,
+  \end{displaymath}
+  \begin{displaymath}
+    \ptf{\Psi}{y} = U, \quad \Psi = Uy, 
+  \end{displaymath}
+  \begin{displaymath}
+    w(z) = U x + i U y.
+  \end{displaymath}
+
+  \paragraph{Free vortex}
+  \begin{displaymath}
+    \vec u = \frac{\Gamma}{2 \pi r} \hat e_\theta, \quad w(z) = ?,
+  \end{displaymath}
+  \begin{displaymath}
+    \frac{1}{r} \ptf{\Phi}{\theta} = \frac{\Gamma}{2 \pi r} \qLRa \Phi = \frac{\Gamma}{2\pi}\theta,
+  \end{displaymath}
+  \begin{displaymath}
+    - \ptf{\Psi}{r} = \frac{\Gamma}{2\pi r} \qLRa \Psi = - \frac{\Gamma}{2\pi} \log r,
+  \end{displaymath}
+  \begin{displaymath}
+    w(z) = \Phi + i \Psi = \frac{\Gamma}{2 \pi}\theta - i \frac{\Gamma}{2\pi} \log r = \frac{\Gamma}{2 \pi} ( \theta - i \log r).
+  \end{displaymath}
+  Substituting $z = r e^{i \theta}$ we obtain 
+  \begin{displaymath}
+    w(z) = - i \frac{\Gamma}{2 \pi}\log z.
+  \end{displaymath}
+  
+  \paragraph{Cylinder without circluation}
+  \begin{displaymath}
+    \phi= U \left(r + \frac{a^2}{r}\right) \cos \theta,
+  \end{displaymath}
+  \begin{displaymath}
+    \Psi = U\left( r - \frac{a^2}{r}\right) \sin \theta,
+  \end{displaymath}
+  \begin{displaymath}
+    w(z) = U\left( z + \frac{a^2}{z} \right).
+  \end{displaymath}
+  
+  \paragraph{Cylinder with circulation}
+  We just superpose the free vortex one with the cylinder without circulation to obtain
+  \begin{displaymath}
+    w(z) = U \left( z + \frac{a^2}{z} \right) - i \frac{\Gamma}{2 \pi }\log z
+  \end{displaymath}
+  
+  \paragraph{Plane wing}
+
+  Assume that we know the solution for the problem when the wing is just a cylinder
+  and also that we know the mapping from cylindrical problem into the physical one.
+  Assume that $z = z(z_1)$ and also we know the inverse $z_1 = z_1(z)$.
+  Then, our solution is given by
+  \begin{displaymath}
+    w(z) = w_1[z_1(z)].
+  \end{displaymath}
+  
+  \paragraph{Joukowski transformation}
+  Consider
+  \begin{displaymath}
+    Z = z_1 + \frac{a^2}{z_1}, \quad a \in \RR
+  \end{displaymath}
+  and
+  \begin{displaymath}
+    z_1 = \rho e^{i \phi}, \quad \rho \neq a.
+  \end{displaymath}
+  Then,
+  \begin{displaymath}
+    Z = x + iy 
+    = \rho e^{i \varphi} + \frac{a^2}{\rho} e^{-i \varphi} 
+    = \left( \rho + \frac{a^2}{\rho} \right) \cos \varphi + i\left( \rho - \frac{a^2}{\rho} \right) \sin \varphi.
+  \end{displaymath}
+  
+  \todo FigNext (XD)
+
+  We want to calculate a force on a plate that forms an angle $\alpha$.
+  Consider a cylinder with
+  \begin{displaymath}
+    w_1(z_1) = U\left(z + \frac{a^2}{z_1}\right).
+  \end{displaymath}
+  To obtain a plate we first need to rotate the cylinder by $\alpha$, thus multiply by $z_1e^{i \alpha}$.
+  We get $z_2 = z_1 e^{i\alpha}$. Next we squeeze using the Joukowski transformation
+  \begin{displaymath}
+    z = z_2 + \frac{a^2}{z2}.
+  \end{displaymath}
+  Using the formula for the derivative of a composite function we obtain
+  \begin{displaymath}
+    \dfrac{w}{z} = \dfrac{w_1}{z_1} \dfrac{z_1}{z_2}\dfrac{z_2}{z} = \dfrac{w_1}{z_1} e^{-i\alpha} \left[ 1 - \frac{a^2}{z_2^2} \right]^2.
+  \end{displaymath}
+  To obtain the force we use Kutta-Joukowski theorem.
+  That requires calculating the circulation first.
+  But we used only conformal mapping, thus the circulation is the same as in the case of the cylinder.
+  Thus the force is 0 again XD.
+
+  Note that we have a singularity for $z_1 = a$. 
+  It is called a \fndef{trailing edge}.
+  To solve this problem we say that $\d w_1/ \d z_1 = 0$ and the trailing edge is a stagnation point.
+  
+  We introduce an artificial circulation to make $z = a$ a stagnation point.
+  It is called a Kutta condition.
+  The circulation that we have to put is equal to 
+  \begin{displaymath}
+    \alpha = - \theta_s, \quad \sin \theta_s = \frac{\Gamma}{4 \pi U a}.
+  \end{displaymath}
+
+  Now the circulation is non-zero and thus
+  \begin{displaymath}
+    \Gamma = -4\pi U a \sin \alpha, \quad F = 4 \pi U a \rho \sin \theta.
+  \end{displaymath}
+  
+  \todo loads of figs
+  
+  A \fndef{stall} is a phenomenon when $\alpha$ is big enough that the force starts to decrease.
+  In case of real fluids we also have the \fndef{turbulent wake}.
+  
+\end{document}

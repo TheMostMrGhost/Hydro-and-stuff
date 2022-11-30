@@ -1,0 +1,162 @@
+\documentclass[11pt,oneside]{book}
+\usepackage[margin=1.2in]{geometry}
+\usepackage[toc,page]{appendix}
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{twoopt} % Do działania komend z kilkoma argumentami
+\usepackage{cancel}
+\usepackage{lipsum}
+\usepackage{caption}
+\usepackage[T1]{fontenc}
+\usepackage{titlesec, blindtext, color}
+\usepackage{xcolor,tikz}
+\usepackage{tikz-cd}
+\usepackage{caption}
+\usepackage{subcaption}
+\usetikzlibrary{patterns}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{decorations.pathmorphing}
+% \usepackage{amsmath,amssymb,amsthm,mathrsfs,amsfonts,xfrac,pifont,bbold,physics}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\usepackage{pgfplots}
+\usepackage[breakable, theorems, skins]{tcolorbox}
+\usepackage[colorlinks = true,
+            linkcolor = red,
+            urlcolor  = blue,
+            citecolor = red,
+            anchorcolor = red]{hyperref}
+\usepackage{enumitem}
+\usepackage{TemplateMatma}
+\usepackage{TemplateNotatkiPE}
+\usepackage{subfiles}
+\usepackage{aurical}
+\usepackage[T1]{fontenc}
+
+\tikzset{
+    partial ellipse/.style args={#1:#2:#3}{
+        insert path={+ (#1:#3) arc (#1:#2:#3)}
+    }
+}
+
+
+\renewcommand{\vec}[1]{\underline{#1}}
+
+% -------------------------------------------------------------------
+% Theorem Styles
+% -------------------------------------------------------------------
+
+\theoremstyle{definition} % Define theorem styles here based on the definition style (used for definitions and examples)
+\newtheorem*{definition}{Definition}
+
+\theoremstyle{plain} % Define theorem styles here based on the plain style (used for theorems, lemmas, propositions)
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{axiom}{Axiom}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{postulate}{Postulate}
+
+\theoremstyle{remark} % Define theorem styles here based on the remark style (used for remarks and notes)
+\newtheorem*{solution}{Solution}
+
+
+\newtheoremstyle{underline}% name
+{}        % Space above, empty = `usual value'
+{}              % Space below
+{}              % Body font
+{}    % Indent amount (empty = no indent, \parindent = para indent)
+{}              % Thm head font
+{.}             % Punctuation after thm head
+{1.5mm}         % Space after thm head: \newline = linebreak
+{{\underline{\textit{\thmname{#1}\thmnumber{ #2}}~\thmnote{(#3)}\unskip}}}  % Thm head spec
+
+\theoremstyle{underline}
+
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem*{terminology}{Terminology}
+\newtheorem*{notation}{Notation}
+\newtheorem*{convention}{Convention}
+
+\newcommand\Ccancel[2][black]{
+    \let\OldcancelColor\CancelColor
+    \renewcommand\CancelColor{\color{#1}}
+    \cancel{#2}
+    \renewcommand\CancelColor{\OldcancelColor}
+}
+
+\newcommandtwoopt{\canto}[3][red][0]{
+    \let\OldcancelColor\CancelColor
+    \renewcommand\CancelColor{\color{#1}}
+    \cancelto{#2}{#3}
+    \renewcommand\CancelColor{\OldcancelColor}
+}
+
+
+
+
+% -------------------------------------------------------------------
+% Chapter Headings
+% -------------------------------------------------------------------
+
+\setcounter{chapter}{0}
+
+\makeatletter
+\renewcommand{\@chapapp}{Lecture}
+\makeatother
+\definecolor{lightergray}{rgb}{0.9,0.9,0.9}
+
+\usepackage{titlesec}
+\titleformat{\section}{\large\bfseries\raggedright}{}{0em}{\colorsection}[\titlerule]
+\titleformat{name=\section,numberless}{\large\scshape\bfseries\raggedright}{}{0em}{\colorsectionnonumber}[\titlerule]
+
+\titleformat{\subsection}{\bfseries\raggedright}{}{0em}{\colorsubsection}
+\titleformat{name=\subsection,numberless}{\bfseries\raggedright}{}{0em}{\colorsubsectionnonumber}
+
+\newcommand{\colorsection}[1]{%
+    \colorbox{lightergray}{\parbox{\dimexpr\textwidth-2\fboxsep}{\thesection\ \ #1}}}
+\newcommand{\colorsectionnonumber}[1]{%
+    \colorbox{lightergray}{\parbox{\dimexpr\textwidth-2\fboxsep}{#1}}}
+    
+\newcommand{\colorsubsection}[1]{%
+    \colorbox{lightergray}{\parbox{\dimexpr\textwidth-2\fboxsep}{\thesubsection\ #1}}}
+\newcommand{\colorsubsectionnonumber}[1]{%
+    \colorbox{lightergray}{\parbox{\dimexpr\textwidth-2\fboxsep}{#1}}}
+    
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{20pt}}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+
+\title{Hydrodynamics and elasticity,\\ Lecture notes}
+\author{Mikołaj Duch}
+
+\begin{document}
+
+  \maketitle
+  \frontmatter
+
+  % -------------------------------------------------------------------
+  % Contents
+  % -------------------------------------------------------------------
+
+  \tableofcontents
+
+  % -------------------------------------------------------------------
+  % Main sections 
+  % -------------------------------------------------------------------
+
+  \mainmatter
+
+  \subfile{sections/01lecture.tex}
+  \subfile{sections/02lecture.tex}
+  \subfile{sections/03lecture.tex}
+  \subfile{sections/04lecture.tex}
+  \subfile{sections/05lecture.tex}
+  \subfile{sections/06lecture.tex}
+  \subfile{sections/07lecture.tex}
+
+  
+\end{document}

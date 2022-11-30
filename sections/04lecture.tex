@@ -1,0 +1,299 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+  \chapter{Lecture 4}
+  \section{Recall what we already know}
+  For the ideal fluid the stress tensor consists only of $p$ and an identity tensor.
+  However, real fluids are not ideal. 
+  Newton's second law for real fluid
+  \begin{displaymath}
+    \rho \dfrac{\vec u}{t} = - \nabla p + \vec f, \quad \rho \dfrac{\vec u}{t} = \div \ten \Sigma + \vec f.
+  \end{displaymath}
+
+  It would be perfect if we knew the \fnte{heat equation} i.e. $p = p(\rho, T)$, 
+  but for now we only have the equation of state $p(\rho)$.
+
+  Other equations that we have
+  \begin{enumerate}
+    \item momentum equation
+    \item mass conservation
+    \item equation of state
+    \item continuity equation
+  \end{enumerate}
+  
+  For an incomprehensible fluid
+  \begin{displaymath}
+    \ptf{\rho}{t} + \nabla \cdot(\rho \vec u) = 0 \qLRa \rho (\nabla \cdot \vec u) = 0.
+  \end{displaymath}
+  
+
+  % TODO name of this equation.
+  \begin{displaymath}
+    \ptf{\vec u}{t} + (\nabla \times \vec u) \times \vec u = - \nabla (\frac{\vec u^2}{2} + \varphi + \psi),
+  \end{displaymath}
+  where $\vec f = - \nabla \varphi$, $\psi = \frac{p}{\rho}$.
+  By introducting vorticity $\xi = \nabla \times \vec u$ we can write it as
+  \begin{displaymath}
+    \ptf{\vec u}{t} + \xi \times \vec u = - \nabla (\frac{\vec u^2}{2} + \varphi + \psi)
+  \end{displaymath}
+
+  
+  $\frac{1}{2}\xi$ represents the averege angular velocity of this initially $\perp$ segments in the fluid.
+  Consider a $2$D fluid $\vec \xi = \xi \vez$, $\xi = \ptf{u_y}{x} - \ptf{u_x}{y}$, and look on two
+  small, perpendicular segments. We will consider a difference between their components velocities in the $y$ direction.
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale = 2]
+      \draw (0, 0) -- (0, 1);
+      \draw (0, 0) -- (1, 0);
+      \node at (-0.2, 1) {C};
+      \node at (-0.2, -0.2) {A};
+      \node at (1, -0.2) {B};
+      \node at (-0.2, 0.5) {$\delta_y$};
+      \node at (0.5, -0.2) {$\delta_x$};
+    \end{tikzpicture}
+    \label{fig:}
+  \end{figure}
+  % Let us calculate the angular velocity of
+  \begin{displaymath}
+    u_y(B) - u_y(A) = u_y(x + \delta, y)- u_y(x, y) 
+    = \Ccancel[blue]{u_y(x, y)} + \ptf{u_y}{x} \delta x - \Ccancel[blue]{u_y(x, y)}
+    = \ptf{u}{x} \delta x.
+  \end{displaymath}
+  This is an instantaneous  angular velocity of $AB$ around the $\perp$ axis through $A$.
+  Computing the same for rotation along $C$ axis we get
+  \begin{displaymath}
+    u_x(C) - u_x(A) = \ptf{u_x}{y} \delta_y.
+  \end{displaymath}
+  So the vorticity at a point informs us about how much will rotate two, initially close, points. % TODO
+  Vorticity is a measure of rotation, but rather nonintuitive.
+  
+  Example. Take rigid body motion $\vec u = \vec \Omega \times \vec r$.
+  \begin{displaymath}
+    \vec \xi = \nabla \times \vec u , \quad \xi_i 
+    = \epsilon_{ijk} \ptf{u_k}{x^j}
+    = \epsilon_{ijk} \epsilon_{klm} \Omega_l \overbrace{\ptf{r_m}{x^j}}^{\delta_{jm}}
+    = \epsilon_{ijk} \epsilon_{klj} \Omega_l 
+    = - \left( \delta_{il} - 3 \delta_{il} \right) \Omega_l = 2 \Omega_i.
+  \end{displaymath}
+  Thus, for this particular flow
+  \begin{displaymath}
+    \vec \xi = 2 \vec \Omega.
+  \end{displaymath}
+  Note that the left side refers to local rotation, and right refers to global rotation.
+
+  \paragraph{Nonintuitive case}
+  Consider bathtub vortex.
+  It can be represented as
+  \begin{displaymath}
+    \vec u = \frac{k}{r} \hat{e}_\theta.
+  \end{displaymath}
+  
+  Trick
+  \begin{displaymath}
+    \nabla \times \vec u = \frac{1}{r} \begin{bmatrix}
+      \ver & r \hat{e} _\theta & \hat{e}_z\\
+      \ptf{}{r} & \ptf{}{\theta} & \ptf{}{z} \\
+      u_r & r u_\theta & u_z
+    \end{bmatrix} = 0.
+  \end{displaymath}
+  It means that the amount of global and local rotation perfectly cancel out, and the local vorticity meter 
+  shows nothing.
+
+  \section{Irrotational flows}
+  
+  A flow with $\vec \xi = 0$ is called \fndef{irrotational}.
+  \begin{displaymath}
+    \left.\begin{matrix}
+      \nabla \times \vec u = 0 \\
+      \nabla \times \nabla \chi = 0 
+    \end{matrix}\right\} \quad \vec u =  \nabla \chi,
+  \end{displaymath}
+  which is called \fndef{potential flow}.
+  $\chi$ can be defind as
+  \begin{displaymath}
+    \chi(\vec r) = \int_{r_0}^{\vec r} \vec u \d \vec r', 
+    \quad \chi(\vec r + \d \vec r) - \chi(\vec r) = \nabla \chi \cdot \d \vec r = \vec u \cdot \d \vec r,
+  \end{displaymath}
+  Note. $\chi$ is determined uniquely for simply connected domains (with no holes).
+
+  From the stokes theorem
+  \begin{displaymath}
+    \oint_{1-2} \vec u \cdot \d \vec r = \int\d S( \nabla \times \vec u) = 0, 
+  \end{displaymath}
+  since $\nabla \times \vec u$.
+  
+  \section{Bernoulli theorem}
+
+  Euler's equation
+  \begin{displaymath}
+    \rho\dfrac{\vec u}{t} = - \nabla p + \vec f.
+  \end{displaymath}
+  We make the following assumptions
+  \begin{enumerate}
+    \item potential form $\vec f = - \nabla \varphi$
+    \item incomprehensible flow $\rho = \const$
+  \end{enumerate}
+  Note that
+  \begin{displaymath}
+    \dfrac{\vec u}{t} = \ptf{\vec u}{t} + (\vec u \cdot \nabla ) \vec u 
+    = \ptf{\vec u}{t} + (\nabla \times \vec u) \times \vec u + \nabla \left( \frac{1}{2} \vec u^2 \right),
+  \end{displaymath}
+  thus we can rewrite
+  \begin{displaymath}
+    \ptf{\vec u}{t} + 
+    % \Ccancel[red]{\vec \xi \times \vec u} 
+    % \renewcommand\CancelColor{\color{red}}
+    % \cancelto{0}{\vec \xi \times \vec u} 
+    \canto{\vec \xi \times \vec u}
+    = - \nabla \left( \frac{\vec u^2}{2} + \varphi + \psi\right) , \quad \psi = \frac{p}{\rho},
+  \end{displaymath}
+  since flow is irrotational.
+  For a barotropic fluid
+  \begin{displaymath}
+    \frac{1}{\rho} \nabla p = \nabla \psi, \quad \psi = \int\frac{\d p'}{\rho(p')}.
+  \end{displaymath}
+  Now we can write
+  \begin{displaymath}
+    \ptf{\vec u}{t} = \ptf{\nabla \chi}{t} = \nabla \ptf{\chi}{t}.
+  \end{displaymath}
+  
+  Gathering everything on a one side we get
+  \begin{displaymath}
+    \nabla \left( \ptf{\chi}{t} + \frac{\vec u^2}{2} + \psi + \varphi \right) = 0,
+  \end{displaymath}
+  and also
+  \begin{displaymath}
+    \ptf{\chi}{t} + \frac{\vec u^2}{2} + \psi + \varphi  = C(t),
+  \end{displaymath}
+  which is \fnte{Cauchy first integral of the Euler equation for an irrotational form}.
+
+  This can be further simplified by setting
+  \begin{displaymath}
+    \chi' = \chi + \int C(t) \d t, \quad \nabla \chi' = \nabla \chi
+  \end{displaymath}
+  then
+  \begin{displaymath}
+    \ptf{\chi'}{t} + \frac{\vec u^2}{2} + \varphi + \psi = 0.
+  \end{displaymath}
+  This works everywhere in the fluid and is called \fnte{Bernoulli's theorem}.
+  If the flow if \fndef{steady} then $\ptf{\chi'}{t} = 0$ and
+  \begin{displaymath}
+    \frac{\vec u^2}{2} + \varphi + \psi = \const.
+  \end{displaymath}
+  This is \fnte{Bernoulli's theorem for steady irrotational flow}.
+
+  \section{Bernoulli's theorem for rotational forms}
+  
+  Lamb's form 
+  \begin{displaymath}
+    \ptf{\vec u}{t} + \vec \xi \times \vec u = - \nabla \left( \frac{\vec u^2}{2} + \varphi + \psi \right),
+  \end{displaymath}
+  but there is no velocity potential.
+  Consider steady flow and perform scalar multiplication by $\vec u$.
+  We get 
+  \begin{displaymath}
+    0 = \vec u \cdot (\vec \xi \times \vec u) 
+    = - \vec u \cdot\nabla \left(\frac{\vec u^2}{2} + \varphi + \psi\right)
+    = \vec u \cdot \nabla H, \quad H = \frac{1}{2} \vec u^2 + \varphi + \psi.
+  \end{displaymath}
+  
+  The quantity $H$ is constatn along streamlines!
+
+  Evangelista Torricelli in $1664$ asked the following problem.
+  A barrel of wine has a little spout at the bottom. 
+  If we remove a plag we see a stream of fluid.
+  How long will it take for the barrel to drain?
+
+  Assuming that we deal with an incompressible fluid, $\psi = \frac{p}{\rho}$, and $\varphi = g z$
+  Choose a streamline and two points on it $A$, $B$.
+  By using second Bernoulli equation we can calculate a velocity of an outgoing fluid.
+  It will be equal
+  \begin{displaymath}
+    H_A = gh + \frac{p_0}{\rho} + \frac{1}{2} \cdot 0 ^2 ,
+  \end{displaymath}
+  \begin{displaymath}
+    H_B = 0 + \frac{p_0}{\rho} + \frac{1}{2} \vec u^2.
+  \end{displaymath}
+  Comparing those two we obtain
+  \begin{displaymath}
+    \frac{p_0}{\rho} + gh = \frac{p_0}{\rho} + \frac{1}{2} \vec u^2 \qiff V = \sqrt{2gh}.
+  \end{displaymath}
+
+  For a bottle with diameter $1$ m and height $2$ m, and $a = 5$ cm, $V = 6.3$ $\frac{\tm{m}}{\tm{s}}$.
+  
+  \section{Vorticity equation}
+  \begin{displaymath}
+    \ptf{\vec u}{t} + \vec \xi \times \vec u = - \nabla H
+  \end{displaymath}
+  \begin{displaymath}
+    \ptf{\vec \xi}{t} + \nabla \times (\vec \xi \times \vec u) = - \nabla \times \nabla H = 0
+  \end{displaymath}
+  \begin{displaymath}
+    \nabla \times(\vec \xi \times\vec u )  = (\vec u \cdot \nabla) \vec \xi + 
+    \Ccancel[red]{\vec \xi (\nabla \cdot \vec u)} - \Ccancel[blue]{(\nabla \cdot \vec \xi) \vec u} - (\vec \xi \cdot \nabla ) \vec u.
+  \end{displaymath}
+  thus
+  \begin{displaymath}
+    \ptf{\vec \xi}{t} + (\vec u\cdot \nabla ) \vec \xi = (\vec \xi \cdot \nabla)\vec u 
+    \qLRa \dfrac{\vec \xi}{t} = (\vec \xi \cdot \nabla) \vec u.
+  \end{displaymath}
+
+  For a 2D flow
+  \begin{displaymath}
+    \vec u = \begin{pmatrix}
+      u_x\\
+      u_y\\
+      0
+    \end{pmatrix}, \quad 
+    \vec \xi = \begin{pmatrix}
+      0\\
+      0\\
+      \xi
+    \end{pmatrix}, \quad (\vec \xi \cdot \nabla) \vec u = 0, 
+  \end{displaymath}
+  thus
+  \begin{displaymath}
+    \dfrac{\vec \xi}{t} = 0.
+  \end{displaymath}
+
+  \begin{enumerate}
+    \item For a $2$D flow vorticity of a fluid element is conserved.
+    \item In a 3D, if at any time $t_0$ $\vec \xi =0$ then for $t> t_0$ it will remain $0$.
+      (Persistance of irrotational flows, Cauchy-Lagrange theorem)
+    \item Consider a steady flow. Then 
+      \begin{displaymath}
+        (\vec u \cdot \nabla) \vec \xi = 0.
+      \end{displaymath}
+      
+  \end{enumerate}
+
+  \section{Circulation}
+  An ideal fluid is sometimes called inviscid.
+  Consider force field $\vec g = - \nabla g$ and consider a material curve made of fluid elements.
+
+  Define a \fndef{circulation}  along a curve $c(t)$, which is equal to 
+  \begin{displaymath}
+    \Gamma(t) = \oint_{c(t)} \vec u \cdot \d \vec r.
+  \end{displaymath}
+  Kelvin Circualtion theorem: $\Gamma(t) = \const$
+
+  \begin{proof}
+    
+    We calculate the change on the circulation while the $c(t)$ is changing.
+    Let's look at it in an Euler picture.
+    \begin{displaymath}
+      \delta \Gamma(c(t),t) = \Gamma(c(t + \delta t), t + \delta t) - \Gamma(c(t), t) 
+      = \oint_{c(t + \delta t)} \vec u( r', t + \delta t) \d \vec r' 
+      - \oint_{c(t + \delta t)} \vec u( r') \d \vec r' 
+    \end{displaymath}
+    \begin{displaymath}
+      \delta \Gamma(t) = \oint_{c(t)} \vec u( \vec r + \vec u(\vec r, t) \delta t, t + \delta t) \cdot ( \d \vec r + ( \d \vec r \cdot \nabla) \vec u \delta t
+      - \oint_{c(t)}\vec u(\vec r, t) \d \vec r = 
+    \end{displaymath}
+    expand to first order in $\delta t$
+    \begin{displaymath}
+      = \oint_{c(t)} \left\{ \ptf{\vec u}{t} + (\vec u(\vec r, t)\cdot \nabla ) \vec u\delta t) \cdot \d \vec r + \vec u (\vec r, t) \cdot (\d \vec r \cdot \nabla ) \vec u \delta t \right\}
+      =\int_{c(t)} (- \nabla \frac{p}{\rho} - \nabla \varphi + \frac{1}{2} \nabla \vec u^2\d \vec r  = \int\nabla \dots\tm{\todo}.
+    \end{displaymath}
+  \end{proof}
+\end{document}
